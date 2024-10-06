@@ -20,8 +20,8 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="382dp"
-        android:layout_height="377dp"
+        android:layout_width="366dp"
+        android:layout_height="362dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/kulim_park"
-        android:text="Log In"
+        android:text="@string/log_in"
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView6"
@@ -120,12 +120,12 @@
         app:layout_constraintVertical_bias="0.271" />
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/button_login"
         android:layout_width="195dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:background="@drawable/button_background"
         android:fontFamily="@font/kulim_park"
-        android:text="Log In"
+        android:text="@string/log_in"
         android:textColor="@color/black"
         android:textSize="15sp"
         app:backgroundTint="#ECB35E"

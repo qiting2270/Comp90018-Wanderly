@@ -8,5 +8,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="forgot_password"><u>Forgot Password?</u></string>
+    <string name="log_in">Log In</string>
+    <string name="create_new_account">Create new account</string>
 
 </resources>
