@@ -1,6 +1,7 @@
 <resources>
     <string name="empty_string"> </string>
     <string name="app_name">Wanderly</string>
+    <string name="client_id">553734931935-0lkhj9jq884etdd3vihgje7aguekql33.apps.googleusercontent.com</string>
     <string name="log_in_with_email">Log In with Email</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="create_account">Create Account</string>
