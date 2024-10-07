@@ -1,6 +1,7 @@
 package com.example.wanderly;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -51,7 +52,7 @@ public class SignupActivity extends AppCompatActivity {
         register = findViewById(R.id.button_create_new_account);
 
         auth = FirebaseAuth.getInstance();
-        // register new user in database
+        // register new user
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,24 +79,31 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void registerUser(String email, String password) {
+        //sign up user into database
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    //sign up successful dialog
                     AlertDialog.Builder dialog = new AlertDialog.Builder(SignupActivity.this);
-                    dialog.setMessage("Congratulations, Create new account Successful!");
+                    dialog.setMessage("Create new account Successful!");
                     dialog.setCancelable(true);
                     dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-
+                            // direct user to login page
+                            Intent intent = new Intent(SignupActivity.this, StartActivity.class);
+                            startActivity(intent);
+                            //finish the current activity
+                            finish();
                         }
                     });
                     dialog.show();
                 }
                 else{
+                    //sign up unsuccessful dialog
                     AlertDialog.Builder dialog = new AlertDialog.Builder(SignupActivity.this);
-                    dialog.setMessage("Sorry, Create new account UnSuccessful, Please Try Again!");
+                    dialog.setMessage("Create new account UnSuccessful, Please Try again Later!");
                     dialog.setCancelable(true);
                     dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
