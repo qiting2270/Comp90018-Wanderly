@@ -95,7 +95,8 @@ public class SignupActivity extends AppCompatActivity {
 
     private void registerUser(String email, String password, String firstName, String lastName) {
         //sign up user into database
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
