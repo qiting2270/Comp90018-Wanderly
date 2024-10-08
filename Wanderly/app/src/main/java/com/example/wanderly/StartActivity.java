@@ -37,7 +37,7 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        //unfinished google login
         Button continueWithGoogle = (Button) findViewById(R.id.button_continueWithGoogle);
         continueWithGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +45,8 @@ public class StartActivity extends AppCompatActivity {
 
             }
         });
+
+
 
 
 

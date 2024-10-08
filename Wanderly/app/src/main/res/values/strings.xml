@@ -11,5 +11,7 @@
     <string name="forgot_password"><u>Forgot Password?</u></string>
     <string name="log_in">Log In</string>
     <string name="create_new_account">Create new account</string>
+    <string name="send_code">Send Code</string>
+    <string name="please_enter_your_registered_email_id"><b>Please enter your registered email ID.</b></string>
 
 </resources>

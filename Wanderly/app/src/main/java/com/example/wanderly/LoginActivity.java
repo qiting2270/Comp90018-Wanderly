@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -48,13 +49,23 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.button_login);
 
         auth = FirebaseAuth.getInstance();
-
+        //log in user
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String txt_email = email.getText().toString();
                 String txt_password = password.getText().toString();
                 loginUser(txt_email, txt_password);
+            }
+        });
+
+        // navigate to forgot password page
+        TextView forgot_password = findViewById(R.id.forgot_password_btn);
+        forgot_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, ForgetPassword.class);
+                startActivity(intent);
             }
         });
 
@@ -81,8 +92,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
                 dialog.show();
-
-
 
             }
         });
