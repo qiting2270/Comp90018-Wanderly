@@ -46,7 +46,6 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        FirebaseDatabase.getInstance().getReference().child("testing_branch").child("123").setValue("abc");
 
 
     }
