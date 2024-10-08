@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -23,6 +24,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
     Button sendCodeBtn;
     EditText email;
+    ProgressBar sendCodeprogressBar;
+
     FirebaseAuth auth;
 
     @Override
@@ -33,6 +36,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
         sendCodeBtn =  findViewById(R.id.button_forget_password_sendCode);
         email = findViewById(R.id.forgetpasswordPage_email);
+        sendCodeprogressBar = findViewById(R.id.progressBar_forgotPassword);
 
         auth = FirebaseAuth.getInstance();
 
@@ -65,6 +69,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     }
 
     private void ResetPassword(String email) {
+        sendCodeprogressBar.setVisibility(View.VISIBLE);
+        sendCodeBtn.setVisibility(View.INVISIBLE);
+
         auth.sendPasswordResetEmail(email)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
