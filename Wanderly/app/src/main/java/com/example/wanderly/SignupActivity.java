@@ -101,13 +101,15 @@ public class SignupActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     // get user id
                     String userId = auth.getCurrentUser().getUid();
+
                     HashMap<String, Object> map = new HashMap<>();
-                    map.put("First Name", firstName);
-                    map.put("Last Name", lastName);
-                    map.put("Email", email);
-                    map.put("Password", password);
+                    map.put("user_id", userId);
+                    map.put("firstname", firstName);
+                    map.put("lastname", lastName);
+                    map.put("email", email);
+                    map.put("password", password);
                     // store user info in db
-                    FirebaseDatabase.getInstance().getReference().child("User Information").child(userId).updateChildren(map);
+                    FirebaseDatabase.getInstance().getReference().child("User Information").push().updateChildren(map);
 
                     //sign up successful dialog
                     AlertDialog.Builder dialog = new AlertDialog.Builder(SignupActivity.this);
