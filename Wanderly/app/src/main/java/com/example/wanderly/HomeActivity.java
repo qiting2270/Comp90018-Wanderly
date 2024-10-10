@@ -1,7 +1,10 @@
 package com.example.wanderly;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +27,10 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String currentUserId;
     private TextView home_greeting;
+    private ImageView menuMyProfileBtn;
+    private String userLastName;
+    private String userFirstname;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +41,11 @@ public class HomeActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         currentUserId = auth.getCurrentUser().getUid();
         home_greeting = findViewById(R.id.home_greeting);
+        menuMyProfileBtn = findViewById(R.id.menu_profile);
+
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -44,8 +53,9 @@ public class HomeActivity extends AppCompatActivity {
 
                     if (userId != null && userId.equals(currentUserId)) {
                         // If the user_id matches the currentUserId, get last name
-                        String lastName = snapshot.child("lastname").getValue(String.class);
-                        home_greeting.setText("Bon Voyage, " + lastName + "!");
+                        userLastName = snapshot.child("lastname").getValue(String.class);
+                        userFirstname = snapshot.child("firstname").getValue(String.class);
+                        home_greeting.setText("Bon Voyage, " + userLastName + "!");
                         break; // Exit the loop once the user is found
                     }
                 }
@@ -57,6 +67,19 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+
+        //menu navigation
+        menuMyProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, MyProfileActivity.class);
+                intent.putExtra("userLastName", userLastName);
+                intent.putExtra("userFirstName", userFirstname);
+                startActivity(intent);
+            }
+        });
+
+
 
     }
 }

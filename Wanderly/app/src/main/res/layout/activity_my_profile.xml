@@ -135,50 +135,131 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView14" />
 
             <GridLayout
-                android:layout_width="380dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:columnCount="3"
+                android:layout_margin="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/my_profile_addimagebtn">
 
 
                 <ImageView
-                    android:id="@+id/imageView15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/my_profile_post"
+                    android:layout_width="118dp"
+                    android:layout_height="118dp"
+                    android:layout_margin="5dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <ImageView
-                    android:id="@+id/imageView16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_row="0"
-                    android:layout_column="1"
+                    android:id="@+id/imageView24"
+                    android:layout_width="118dp"
+                    android:layout_height="118dp"
+                    android:layout_margin="5dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <ImageView
-                    android:id="@+id/imageView17"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView23"
+                    android:layout_width="118dp"
+                    android:layout_height="118dp"
+                    android:layout_margin="5dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <ImageView
-                    android:id="@+id/imageView18"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView25"
+                    android:layout_width="118dp"
+                    android:layout_height="118dp"
+                    android:layout_margin="5dp"
                     tools:srcCompat="@tools:sample/avatars" />
-
             </GridLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
-
     </ScrollView>
+
+
+    <!-- Fixed Menu Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/menu_background"
+            android:layout_width="324dp"
+            android:layout_height="78dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/menu_background_darkblue" />
+
+        <ImageView
+            android:id="@+id/menu_button_selected"
+            android:layout_width="73dp"
+            android:layout_height="56dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.875"
+            app:layout_constraintStart_toStartOf="@+id/menu_background"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.69"
+            app:srcCompat="@drawable/menu_button_selected" />
+
+        <ImageView
+            android:id="@+id/menu_homebutton"
+            android:layout_width="30dp"
+            android:layout_height="27dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.18"
+            app:layout_constraintStart_toStartOf="@+id/menu_background"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.51"
+            app:srcCompat="@drawable/icon_homebtn" />
+
+        <ImageView
+            android:id="@+id/menu_tripbutton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_homebutton"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.55"
+            app:srcCompat="@drawable/airplane_ticket" />
+
+        <ImageView
+            android:id="@+id/menu_bookmark"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_tripbutton"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_tripbutton"
+            app:layout_constraintTop_toTopOf="@+id/menu_tripbutton"
+            app:srcCompat="@drawable/bookmark" />
+
+        <ImageView
+            android:id="@+id/menu_profile"
+            android:layout_width="30dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_bookmark"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:srcCompat="@drawable/icon_person" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 

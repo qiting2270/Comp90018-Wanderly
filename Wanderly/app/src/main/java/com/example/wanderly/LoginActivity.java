@@ -10,9 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -80,6 +82,12 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 // finish current activity, don't allow user to go back
                 finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // sign in unsuccessful
+                Toast.makeText(LoginActivity.this, "Wrong Email or Password! Please try again", Toast.LENGTH_SHORT).show();
             }
         });
     }

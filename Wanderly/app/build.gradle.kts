@@ -45,15 +45,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.google.firebase.auth)
+    implementation(libs.play.services.auth)
+    implementation(libs.glide)
 
-        // Import the BoM for the Firebase platform
-        implementation(platform(libs.firebase.bom))
-
-        // Add the dependency for the Firebase Authentication library
-        // When using the BoM, you don't specify versions in Firebase library dependencies
-        implementation(libs.google.firebase.auth)
-
-        // Also add the dependency for the Google Play services library and specify its version
-        implementation(libs.play.services.auth)
 
 }

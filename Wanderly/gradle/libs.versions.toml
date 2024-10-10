@@ -1,6 +1,9 @@
 [versions]
 agp = "8.5.1"
 firebaseBom = "33.4.0"
+githubGlide = "4.16.0"
+glide = "4.11.0"
+glideVersion = "4.15.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -16,7 +19,11 @@ firebaseDatabase = "21.0.0"
 firebaseStorage = "21.0.1"
 
 [libraries]
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "githubGlide" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-v4151 = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
+glide-v4160 = { module = "com.github.bumptech.glide:glide", version.ref = "githubGlide" }
 google-firebase-auth = { module = "com.google.firebase:firebase-auth" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
