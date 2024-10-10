@@ -69,6 +69,7 @@ public class MyProfileActivity extends AppCompatActivity {
             if (result.getResultCode() == RESULT_OK && result.getData() != null && result.getData().getData() != null){
                 //uploadImageBtn.setEnabled(true);
                 image = result.getData().getData();
+                //temporary display in imageVIew
                 Glide.with(getApplicationContext()).load(image).into(imageView);
                 uploadImage(image);
             }
@@ -135,15 +136,29 @@ public class MyProfileActivity extends AppCompatActivity {
         fileRef.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(MyProfileActivity.this, "upload image successful", Toast.LENGTH_SHORT).show();
+                // retrieve the image URL
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        String imageUrl = uri.toString();  // Here you get the download URL as a string
+                        Log.d("urllink", imageUrl);
+                        Toast.makeText(MyProfileActivity.this, "Upload image successful", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MyProfileActivity.this, "Failed to get download URL", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MyProfileActivity.this, "upload image failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyProfileActivity.this, "Upload image failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
 
 
