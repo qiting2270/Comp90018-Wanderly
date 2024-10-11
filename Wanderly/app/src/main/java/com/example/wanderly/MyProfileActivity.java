@@ -141,7 +141,7 @@ public class MyProfileActivity extends AppCompatActivity {
                         Log.d("urllink", imageUrl);
                         Toast.makeText(MyProfileActivity.this, "Upload image successful", Toast.LENGTH_SHORT).show();
                         // save url to real time database
-                        //saveUrlToDB(imageUrl);
+                        saveUrlToDB(imageUrl);
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -159,20 +159,18 @@ public class MyProfileActivity extends AppCompatActivity {
         });
     }
 
-    /*
+
     private void saveUrlToDB(String imageUrl) {
         // get user id
         String userId = auth.getCurrentUser().getUid();
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("user_id", userId);
-        map.put("imageUrl")
+        map.put("profileImageUrl",imageUrl);
 
         // store user info in db
-        FirebaseDatabase.getInstance().getReference().child("User Information").push().updateChildren(map);
+        FirebaseDatabase.getInstance().getReference().child("User Information").child(userId).updateChildren(map);
 
-
-    }*/
+    }
 
 
 }
