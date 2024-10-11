@@ -104,13 +104,12 @@ public class SignupActivity extends AppCompatActivity {
                     String userId = auth.getCurrentUser().getUid();
 
                     HashMap<String, Object> map = new HashMap<>();
-                    map.put("user_id", userId);
                     map.put("firstname", firstName);
                     map.put("lastname", lastName);
                     map.put("email", email);
                     map.put("password", password);
-                    // store user info in db
-                    FirebaseDatabase.getInstance().getReference().child("User Information").push().updateChildren(map);
+                    // store user info in db, make userId the key
+                    FirebaseDatabase.getInstance().getReference("User Information").child(userId).updateChildren(map);
 
                     //sign up successful dialog
                     AlertDialog.Builder dialog = new AlertDialog.Builder(SignupActivity.this);

@@ -48,11 +48,9 @@ public class HomeActivity extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String userId = snapshot.child("user_id").getValue(String.class);
 
-                    if (userId != null && userId.equals(currentUserId)) {
-                        // If the user_id matches the currentUserId, get last name
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    if(snapshot.getKey().equals(currentUserId)){
                         userLastName = snapshot.child("lastname").getValue(String.class);
                         userFirstname = snapshot.child("firstname").getValue(String.class);
                         home_greeting.setText("Bon Voyage, " + userLastName + "!");

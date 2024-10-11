@@ -158,10 +158,19 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
     }
-/*
+
+    /*
     private void saveUrlToDB(String imageUrl) {
         // get user id
         String userId = auth.getCurrentUser().getUid();
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("user_id", userId);
+        map.put("imageUrl")
+
+        // store user info in db
+        FirebaseDatabase.getInstance().getReference().child("User Information").push().updateChildren(map);
+
 
     }*/
 
