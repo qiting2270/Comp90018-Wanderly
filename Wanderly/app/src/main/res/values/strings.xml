@@ -13,5 +13,6 @@
     <string name="create_new_account">Create new account</string>
     <string name="send_code">Send Code</string>
     <string name="please_enter_your_registered_email_id"><b>Please enter your registered email ID.</b></string>
+    <string name="title_activity_maps2">MapsActivity2</string>
 
 </resources>

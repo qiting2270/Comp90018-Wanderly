@@ -30,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView menuMyProfileBtn;
     private String userLastName;
     private String userFirstname;
-
+    private ImageView viewmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         currentUserId = auth.getCurrentUser().getUid();
         home_greeting = findViewById(R.id.home_greeting);
         menuMyProfileBtn = findViewById(R.id.menu_profile);
+        viewmap = findViewById(R.id.imageView8);
 
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
@@ -73,6 +74,15 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, MyProfileActivity.class);
                 intent.putExtra("userLastName", userLastName);
                 intent.putExtra("userFirstName", userFirstname);
+
+                startActivity(intent);
+            }
+        });
+
+        viewmap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
                 startActivity(intent);
             }
         });
