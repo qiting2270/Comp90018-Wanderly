@@ -62,7 +62,6 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -71,8 +70,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, MyProfileActivity.class);
-                intent.putExtra("userLastName", userLastName);
-                intent.putExtra("userFirstName", userFirstname);
+                //intent.putExtra("userLastName", userLastName);
+                //intent.putExtra("userFirstName", userFirstname);
                 startActivity(intent);
             }
         });

@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.RequestManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -50,21 +54,28 @@ import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class MyProfileActivity extends AppCompatActivity {
 
     private ImageView menuHomeBtn;
     private TextView myProfileName;
-
+    private String userLastName;
+    private String userFirstName;
 
     private TextView addImageBtn;
+    private GridLayout gridLayout;
 
     Uri image;
-    ImageView imageView;
+    //ImageView imageView;
 
     private FirebaseAuth auth;
+    private String currentUserId;
+
+    private ArrayList<String> posts_list = new ArrayList<>();
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -89,20 +100,22 @@ public class MyProfileActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_my_profile);
 
-
+/*
         // Retrieve the data from Intent
         String userLastName = getIntent().getStringExtra("userLastName");
         String userFirstName = getIntent().getStringExtra("userFirstName");
-
+*/
         menuHomeBtn = findViewById(R.id.menu_homebutton);
         myProfileName = findViewById(R.id.my_profile_name);
-        myProfileName.setText(userFirstName + " " + userLastName);
+
+        //myProfileName.setText(userFirstName + " " + userLastName);
         auth = FirebaseAuth.getInstance();
+        currentUserId = auth.getCurrentUser().getUid();
 
         FirebaseApp.initializeApp(MyProfileActivity.this);
-        imageView = findViewById(R.id.my_profile_post);
+        //imageView = findViewById(R.id.my_profile_post);
         addImageBtn = findViewById(R.id.my_profile_addimagebtn);
-
+        gridLayout = findViewById(R.id.my_profile_gridLayout);
 
         addImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,9 +138,99 @@ public class MyProfileActivity extends AppCompatActivity {
         });
 
 
+        //final ArrayList<String> posts_list = new ArrayList<>();
+        // access db
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                posts_list.clear();
+                gridLayout.removeAllViews();
+                //search data in db
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    if(snapshot.getKey().equals(currentUserId)){
+                        userLastName = snapshot.child("lastname").getValue(String.class);
+                        userFirstName = snapshot.child("firstname").getValue(String.class);
+                        myProfileName.setText(userFirstName + " " + userLastName);
+                        for(DataSnapshot data : snapshot.child("Profile Posts").getChildren()){
+                            posts_list.add(Objects.requireNonNull(data.getValue()).toString());
+                        }
+                    }
+                }
+
+                for (String url : posts_list){
+                    // display all images under posts (gridlayout).
+                    ImageView imageView = new ImageView(MyProfileActivity.this);
+
+                    int widthInDp = 118;
+                    int heightInDp = 118;
+                    // Convert dp to pixels programmatically
+                    int widthInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthInDp, getResources().getDisplayMetrics());
+                    int heightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, heightInDp, getResources().getDisplayMetrics());
+                    // Create LayoutParams
+                    GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                    params.width = widthInPx;
+                    params.height = heightInPx;
+                    // Set margins (5dp converted to pixels)
+                    int marginInDp = 5;
+                    int marginInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginInDp, getResources().getDisplayMetrics());
+                    params.setMargins(marginInPx, marginInPx, marginInPx, marginInPx);
+
+                    imageView.setLayoutParams(params);
+                    //load img to ImageView
+                    Glide.with(MyProfileActivity.this).load(url).into(imageView);
+
+                    // add imageview to the grid layout
+                    gridLayout.addView(imageView);
+
+                }
 
 
-        Glide.with(this).load().into(imageView);
+
+
+
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        /*
+
+        for (String url : posts_list){
+            Log.d("postList","1");
+            Log.d("postsList", url);
+            Log.d("postsList", "Starting the iteration over posts_list");
+            // display all images under posts (gridlayout).
+            ImageView imageView = new ImageView(this);
+
+            int widthInDp = 118;
+            int heightInDp = 118;
+            // Convert dp to pixels programmatically
+            int widthInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthInDp, getResources().getDisplayMetrics());
+            int heightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, heightInDp, getResources().getDisplayMetrics());
+            // Create LayoutParams
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.width = widthInPx;
+            params.height = heightInPx;
+            // Set margins (5dp converted to pixels)
+            int marginInDp = 5;
+            int marginInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginInDp, getResources().getDisplayMetrics());
+            params.setMargins(marginInPx, marginInPx, marginInPx, marginInPx);
+
+            imageView.setLayoutParams(params);
+            //load img to ImageView
+            Glide.with(this).load(url).into(imageView);
+
+            // add imageview to the grid layout
+            gridLayout.addView(imageView);
+
+        }
+
+*/
+
+
 
 
 
@@ -169,12 +272,8 @@ public class MyProfileActivity extends AppCompatActivity {
     private void saveUrlToDB(String imageUrl) {
         // get user id
         String userId = auth.getCurrentUser().getUid();
-
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("profileImageUrl",imageUrl);
-
-        // store user info in db
-        FirebaseDatabase.getInstance().getReference().child("User Information").child(userId).updateChildren(map);
+        // store image url in db with random key.
+        FirebaseDatabase.getInstance().getReference().child("User Information").child(userId).child("Profile Posts").push().setValue(imageUrl);
 
     }
 
