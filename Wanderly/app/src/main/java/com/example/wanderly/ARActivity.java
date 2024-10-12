@@ -28,7 +28,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.util.concurrent.ListenableFuture;
-
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -46,6 +45,8 @@ public class ARActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private ImageView arrow;
     private PreviewView previewView;
+    private Location targetLocation;
+    private float bearingToTarget = 0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,27 +57,29 @@ public class ARActivity extends AppCompatActivity {
         previewView = findViewById(R.id.previewView);
         arrow = findViewById(R.id.arrow);
 
-        // 检查并请求相机权限
+        // 目的地 假设
+        targetLocation = new Location("");
+        targetLocation.setLatitude(37.7749);  // Example: Latitude of San Francisco
+        targetLocation.setLongitude(-122.4194); // Example: Longitude of San Francisco
+
+
+        // Request camera permissions and start camera
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
         } else {
-            // 初始化相机
             startCamera();
         }
 
 
-        // 初始化位置服务
+        // Initialize location services and sensors
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLocation();
-
-        // 初始化方向传感器
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         startSensors();
     }
 
 
     private void startCamera() {
-        // 相机的启动逻辑
         ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(() -> {
             try {
@@ -113,22 +116,18 @@ public class ARActivity extends AppCompatActivity {
 //    }
 
     private void getLocation() {
-        // 检查GPS权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         } else {
-            // 获取GPS定位
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
                             if (location != null) {
-                                // 处理位置数据
-                                double latitude = location.getLatitude();
-                                double longitude = location.getLongitude();
-                                // 使用经纬度进行导航或其他操作
+//                                double latitude = location.getLatitude();
+//                                double longitude = location.getLongitude();
+                                calculateBearingToTarget(location);
                             } else {
-                                // 如果 location 为 null，考虑请求位置更新
                                 requestNewLocationData();
                             }
                         }
@@ -136,7 +135,7 @@ public class ARActivity extends AppCompatActivity {
         }
     }
 
-    // 请求实时位置更新
+
     private void requestNewLocationData() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Request the permission if it hasn't been granted
@@ -157,30 +156,34 @@ public class ARActivity extends AppCompatActivity {
         public void onLocationResult(LocationResult locationResult) {
             Location location = locationResult.getLastLocation();
             if (location != null) {
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                // 使用经纬度进行操作
+//                double latitude = location.getLatitude();
+//                double longitude = location.getLongitude();
+                calculateBearingToTarget(location);
             }
         }
     };
 
-    // 处理权限请求结果
+    // Calculate the bearing from the device's current location to the target location
+    private void calculateBearingToTarget(Location currentLocation) {
+        if (currentLocation != null && targetLocation != null) {
+            bearingToTarget = currentLocation.bearingTo(targetLocation);
+        }
+    }
+
+    // Handle permission requests result
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 用户授予了权限，重新调用获取位置的方法
                 getLocation();
             } else {
-                // 用户拒绝了权限，显示提示信息
                 Toast.makeText(this, "Location permission is required to get GPS data", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private void startSensors() {
-        // 开启方向传感器
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         Sensor magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         SensorEventListener sensorEventListener = new SensorEventListener() {
@@ -200,10 +203,16 @@ public class ARActivity extends AppCompatActivity {
                     if (success) {
                         float orientation[] = new float[3];
                         SensorManager.getOrientation(R, orientation);
-                        float azimuth = orientation[0]; // 设备的朝向
+                        float azimuth = orientation[0];// Azimuth in radians
 
-                        // 计算箭头的旋转角度
-                        arrow.setRotation((float) Math.toDegrees(azimuth));
+                        // Convert azimuth to degrees
+                        float azimuthInDegrees = (float) Math.toDegrees(azimuth);
+                        if (azimuthInDegrees < 0) {
+                            azimuthInDegrees += 360;
+                        }
+
+                        // Rotate arrow to point towards the target location
+                        arrow.setRotation(bearingToTarget - azimuthInDegrees);
                     }
                 }
             }
