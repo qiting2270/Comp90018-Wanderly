@@ -82,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
         viewmap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, MapsActivity.class);
+                Intent intent = new Intent(HomeActivity.this, MapsActivity2.class);
                 startActivity(intent);
             }
         });
