@@ -63,6 +63,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     private ImageView menuHomeBtn;
     private TextView myProfileName;
+    private ImageView myProfileSetting;
     private String userLastName;
     private String userFirstName;
 
@@ -107,6 +108,7 @@ public class MyProfileActivity extends AppCompatActivity {
 */
         menuHomeBtn = findViewById(R.id.menu_homebutton);
         myProfileName = findViewById(R.id.my_profile_name);
+        myProfileSetting = findViewById(R.id.my_profile_setting);
 
         //myProfileName.setText(userFirstName + " " + userLastName);
         auth = FirebaseAuth.getInstance();
@@ -137,8 +139,16 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
+        //navigate to setting page
+        myProfileSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyProfileActivity.this, SettingActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        //final ArrayList<String> posts_list = new ArrayList<>();
+
         // access db
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
         reference.addValueEventListener(new ValueEventListener() {
@@ -189,50 +199,11 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
 
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
-        /*
-
-        for (String url : posts_list){
-            Log.d("postList","1");
-            Log.d("postsList", url);
-            Log.d("postsList", "Starting the iteration over posts_list");
-            // display all images under posts (gridlayout).
-            ImageView imageView = new ImageView(this);
-
-            int widthInDp = 118;
-            int heightInDp = 118;
-            // Convert dp to pixels programmatically
-            int widthInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthInDp, getResources().getDisplayMetrics());
-            int heightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, heightInDp, getResources().getDisplayMetrics());
-            // Create LayoutParams
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.width = widthInPx;
-            params.height = heightInPx;
-            // Set margins (5dp converted to pixels)
-            int marginInDp = 5;
-            int marginInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginInDp, getResources().getDisplayMetrics());
-            params.setMargins(marginInPx, marginInPx, marginInPx, marginInPx);
-
-            imageView.setLayoutParams(params);
-            //load img to ImageView
-            Glide.with(this).load(url).into(imageView);
-
-            // add imageview to the grid layout
-            gridLayout.addView(imageView);
-
-        }
-
-*/
-
-
-
-
 
 
     }

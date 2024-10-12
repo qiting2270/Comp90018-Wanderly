@@ -13,5 +13,9 @@
     <string name="create_new_account">Create new account</string>
     <string name="send_code">Send Code</string>
     <string name="please_enter_your_registered_email_id"><b>Please enter your registered email ID.</b></string>
+    <string name="settings"><b>Settings</b></string>
+    <string name="privacy_security"><b><![CDATA[Privacy & Security]]></b></string>
+    <string name="notification"><b>Notification</b></string>
+    <string name="change_password"><u>Change password</u></string>
 
 </resources>
