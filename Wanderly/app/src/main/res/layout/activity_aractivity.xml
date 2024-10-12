@@ -7,4 +7,35 @@
     android:layout_height="match_parent"
     tools:context=".ARActivity">
 
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/arrow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

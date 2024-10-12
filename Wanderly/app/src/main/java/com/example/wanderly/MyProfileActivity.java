@@ -127,7 +127,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
 
-        Glide.with(this).load().into(imageView);
+//        Glide.with(this).load().into(imageView);
 
 
 

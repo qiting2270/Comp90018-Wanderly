@@ -42,6 +42,9 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)
+    implementation(libs.camera.view)
+    implementation(libs.play.services.location)
+    implementation(libs.camera.lifecycle)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -49,6 +52,14 @@ dependencies {
     implementation(libs.google.firebase.auth)
     implementation(libs.play.services.auth)
     implementation(libs.glide)
+
+
+    // CameraX core library using Camera2 implementation
+    implementation (libs.camera.core)
+    implementation (libs.camera.camera2)
+    implementation (libs.camera.lifecycle.v110)
+    implementation (libs.camera.view.v100alpha31)
+    implementation (libs.guava)
 
 
 }
