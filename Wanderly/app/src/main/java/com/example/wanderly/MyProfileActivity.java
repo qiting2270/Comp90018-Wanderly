@@ -73,7 +73,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 //uploadImageBtn.setEnabled(true);
                 image = result.getData().getData();
                 //temporary display in imageVIew
-                Glide.with(getApplicationContext()).load(image).into(imageView);
+                //Glide.with(getApplicationContext()).load(image).into(imageView);
                 uploadImage(image);
             }
             else{
@@ -123,6 +123,12 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+
+
+        Glide.with(this).load().into(imageView);
+
 
 
 

@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
                     if(snapshot.getKey().equals(currentUserId)){
                         userLastName = snapshot.child("lastname").getValue(String.class);
                         userFirstname = snapshot.child("firstname").getValue(String.class);
-                        home_greeting.setText("Bon Voyage, " + userLastName + "!");
+                        home_greeting.setText("Bon Voyage, " + userFirstname + "!");
                         break; // Exit the loop once the user is found
                     }
                 }
