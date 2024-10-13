@@ -3,7 +3,6 @@ package com.example.wanderly;
 import static android.content.Intent.ACTION_GET_CONTENT;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -64,6 +63,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private ImageView menuHomeBtn;
     private TextView myProfileName;
     private ImageView myProfileSetting;
+    private TextView editProfileBtn;
     private String userLastName;
     private String userFirstName;
 
@@ -109,6 +109,7 @@ public class MyProfileActivity extends AppCompatActivity {
         menuHomeBtn = findViewById(R.id.menu_homebutton);
         myProfileName = findViewById(R.id.my_profile_name);
         myProfileSetting = findViewById(R.id.my_profile_setting);
+        editProfileBtn = findViewById(R.id.my_profile_editProfile);
 
         //myProfileName.setText(userFirstName + " " + userLastName);
         auth = FirebaseAuth.getInstance();
@@ -144,6 +145,15 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MyProfileActivity.this, SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // navigate to edit profile page
+        editProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyProfileActivity.this, EditProfileActivity.class);
                 startActivity(intent);
             }
         });

@@ -17,5 +17,7 @@
     <string name="privacy_security"><b><![CDATA[Privacy & Security]]></b></string>
     <string name="notification"><b>Notification</b></string>
     <string name="change_password"><u>Change password</u></string>
+    <string name="edit_profile"><b>Edit Profile</b></string>
+    <string name="click_to_change_profile_picture"><u>Click to change profile picture</u></string>
 
 </resources>
