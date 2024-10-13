@@ -5,10 +5,13 @@ import static android.content.Intent.ACTION_GET_CONTENT;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
@@ -66,13 +69,15 @@ public class MyProfileActivity extends AppCompatActivity {
     private TextView editProfileBtn;
     private String userLastName;
     private String userFirstName;
+    private ImageView myProfilePic;
+    private TextView myProfileMessage;
+    private TextView shareProfileBtn;
 
     private TextView addImageBtn;
     private GridLayout gridLayout;
 
     Uri image;
-    //ImageView imageView;
-
+    AlertDialog progressDialog;
     private FirebaseAuth auth;
     private String currentUserId;
 
@@ -86,6 +91,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 image = result.getData().getData();
                 //temporary display in imageVIew
                 //Glide.with(getApplicationContext()).load(image).into(imageView);
+                showProgressDialog();
                 uploadImage(image);
             }
             else{
@@ -119,6 +125,9 @@ public class MyProfileActivity extends AppCompatActivity {
         //imageView = findViewById(R.id.my_profile_post);
         addImageBtn = findViewById(R.id.my_profile_addimagebtn);
         gridLayout = findViewById(R.id.my_profile_gridLayout);
+        myProfilePic = findViewById(R.id.my_profile_pic);
+        myProfileMessage = findViewById(R.id.my_profile_message);
+        shareProfileBtn = findViewById(R.id.my_profile_shareProfile);
 
         addImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +180,15 @@ public class MyProfileActivity extends AppCompatActivity {
                     if(snapshot.getKey().equals(currentUserId)){
                         userLastName = snapshot.child("lastname").getValue(String.class);
                         userFirstName = snapshot.child("firstname").getValue(String.class);
+                        //display user name
                         myProfileName.setText(userFirstName + " " + userLastName);
+                        String profilePicUrl = snapshot.child("profile_pic").getValue(String.class);
+                        Glide.with(MyProfileActivity.this).load(profilePicUrl).into(myProfilePic);
+                        //display bio
+                        String message = snapshot.child("userBio").getValue(String.class);
+                        myProfileMessage.setText(message);
+
+                        // add profile posts in Posts
                         for(DataSnapshot data : snapshot.child("Profile Posts").getChildren()){
                             posts_list.add(Objects.requireNonNull(data.getValue()).toString());
                         }
@@ -205,13 +222,20 @@ public class MyProfileActivity extends AppCompatActivity {
 
                 }
 
-
-
-
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        shareProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "www.wanderlyappfuturelink.com");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Check out this amazing travel planning app Wanderly!");
+                startActivity(Intent.createChooser(shareIntent, "Share Link"));
             }
         });
 
@@ -231,6 +255,7 @@ public class MyProfileActivity extends AppCompatActivity {
                         Log.d("urllink", imageUrl);
                         // save url to real time database
                         saveUrlToDB(imageUrl);
+                        dismissProgressDialog();
                         Toast.makeText(MyProfileActivity.this, "Upload image successful", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -255,6 +280,22 @@ public class MyProfileActivity extends AppCompatActivity {
         // store image url in db with random key.
         FirebaseDatabase.getInstance().getReference().child("User Information").child(userId).child("Profile Posts").push().setValue(imageUrl);
 
+    }
+
+    private void showProgressDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.progress_dialog, null));
+        builder.setCancelable(false);  // Disables outside touch dismissal
+
+        progressDialog = builder.create();
+        progressDialog.show();
+    }
+
+    private void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 
 

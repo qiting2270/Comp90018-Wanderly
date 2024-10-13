@@ -50,7 +50,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText editFirstname;
     private EditText editLastname;
     private EditText editBio;
-    private boolean UrlGet;
 
     private FirebaseAuth auth;
     private String currentUserId;
@@ -64,7 +63,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 image = result.getData().getData();
                 //temporary display in imageVIew
                 Glide.with(getApplicationContext()).load(image).into(changeProfilePic);
-                UrlGet = false;
                 showProgressDialog();
                 uploadImage(image);
             }
@@ -87,7 +85,6 @@ public class EditProfileActivity extends AppCompatActivity {
         editFirstname = findViewById(R.id.edit_profile_firstName);
         editLastname = findViewById(R.id.edit_profile_lastName);
         editBio = findViewById(R.id.edit_profile_Bio);
-        UrlGet = false;
 
         //back icon logic
         ImageView backIcon = (ImageView) findViewById(R.id.back_icon);
@@ -169,7 +166,6 @@ public class EditProfileActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         imageUrl = uri.toString();
-                        UrlGet = true;
                         dismissProgressDialog();
                         Log.d("Url image", imageUrl);
                     }
@@ -197,10 +193,13 @@ public class EditProfileActivity extends AppCompatActivity {
         map.put("firstname", firstName);
         map.put("lastname", lastName);
         map.put("userBio", userBio);
-        map.put("profile_pic", imageUrl);
+        // Only add imageUrl to the map if it is not null or empty
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            map.put("profile_pic", imageUrl);
+        }
+
         // store user info in db, make userId the key
         FirebaseDatabase.getInstance().getReference("User Information").child(userId).updateChildren(map);
-
         //FirebaseDatabase.getInstance().getReference().child("User Information").child(userId).child("profile_pic").setValue(imageUrl);
 
     }
