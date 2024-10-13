@@ -60,7 +60,7 @@
         app:srcCompat="@drawable/frame4" />
 
     <ImageView
-        android:id="@+id/imageView19"
+        android:id="@+id/setting_change_profilePicture_Btn"
         android:layout_width="174dp"
         android:layout_height="177dp"
         android:layout_marginTop="24dp"
@@ -70,18 +70,18 @@
         app:srcCompat="@drawable/vector2" />
 
     <TextView
-        android:id="@+id/textView23"
+        android:id="@+id/setting_change_profilePicture_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/kulim_park"
         android:text="@string/click_to_change_profile_picture"
         android:textColor="#3B5667"
-        android:textSize="14sp"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@+id/imageView17"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="@+id/imageView17"
-        app:layout_constraintTop_toBottomOf="@+id/imageView19" />
+        app:layout_constraintTop_toBottomOf="@+id/setting_change_profilePicture_Btn" />
 
     <TextView
         android:id="@+id/textView24"
@@ -96,7 +96,7 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView17"
         app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintStart_toStartOf="@+id/imageView17"
-        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+        app:layout_constraintTop_toBottomOf="@+id/setting_change_profilePicture_text" />
 
     <EditText
         android:id="@+id/edit_profile_firstName"
@@ -168,6 +168,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView26"
         android:gravity="top|start"
         android:inputType="textMultiLine"/>
+
 
 
 

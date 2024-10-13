@@ -144,8 +144,6 @@
                 app:srcCompat="@drawable/frame2" />
 
 
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

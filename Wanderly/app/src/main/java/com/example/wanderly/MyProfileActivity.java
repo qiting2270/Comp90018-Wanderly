@@ -227,12 +227,11 @@ public class MyProfileActivity extends AppCompatActivity {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        String imageUrl = uri.toString();  // Here you get the download URL as a string
+                        String imageUrl = uri.toString();
                         Log.d("urllink", imageUrl);
-                        Toast.makeText(MyProfileActivity.this, "Upload image successful", Toast.LENGTH_SHORT).show();
                         // save url to real time database
                         saveUrlToDB(imageUrl);
-
+                        Toast.makeText(MyProfileActivity.this, "Upload image successful", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
