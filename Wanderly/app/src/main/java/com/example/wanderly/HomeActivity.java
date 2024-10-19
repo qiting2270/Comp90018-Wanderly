@@ -1,6 +1,7 @@
 package com.example.wanderly;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,8 @@ public class HomeActivity extends AppCompatActivity {
     private String currentUserId;
     private TextView home_greeting;
     private ImageView menuMyProfileBtn;
+    private ImageView menuHomeBtn;
+    private ImageView menuTripBtn;
     private String userLastName;
     private String userFirstname;
 
@@ -42,6 +45,8 @@ public class HomeActivity extends AppCompatActivity {
         currentUserId = auth.getCurrentUser().getUid();
         home_greeting = findViewById(R.id.home_greeting);
         menuMyProfileBtn = findViewById(R.id.menu_profile);
+        menuHomeBtn = findViewById(R.id.menu_homebutton);
+        menuTripBtn = findViewById(R.id.menu_tripbutton);
 
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
@@ -72,6 +77,20 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, MyProfileActivity.class);
                 //intent.putExtra("userLastName", userLastName);
                 //intent.putExtra("userFirstName", userFirstname);
+                startActivity(intent);
+            }
+        });
+        menuHomeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+        menuTripBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, MyTripsActivity.class);
                 startActivity(intent);
             }
         });
