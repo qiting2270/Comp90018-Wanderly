@@ -60,6 +60,7 @@
                 android:background="@drawable/searchview_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:iconifiedByDefault="false"
                 app:layout_constraintTop_toBottomOf="@+id/my_trips_add_icon" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
