@@ -1,20 +1,12 @@
 package com.example.wanderly;
 
-import static android.content.Intent.ACTION_GET_CONTENT;
-
-import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.MimeTypeMap;
-import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,22 +16,13 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.bumptech.glide.RequestManager;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.firebase.Firebase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -53,17 +36,14 @@ import com.google.firebase.storage.UploadTask;
 import com.bumptech.glide.Glide;
 
 
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
 public class MyProfileActivity extends AppCompatActivity {
 
     private ImageView menuHomeBtn;
+    private ImageView menuBookmarkBtn;
     private TextView myProfileName;
     private ImageView myProfileSetting;
     private TextView editProfileBtn;
@@ -113,6 +93,7 @@ public class MyProfileActivity extends AppCompatActivity {
         String userFirstName = getIntent().getStringExtra("userFirstName");
 */
         menuHomeBtn = findViewById(R.id.menu_homebutton);
+        menuBookmarkBtn = findViewById(R.id.menu_bookmark);
         myProfileName = findViewById(R.id.my_profile_name);
         myProfileSetting = findViewById(R.id.my_profile_setting);
         editProfileBtn = findViewById(R.id.my_profile_editProfile);
@@ -145,6 +126,13 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MyProfileActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+        menuBookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyProfileActivity.this, BookmarkActivity.class);
                 startActivity(intent);
             }
         });

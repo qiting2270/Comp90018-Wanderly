@@ -28,6 +28,7 @@ public class HomeActivity extends AppCompatActivity {
     private String currentUserId;
     private TextView home_greeting;
     private ImageView menuMyProfileBtn;
+    private ImageView menuBookmarkBtn;
     private String userLastName;
     private String userFirstname;
 
@@ -42,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
         currentUserId = auth.getCurrentUser().getUid();
         home_greeting = findViewById(R.id.home_greeting);
         menuMyProfileBtn = findViewById(R.id.menu_profile);
-
+        menuBookmarkBtn = findViewById(R.id.menu_bookmark);
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
         reference.addValueEventListener(new ValueEventListener() {
@@ -75,7 +76,15 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        menuBookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, BookmarkActivity.class);
+                //intent.putExtra("userLastName", userLastName);
+                //intent.putExtra("userFirstName", userFirstname);
+                startActivity(intent);
+            }
+        });
 
 
     }
