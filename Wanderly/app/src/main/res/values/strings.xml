@@ -20,5 +20,5 @@
     <string name="edit_profile"><b>Edit Profile</b></string>
     <string name="click_to_change_profile_picture"><u>Click to change profile picture</u></string>
     <string name="saved"><b>Saved</b></string>
-
+    <string name="notifications"><b>Notifications</b></string>
 </resources>
