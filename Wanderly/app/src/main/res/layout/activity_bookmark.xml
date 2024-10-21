@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfc"
+    tools:context=".BookmarkActivity">
+
+    <TextView
+        android:id="@+id/textView27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/kulim_park"
+        android:text="@string/saved"
+        android:textColor="#3B5667"
+        android:textSize="36sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="367dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="130dp"
+        android:background="@drawable/search_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView27" />
+
+    <ImageView
+        android:id="@+id/search_content"
+        android:layout_width="366dp"
+        android:layout_height="120.5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="220dp"
+        android:background="@drawable/frame5"/>
+
+    <!-- Fixed Menu Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/menu_background"
+            android:layout_width="324dp"
+            android:layout_height="78dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/menu_background_darkblue" />
+
+        <ImageView
+            android:id="@+id/menu_button_selected"
+            android:layout_width="73dp"
+            android:layout_height="56dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.625"
+            app:layout_constraintStart_toStartOf="@+id/menu_background"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.69"
+            app:srcCompat="@drawable/menu_button_selected" />
+
+        <ImageView
+            android:id="@+id/menu_homebutton"
+            android:layout_width="30dp"
+            android:layout_height="27dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.18"
+            app:layout_constraintStart_toStartOf="@+id/menu_background"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.51"
+            app:srcCompat="@drawable/icon_homebtn" />
+
+        <ImageView
+            android:id="@+id/menu_tripbutton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_homebutton"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.55"
+            app:srcCompat="@drawable/airplane_ticket" />
+
+        <ImageView
+            android:id="@+id/menu_bookmark"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_tripbutton"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_tripbutton"
+            app:layout_constraintTop_toTopOf="@+id/menu_tripbutton"
+            app:srcCompat="@drawable/bookmark" />
+
+        <ImageView
+            android:id="@+id/menu_profile"
+            android:layout_width="30dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_bookmark"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:srcCompat="@drawable/icon_person" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>
+
+
