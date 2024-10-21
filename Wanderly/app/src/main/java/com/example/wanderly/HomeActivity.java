@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView menuBookmarkBtn;
     private String userLastName;
     private String userFirstname;
-
+    private ImageView notificationBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         home_greeting = findViewById(R.id.home_greeting);
         menuMyProfileBtn = findViewById(R.id.menu_profile);
         menuBookmarkBtn = findViewById(R.id.menu_bookmark);
+        notificationBtn = findViewById(R.id.notification_btn);
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
         reference.addValueEventListener(new ValueEventListener() {
@@ -63,6 +64,15 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        //navigate to notifications page
+        notificationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
+                startActivity(intent);
             }
         });
 
