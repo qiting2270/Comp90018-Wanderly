@@ -42,8 +42,11 @@ import java.util.UUID;
 
 public class MyProfileActivity extends AppCompatActivity {
 
+    private ImageView menuMyProfileBtn;
     private ImageView menuHomeBtn;
     private ImageView menuBookmarkBtn;
+    private ImageView menuTripBtn;
+
     private TextView myProfileName;
     private ImageView myProfileSetting;
     private TextView editProfileBtn;
@@ -92,8 +95,11 @@ public class MyProfileActivity extends AppCompatActivity {
         String userLastName = getIntent().getStringExtra("userLastName");
         String userFirstName = getIntent().getStringExtra("userFirstName");
 */
+        menuMyProfileBtn = findViewById(R.id.menu_profile);
         menuHomeBtn = findViewById(R.id.menu_homebutton);
         menuBookmarkBtn = findViewById(R.id.menu_bookmark);
+        menuTripBtn = findViewById(R.id.menu_tripbutton);
+
         myProfileName = findViewById(R.id.my_profile_name);
         myProfileSetting = findViewById(R.id.my_profile_setting);
         editProfileBtn = findViewById(R.id.my_profile_editProfile);
@@ -122,6 +128,15 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
         //menu navigation
+        menuMyProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyProfileActivity.this, MyProfileActivity.class);
+                //intent.putExtra("userLastName", userLastName);
+                //intent.putExtra("userFirstName", userFirstname);
+                startActivity(intent);
+            }
+        });
         menuHomeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,6 +148,13 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MyProfileActivity.this, BookmarkActivity.class);
+                startActivity(intent);
+            }
+        });
+        menuTripBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyProfileActivity.this, MyTripsActivity.class);
                 startActivity(intent);
             }
         });

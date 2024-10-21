@@ -1,6 +1,7 @@
 package com.example.wanderly;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +30,8 @@ public class HomeActivity extends AppCompatActivity {
     private TextView home_greeting;
     private ImageView menuMyProfileBtn;
     private ImageView menuBookmarkBtn;
+    private ImageView menuHomeBtn;
+    private ImageView menuTripBtn;
     private String userLastName;
     private String userFirstname;
     private ImageView notificationBtn;
@@ -45,6 +48,9 @@ public class HomeActivity extends AppCompatActivity {
         menuMyProfileBtn = findViewById(R.id.menu_profile);
         menuBookmarkBtn = findViewById(R.id.menu_bookmark);
         notificationBtn = findViewById(R.id.notification_btn);
+        menuHomeBtn = findViewById(R.id.menu_homebutton);
+        menuTripBtn = findViewById(R.id.menu_tripbutton);
+
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
         reference.addValueEventListener(new ValueEventListener() {
@@ -86,6 +92,21 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        menuHomeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+        menuTripBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, MyTripsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         menuBookmarkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

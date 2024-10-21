@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfc"
+    tools:context=".MyTripsActivity">
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/homepage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/my_trips_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="60dp"
+                android:fontFamily="@font/kulim_park_bold"
+                android:text="My Trips"
+                android:textColor="#3B5667"
+                android:textSize="36sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/my_trips_add_icon"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginTop="57dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/button_background"
+                android:backgroundTint="#ECB35E"
+                android:gravity="center"
+                android:text="+"
+                android:textSize="35sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/my_trips_title"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/searchview_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:iconifiedByDefault="false"
+                app:layout_constraintTop_toBottomOf="@+id/my_trips_add_icon" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#F2F2F2"
+                android:paddingBottom="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searchView">
+
+
+                <TextView
+                    android:id="@+id/textView27"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/kulim_park"
+                    android:text="@string/upcoming_trips"
+                    android:textColor="#262627"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView27">
+
+
+                    <ImageView
+                        android:id="@+id/imageView16"
+                        android:layout_width="367dp"
+                        android:layout_height="139dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/trip_background" />
+
+                    <TextView
+                        android:id="@+id/trip_country_background"
+                        android:layout_width="29dp"
+                        android:layout_height="139dp"
+                        android:background="@drawable/trip_text_background"
+                        android:backgroundTint="#E5EDEF"
+                        android:text=""
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+                        app:layout_constraintStart_toStartOf="@+id/imageView16"
+                        app:layout_constraintTop_toTopOf="@+id/imageView16"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/trip_country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="139dp"
+                        android:layout_marginStart="40dp"
+                        android:fontFamily="@font/kulim_park"
+                        android:rotation="-90"
+                        android:text="Australia"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+                        app:layout_constraintStart_toStartOf="@+id/imageView16"
+                        app:layout_constraintTop_toTopOf="@+id/imageView16"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <ImageView
+                        android:id="@+id/trip_image"
+                        android:layout_width="95dp"
+                        android:layout_height="130dp"
+                        android:layout_marginStart="4dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+                        app:layout_constraintStart_toEndOf="@+id/trip_country_background"
+                        app:layout_constraintTop_toTopOf="@+id/imageView16"
+                        app:srcCompat="@drawable/placeholder_image" />
+
+                    <TextView
+                        android:id="@+id/textView30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/kulim_park"
+                        android:text="MEL - SYD"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+                        app:layout_constraintStart_toEndOf="@+id/trip_image"
+                        app:layout_constraintTop_toTopOf="@+id/imageView16"
+                        app:layout_constraintVertical_bias="0.120000005" />
+
+                    <TextView
+                        android:id="@+id/textView31"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/kulim_park"
+                        android:text="03-08 JAN"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="@+id/imageView16"
+                        app:layout_constraintHorizontal_bias="0.769"
+                        app:layout_constraintStart_toEndOf="@+id/textView30"
+                        app:layout_constraintTop_toTopOf="@+id/textView30" />
+
+                    <TextView
+                        android:id="@+id/textView32"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/kulim_park"
+                        android:text="2024"
+                        app:layout_constraintEnd_toEndOf="@+id/textView31"
+                        app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+                    <TextView
+                        android:id="@+id/textView33"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/kulim_park"
+                        android:text="in 2 days"
+                        android:textColor="#ECB35E"
+                        app:layout_constraintStart_toStartOf="@+id/textView30"
+                        app:layout_constraintTop_toBottomOf="@+id/textView30" />
+
+                    <ImageView
+                        android:id="@+id/imageView19"
+                        android:layout_width="105dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/trip_image"
+                        app:layout_constraintTop_toBottomOf="@+id/textView33"
+                        app:layout_constraintVertical_bias="1.0"
+                        app:srcCompat="@drawable/trip_users" />
+
+                    <TextView
+                        android:id="@+id/textView34"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+2"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/kulim_park"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView19"
+                        app:layout_constraintEnd_toEndOf="@+id/imageView19"
+                        app:layout_constraintHorizontal_bias="0.85"
+                        app:layout_constraintStart_toStartOf="@+id/imageView19"
+                        app:layout_constraintTop_toTopOf="@+id/imageView19"
+                        app:layout_constraintVertical_bias="0.42000002" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+    </ScrollView>
+
+    <!-- Fixed Menu Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/menu_background"
+            android:layout_width="324dp"
+            android:layout_height="78dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/menu_background_darkblue" />
+
+        <ImageView
+            android:id="@+id/menu_button_selected"
+            android:layout_width="73dp"
+            android:layout_height="56dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.38"
+            app:layout_constraintStart_toStartOf="@+id/menu_background"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.69"
+            app:srcCompat="@drawable/menu_button_selected" />
+
+        <ImageView
+            android:id="@+id/menu_homebutton"
+            android:layout_width="30dp"
+            android:layout_height="27dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.18"
+            app:layout_constraintStart_toStartOf="@+id/menu_background"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.51"
+            app:srcCompat="@drawable/icon_homebtn" />
+
+        <ImageView
+            android:id="@+id/menu_tripbutton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_homebutton"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.55"
+            app:srcCompat="@drawable/airplane_ticket" />
+
+        <ImageView
+            android:id="@+id/menu_bookmark"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_tripbutton"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_tripbutton"
+            app:layout_constraintTop_toTopOf="@+id/menu_tripbutton"
+            app:srcCompat="@drawable/bookmark" />
+
+        <ImageView
+            android:id="@+id/menu_profile"
+            android:layout_width="30dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_bookmark"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:srcCompat="@drawable/icon_person" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</RelativeLayout>
