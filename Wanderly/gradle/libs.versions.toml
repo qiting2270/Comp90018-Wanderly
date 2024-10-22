@@ -18,6 +18,7 @@ playServicesAuth = "21.2.0"
 firebaseDatabase = "21.0.0"
 firebaseStorage = "21.0.1"
 playServicesMaps = "19.0.0"
+gridlayout = "1.0.0"
 
 [libraries]
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "githubGlide" }
@@ -39,6 +40,7 @@ play-services-auth = { module = "com.google.android.gms:play-services-auth", ver
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
