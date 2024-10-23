@@ -4,6 +4,8 @@ import android.content.Context;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -31,6 +33,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
@@ -40,10 +44,14 @@ public class ARActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST_CODE = 100;
     private static final int LOCATION_REQUEST_CODE = 101;
+    private static final float ARRIVAL_THRESHOLD = 20;
 
     private FusedLocationProviderClient fusedLocationClient;
     private SensorManager sensorManager;
     private ImageView arrow;
+    private ImageView arrivedIcon;
+    private TextView distanceText;
+    private LinearLayout arrivedLayout;
     private PreviewView previewView;
     private Location targetLocation;
     private float bearingToTarget = 0f;
@@ -56,8 +64,10 @@ public class ARActivity extends AppCompatActivity {
 
         previewView = findViewById(R.id.previewView);
         arrow = findViewById(R.id.arrow);
+        distanceText = findViewById(R.id.distanceText);
+        arrivedLayout = findViewById(R.id.arrivedLayout);
 
-        // 目的地 假设
+        // !!!目的地 假设!!!
         targetLocation = new Location("");
         targetLocation.setLatitude(37.7749);  // Example: Latitude of San Francisco
         targetLocation.setLongitude(-122.4194); // Example: Longitude of San Francisco
@@ -70,12 +80,30 @@ public class ARActivity extends AppCompatActivity {
             startCamera();
         }
 
+        // show arrived page
+//        arrow.setVisibility(View.GONE);
+//        distanceText.setVisibility(View.GONE);
+//        arrivedLayout.setVisibility(View.VISIBLE);
+
 
         // Initialize location services and sensors
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLocation();
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         startSensors();
+
+        // Back button setup
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        //!!!arrived page buttons!!!
+        findViewById(R.id.closeButton).setOnClickListener(v -> finish()); // Close the activity
+        findViewById(R.id.viewDetailsButton).setOnClickListener(v -> showStopDetails()); // View stop details
     }
 
 
@@ -96,25 +124,6 @@ public class ARActivity extends AppCompatActivity {
         }, ContextCompat.getMainExecutor(this));
     }
 
-//    private void getLocation() {
-//
-//        // 检查并请求GPS权限
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
-//        }
-//
-//        // 获取GPS定位
-//        fusedLocationClient.getLastLocation()
-//                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-//                    @Override
-//                    public void onSuccess(Location location) {
-//                        if (location != null) {
-//                            // 处理位置数据
-//                        }
-//                    }
-//                });
-//    }
-
     private void getLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
@@ -124,9 +133,8 @@ public class ARActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Location location) {
                             if (location != null) {
-//                                double latitude = location.getLatitude();
-//                                double longitude = location.getLongitude();
                                 calculateBearingToTarget(location);
+                                updateDistance(location);
                             } else {
                                 requestNewLocationData();
                             }
@@ -138,10 +146,9 @@ public class ARActivity extends AppCompatActivity {
 
     private void requestNewLocationData() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Request the permission if it hasn't been granted
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         } else {
-            // Permission is already granted, proceed with location updates
+            // Permission is granted, update locations
             LocationRequest locationRequest = LocationRequest.create();
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             locationRequest.setInterval(5000); // 5 seconds
@@ -156,9 +163,8 @@ public class ARActivity extends AppCompatActivity {
         public void onLocationResult(LocationResult locationResult) {
             Location location = locationResult.getLastLocation();
             if (location != null) {
-//                double latitude = location.getLatitude();
-//                double longitude = location.getLongitude();
                 calculateBearingToTarget(location);
+                updateDistance(location);
             }
         }
     };
@@ -167,6 +173,18 @@ public class ARActivity extends AppCompatActivity {
     private void calculateBearingToTarget(Location currentLocation) {
         if (currentLocation != null && targetLocation != null) {
             bearingToTarget = currentLocation.bearingTo(targetLocation);
+        }
+    }
+
+    // Update the distance to the target location and check if the user has arrived
+    private void updateDistance(Location currentLocation) {
+        float distanceInMeters = currentLocation.distanceTo(targetLocation);
+        distanceText.setText(String.format("Distance: %.1f km", distanceInMeters / 1000));
+
+        if (distanceInMeters <= ARRIVAL_THRESHOLD) {
+            arrow.setVisibility(View.GONE);
+            distanceText.setVisibility(View.GONE);
+            arrivedLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -222,5 +240,11 @@ public class ARActivity extends AppCompatActivity {
         };
         sensorManager.registerListener(sensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_UI);
         sensorManager.registerListener(sensorEventListener, magnetometer, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    // !!!! Handle showing stop details (replace with actual implementation) !!!!
+    private void showStopDetails() {
+        // This can open a new activity or show more information about the stop
+        Toast.makeText(this, "Viewing stop details...", Toast.LENGTH_SHORT).show();
     }
 }
