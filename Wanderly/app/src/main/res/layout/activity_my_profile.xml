@@ -107,24 +107,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/my_profile_friendNum" />
 
             <TextView
-                android:id="@+id/my_profile_shareProfile"
-                android:layout_width="90dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/button_background"
-                android:backgroundTint="#F2F2F2"
-                android:fontFamily="@font/kulim_park"
-                android:gravity="center"
-                android:text="Share Profile"
-                android:textColor="@color/black"
-                android:textSize="13sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/my_profile_editProfile"
-                app:layout_constraintTop_toBottomOf="@+id/my_profile_friendNum" />
-
-            <TextView
                 android:id="@+id/my_profile_message"
                 android:layout_width="367dp"
                 android:layout_height="wrap_content"
@@ -168,6 +150,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/my_profile_post_text"
                 app:srcCompat="@drawable/yellow_line" />
 
+            <ImageView
+                android:id="@+id/my_profile_shareProfile"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/my_profile_setting"
+                app:layout_constraintEnd_toStartOf="@+id/my_profile_setting"
+                app:layout_constraintTop_toTopOf="@+id/my_profile_setting"
+                app:srcCompat="@drawable/share_icon" />
+
             <TextView
                 android:id="@+id/my_profile_saved_text"
                 android:layout_width="wrap_content"
@@ -194,6 +186,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/my_profile_post_text"
                 app:layout_constraintVertical_bias="0.0">
 
+
                 <ImageView
                     android:id="@+id/my_profile_addimagebtn"
                     android:layout_width="118dp"
@@ -201,13 +194,13 @@
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/add_image" />
 
-
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/my_profile_post"-->
-                <!--                    android:layout_width="118dp"-->
-                <!--                    android:layout_height="118dp"-->
-                <!--                    android:layout_margin="5dp"-->
-                <!--                    tools:srcCompat="@tools:sample/avatars" />-->
+<!--                <ImageView-->
+<!--                    android:id="@+id/my_profile_post"-->
+<!--                    android:layout_width="118dp"-->
+<!--                    android:layout_height="118dp"-->
+<!--                    android:layout_margin="5dp"-->
+<!--                    android:visibility="visible"-->
+<!--                    tools:srcCompat="@tools:sample/avatars" />-->
 
 
 
@@ -217,91 +210,83 @@
 
     </ScrollView>
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-<!--        <ImageView-->
-<!--            android:id="@+id/menu_background"-->
-<!--            android:layout_width="324dp"-->
-<!--            android:layout_height="78dp"-->
-<!--            android:layout_marginBottom="16dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:srcCompat="@drawable/menu_background_darkblue" />-->
+        <ImageView
+            android:id="@+id/menu_background"
+            android:layout_width="324dp"
+            android:layout_height="78dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/menu_background_darkblue" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/menu_button_selected"-->
-<!--            android:layout_width="73dp"-->
-<!--            android:layout_height="56dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/menu_background"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/menu_background"-->
-<!--            app:layout_constraintHorizontal_bias="0.875"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/menu_background"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/menu_background"-->
-<!--            app:layout_constraintVertical_bias="0.69"-->
-<!--            app:srcCompat="@drawable/menu_button_selected" />-->
+        <ImageView
+            android:id="@+id/menu_button_selected"
+            android:layout_width="73dp"
+            android:layout_height="56dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.875"
+            app:layout_constraintStart_toStartOf="@+id/menu_background"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.69"
+            app:srcCompat="@drawable/menu_button_selected" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/menu_homebutton"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="27dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/menu_background"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/menu_background"-->
-<!--            app:layout_constraintHorizontal_bias="0.18"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/menu_background"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/menu_background"-->
-<!--            app:layout_constraintVertical_bias="0.51"-->
-<!--            app:srcCompat="@drawable/icon_homebtn" />-->
+        <ImageView
+            android:id="@+id/menu_homebutton"
+            android:layout_width="30dp"
+            android:layout_height="27dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.18"
+            app:layout_constraintStart_toStartOf="@+id/menu_background"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.51"
+            app:srcCompat="@drawable/icon_homebtn" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/menu_tripbutton"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginStart="32dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/menu_background"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/menu_background"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/menu_homebutton"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/menu_background"-->
-<!--            app:layout_constraintVertical_bias="0.55"-->
-<!--            app:srcCompat="@drawable/airplane_ticket" />-->
+        <ImageView
+            android:id="@+id/menu_tripbutton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_homebutton"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:layout_constraintVertical_bias="0.55"
+            app:srcCompat="@drawable/airplane_ticket" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/menu_bookmark"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginStart="32dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/menu_tripbutton"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/menu_background"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/menu_tripbutton"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/menu_tripbutton"-->
-<!--            app:srcCompat="@drawable/bookmark" />-->
+        <ImageView
+            android:id="@+id/menu_bookmark"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_tripbutton"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_tripbutton"
+            app:layout_constraintTop_toTopOf="@+id/menu_tripbutton"
+            app:srcCompat="@drawable/bookmark" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/menu_profile"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="28dp"-->
-<!--            android:layout_marginStart="32dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/menu_background"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/menu_background"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/menu_bookmark"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/menu_background"-->
-<!--            app:srcCompat="@drawable/icon_person" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/textView41"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="TextView"-->
-<!--            tools:layout_editor_absoluteX="193dp"-->
-<!--            tools:layout_editor_absoluteY="376dp" />-->
+        <ImageView
+            android:id="@+id/menu_profile"
+            android:layout_width="30dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/menu_background"
+            app:layout_constraintEnd_toEndOf="@+id/menu_background"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/menu_bookmark"
+            app:layout_constraintTop_toTopOf="@+id/menu_background"
+            app:srcCompat="@drawable/icon_person" />
 
 
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <!-- Fixed Menu Bar -->

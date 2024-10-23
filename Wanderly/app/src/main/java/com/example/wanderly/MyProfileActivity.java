@@ -54,9 +54,9 @@ public class MyProfileActivity extends AppCompatActivity {
     private String userFirstName;
     private ImageView myProfilePic;
     private TextView myProfileMessage;
-    private TextView shareProfileBtn;
+    private ImageView shareProfileBtn;
 
-    private TextView addImageBtn;
+    private ImageView addImageBtn;
     private GridLayout gridLayout;
 
     Uri image;
@@ -184,7 +184,13 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 posts_list.clear();
-                gridLayout.removeAllViews();
+
+                // keep the first element
+                for (int i = gridLayout.getChildCount() - 1; i > 0; i--) {
+                    View child = gridLayout.getChildAt(i);
+                    gridLayout.removeView(child);
+                }
+                //gridLayout.removeAllViews();
                 //search data in db
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     if(snapshot.getKey().equals(currentUserId)){
@@ -193,7 +199,11 @@ public class MyProfileActivity extends AppCompatActivity {
                         //display user name
                         myProfileName.setText(userFirstName + " " + userLastName);
                         String profilePicUrl = snapshot.child("profile_pic").getValue(String.class);
-                        Glide.with(MyProfileActivity.this).load(profilePicUrl).into(myProfilePic);
+                        if(profilePicUrl != null){
+                            // display profile pic
+                            Glide.with(MyProfileActivity.this).load(profilePicUrl).into(myProfilePic);
+                        }
+
                         //display bio
                         String message = snapshot.child("userBio").getValue(String.class);
                         myProfileMessage.setText(message);
