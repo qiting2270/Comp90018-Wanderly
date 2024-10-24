@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,11 @@ public class MyProfileActivity extends AppCompatActivity {
 
     private ImageView addImageBtn;
     private GridLayout gridLayout;
+    private ScrollView savedPageLayout;
+    private TextView savedPageBtn;
+    private TextView postPageBtn;
+    private ImageView saveBtnUnderline;
+    private ImageView postBtnUnderline;
 
     Uri image;
     AlertDialog progressDialog;
@@ -112,9 +118,14 @@ public class MyProfileActivity extends AppCompatActivity {
         //imageView = findViewById(R.id.my_profile_post);
         addImageBtn = findViewById(R.id.my_profile_addimagebtn);
         gridLayout = findViewById(R.id.my_profile_gridLayout);
+        savedPageLayout = findViewById(R.id.my_profile_scrollview_savedpage);
         myProfilePic = findViewById(R.id.my_profile_pic);
         myProfileMessage = findViewById(R.id.my_profile_message);
         shareProfileBtn = findViewById(R.id.my_profile_shareProfile);
+        savedPageBtn = findViewById(R.id.my_profile_saved_text);
+        postPageBtn = findViewById(R.id.my_profile_post_text);
+        saveBtnUnderline = findViewById(R.id.my_profile_saved_btn_underline);
+        postBtnUnderline = findViewById(R.id.my_profile_post_btn_underline);
 
         addImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +187,30 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // navigate to saved section
+        savedPageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                savedPageLayout.setVisibility(View.VISIBLE);
+                gridLayout.setVisibility(View.GONE);
+                saveBtnUnderline.setVisibility(View.VISIBLE);
+                postBtnUnderline.setVisibility(View.GONE);
+            }
+        });
+
+        // navigate to post section
+        postPageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                savedPageLayout.setVisibility(View.GONE);
+                gridLayout.setVisibility(View.VISIBLE);
+                saveBtnUnderline.setVisibility(View.GONE);
+                postBtnUnderline.setVisibility(View.VISIBLE);
+            }
+        });
+
+
 
 
         // access db

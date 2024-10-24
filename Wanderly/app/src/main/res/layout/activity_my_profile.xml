@@ -72,13 +72,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/my_profile_name" />
 
             <TextView
-                android:id="@+id/my_profile_friendNum"
+                android:id="@+id/my_profile_postNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/kulim_park"
-                android:text="55 friends"
+                android:text="5 posts"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +104,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/my_profile_pic"
-                app:layout_constraintTop_toBottomOf="@+id/my_profile_friendNum" />
+                app:layout_constraintTop_toBottomOf="@+id/my_profile_postNum" />
 
             <TextView
                 android:id="@+id/my_profile_message"
@@ -142,12 +142,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView14" />
 
             <ImageView
-                android:id="@+id/imageView32"
+                android:id="@+id/my_profile_post_btn_underline"
                 android:layout_width="53dp"
-                android:layout_height="wrap_content"
+                android:layout_height="5dp"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="@+id/my_profile_post_text"
                 app:layout_constraintStart_toStartOf="@+id/my_profile_post_text"
                 app:layout_constraintTop_toBottomOf="@+id/my_profile_post_text"
+                app:srcCompat="@drawable/yellow_line" />
+
+
+            <ImageView
+                android:id="@+id/my_profile_saved_btn_underline"
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/my_profile_saved_text"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/my_profile_saved_text"
+                app:layout_constraintTop_toBottomOf="@+id/my_profile_saved_text"
                 app:srcCompat="@drawable/yellow_line" />
 
             <ImageView
@@ -180,6 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:columnCount="3"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -206,10 +220,204 @@
 
             </GridLayout>
 
+            <ScrollView
+                android:id="@+id/my_profile_scrollview_savedpage"
+                android:layout_width="409dp"
+                android:layout_height="502dp"
+                android:layout_marginTop="16dp"
+                android:fillViewport="true"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/my_profile_saved_text">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <ImageView
+                            android:id="@+id/imageView27"
+                            android:layout_width="366dp"
+                            android:layout_height="120dp"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.488"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.25"
+                            app:srcCompat="@drawable/frame5" />
+
+                        <TextView
+                            android:id="@+id/textView41"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/kulim_park"
+                            android:text="Indigo"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView27"
+                            app:layout_constraintHorizontal_bias="0.045"
+                            app:layout_constraintStart_toStartOf="@+id/imageView27"
+                            app:layout_constraintTop_toTopOf="@+id/imageView27"
+                            app:layout_constraintVertical_bias="0.079" />
+
+                        <RatingBar
+                            android:id="@+id/ratingBar3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView41"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView27"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toEndOf="@+id/textView41"
+                            app:layout_constraintTop_toTopOf="@+id/textView41" />
+
+                        <TextView
+                            android:id="@+id/textView42"
+                            android:layout_width="306dp"
+                            android:layout_height="49dp"
+                            android:fontFamily="@font/kulim_park"
+                            android:text="Ducimus unde eveniet. Consequatur voluptates nemo nam voluptatum omnis. Expedita perspiciatis laudantium. Quod eos quas nulla."
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView27"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView27"
+                            app:layout_constraintStart_toStartOf="@+id/imageView27"
+                            app:layout_constraintTop_toTopOf="@+id/imageView27"
+                            app:layout_constraintVertical_bias="0.61" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <ImageView
+                            android:id="@+id/imageView27"
+                            android:layout_width="366dp"
+                            android:layout_height="120dp"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.488"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.25"
+                            app:srcCompat="@drawable/frame5" />
+
+                        <TextView
+                            android:id="@+id/textView41"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/kulim_park"
+                            android:text="Indigo"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView27"
+                            app:layout_constraintHorizontal_bias="0.045"
+                            app:layout_constraintStart_toStartOf="@+id/imageView27"
+                            app:layout_constraintTop_toTopOf="@+id/imageView27"
+                            app:layout_constraintVertical_bias="0.079" />
+
+                        <RatingBar
+                            android:id="@+id/ratingBar3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView41"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView27"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toEndOf="@+id/textView41"
+                            app:layout_constraintTop_toTopOf="@+id/textView41" />
+
+                        <TextView
+                            android:id="@+id/textView42"
+                            android:layout_width="306dp"
+                            android:layout_height="49dp"
+                            android:fontFamily="@font/kulim_park"
+                            android:text="Ducimus unde eveniet. Consequatur voluptates nemo nam voluptatum omnis. Expedita perspiciatis laudantium. Quod eos quas nulla."
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView27"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView27"
+                            app:layout_constraintStart_toStartOf="@+id/imageView27"
+                            app:layout_constraintTop_toTopOf="@+id/imageView27"
+                            app:layout_constraintVertical_bias="0.61" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <ImageView
+                            android:id="@+id/imageView27"
+                            android:layout_width="366dp"
+                            android:layout_height="120dp"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.488"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.25"
+                            app:srcCompat="@drawable/frame5" />
+
+                        <TextView
+                            android:id="@+id/textView41"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/kulim_park"
+                            android:text="Indigo"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView27"
+                            app:layout_constraintHorizontal_bias="0.045"
+                            app:layout_constraintStart_toStartOf="@+id/imageView27"
+                            app:layout_constraintTop_toTopOf="@+id/imageView27"
+                            app:layout_constraintVertical_bias="0.079" />
+
+                        <RatingBar
+                            android:id="@+id/ratingBar3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView41"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView27"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toEndOf="@+id/textView41"
+                            app:layout_constraintTop_toTopOf="@+id/textView41" />
+
+                        <TextView
+                            android:id="@+id/textView42"
+                            android:layout_width="306dp"
+                            android:layout_height="49dp"
+                            android:fontFamily="@font/kulim_park"
+                            android:text="Ducimus unde eveniet. Consequatur voluptates nemo nam voluptatum omnis. Expedita perspiciatis laudantium. Quod eos quas nulla."
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView27"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView27"
+                            app:layout_constraintStart_toStartOf="@+id/imageView27"
+                            app:layout_constraintTop_toTopOf="@+id/imageView27"
+                            app:layout_constraintVertical_bias="0.61" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </LinearLayout>
+            </ScrollView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
+    <!-- Fixed Menu Bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -289,7 +497,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <!-- Fixed Menu Bar -->
+
 
 
 </RelativeLayout>
