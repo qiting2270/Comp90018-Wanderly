@@ -65,6 +65,8 @@ public class MyProfileActivity extends AppCompatActivity {
     private ImageView saveBtnUnderline;
     private ImageView postBtnUnderline;
 
+    private TextView postNum;
+
     Uri image;
     AlertDialog progressDialog;
     private FirebaseAuth auth;
@@ -126,6 +128,7 @@ public class MyProfileActivity extends AppCompatActivity {
         postPageBtn = findViewById(R.id.my_profile_post_text);
         saveBtnUnderline = findViewById(R.id.my_profile_saved_btn_underline);
         postBtnUnderline = findViewById(R.id.my_profile_post_btn_underline);
+        postNum = findViewById(R.id.my_profile_postNum);
 
         addImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,6 +250,8 @@ public class MyProfileActivity extends AppCompatActivity {
                         for(DataSnapshot data : snapshot.child("Profile Posts").getChildren()){
                             posts_list.add(Objects.requireNonNull(data.getValue()).toString());
                         }
+                        // update the post number
+                        postNum.setText(posts_list.size() + " posts");
                     }
                 }
 
@@ -293,6 +298,10 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(shareIntent, "Share Link"));
             }
         });
+
+
+
+
 
 
     }

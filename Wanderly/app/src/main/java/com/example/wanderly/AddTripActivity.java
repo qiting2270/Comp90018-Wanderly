@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -18,6 +20,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.LayoutInflater;
+
+
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 
 import java.util.ArrayList;
@@ -28,9 +35,24 @@ public class AddTripActivity extends AppCompatActivity {
     private Spinner whereTo;
     private TextView departureDate;
     private TextView returnDate;
+    private TextView addFlightBtn;
+    private TextView addMembersBtn;
+    private HorizontalScrollView horizontalScrollView;
+    private TextView nothingSelectedText;
+
+    private String trip_from;
+    private String trip_to;
+    private int fromSelectionIndex = 0;
+    private int toSelectionIndex = 0;
 
     Calendar departureCalendar;
     Calendar returnCalendar;
+
+    private boolean isDepartureDateSet = false;
+    private boolean isReturnDateSet = false;
+
+    LinearLayout addTripLinearLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +65,16 @@ public class AddTripActivity extends AppCompatActivity {
         whereTo = findViewById(R.id.add_trip_spinner_whereTo);
         departureDate = findViewById(R.id.add_trip_departure_date);
         returnDate = findViewById(R.id.add_trip_return_date);
+        addFlightBtn = findViewById(R.id.add_trip_addflight);
+        addMembersBtn = findViewById(R.id.add_trip_addmembers);
+        horizontalScrollView = findViewById(R.id.add_trip_Horizontal_scroll_view);
 
         // Initialize Calendar objects
         departureCalendar = Calendar.getInstance();
         returnCalendar = Calendar.getInstance();
 
+        addTripLinearLayout = findViewById(R.id.add_trip_Horizontal_scroll_view_linearlayout);
+        nothingSelectedText = findViewById(R.id.add_trip_nothing_selected_text);
 
         //back icon logic
         ImageView backIcon = (ImageView) findViewById(R.id.back_icon);
@@ -63,8 +90,12 @@ public class AddTripActivity extends AppCompatActivity {
         whereFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String item = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(AddTripActivity.this,"Selected item" + item, Toast.LENGTH_SHORT).show();
+                trip_from = adapterView.getItemAtPosition(i).toString();
+                // update spinner selection index
+                fromSelectionIndex = i;
+                updateVisibility();
+
+                Toast.makeText(AddTripActivity.this,"Selected item" + trip_from, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -76,8 +107,10 @@ public class AddTripActivity extends AppCompatActivity {
         whereTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String item = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(AddTripActivity.this,"Selected item" + item, Toast.LENGTH_SHORT).show();
+                trip_to = adapterView.getItemAtPosition(i).toString();
+                toSelectionIndex = i;
+                updateVisibility();
+                Toast.makeText(AddTripActivity.this,"Selected item" + trip_to, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -85,6 +118,8 @@ public class AddTripActivity extends AppCompatActivity {
 
             }
         });
+
+
 
         // Where From
         ArrayList<String> arrayListWhereFrom = new ArrayList<>();
@@ -132,6 +167,15 @@ public class AddTripActivity extends AppCompatActivity {
             }
         });
 
+        // Inflate the ConstraintLayout from XML
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View constraintLayout = inflater.inflate(R.layout.addtrip_inside_horizontal_layout, addTripLinearLayout, false);
+
+        // Now add the inflated ConstraintLayout to the LinearLayout
+        addTripLinearLayout.addView(constraintLayout);
+
+
+
 
 
     }
@@ -152,14 +196,18 @@ public class AddTripActivity extends AppCompatActivity {
                     // Update the respective Calendar object
                     if (isDeparture) {
                         departureCalendar.set(selectedYear, selectedMonth, selectedDay);
-                    } else {
+                        isDepartureDateSet = true;
+                    }
+                    else {
                         returnCalendar.set(selectedYear, selectedMonth, selectedDay);
+                        isReturnDateSet = true;
 
                         // Calculate and show the duration when both dates are selected
                         if (departureCalendar != null && returnCalendar != null) {
                             calculateDuration();
                         }
                     }
+                    updateVisibility();
                 },
                 year, month, day);
 
@@ -182,6 +230,22 @@ public class AddTripActivity extends AppCompatActivity {
         } else {
             // If the return date is before the departure date
             Toast.makeText(AddTripActivity.this, "Return date cannot be before departure date!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateVisibility() {
+        if (fromSelectionIndex != 0 && toSelectionIndex != 0 && isDepartureDateSet && isReturnDateSet) {
+            addMembersBtn.setVisibility(View.VISIBLE);
+            addFlightBtn.setVisibility(View.VISIBLE);
+            horizontalScrollView.setVisibility(View.VISIBLE);
+            nothingSelectedText.setVisibility(View.GONE);
+
+        } else {
+            addMembersBtn.setVisibility(View.GONE);
+            addFlightBtn.setVisibility(View.GONE);
+            horizontalScrollView.setVisibility(View.GONE);
+            nothingSelectedText.setVisibility(View.VISIBLE);
+
         }
     }
 
