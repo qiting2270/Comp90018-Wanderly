@@ -83,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, MapsActivity2.class);
+                intent.putExtra("location", "Billy's Central");
                 startActivity(intent);
             }
         });

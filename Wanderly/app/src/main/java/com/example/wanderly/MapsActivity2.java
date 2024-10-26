@@ -1,6 +1,7 @@
 package com.example.wanderly;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,10 +22,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,12 +39,49 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     private EditText latitudeInput;
     private EditText longitudeInput;
     private Button showStreetViewButton;
+    Intent intent;
+    private double latitude;
+    private double longitude;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
+    LatLng targetLatLng;
+
+    HashMap<String, double[]> locationMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+        locationMap.put("Thai Town", new double[]{-33.8784, 151.2070});
+        locationMap.put("Billy's Central", new double[]{-37.8136, 144.9631});
+        locationMap.put("Bornga", new double[]{-37.8140, 144.9660});
+        locationMap.put("Sweet Canteen", new double[]{-37.8162, 144.9613});
+        locationMap.put("National Gallery of Victoria", new double[]{-37.8226, 144.9690});
+        locationMap.put("State Library of Victoria", new double[]{-37.8099, 144.9656});
+        locationMap.put("Queen Victoria Market", new double[]{-37.8076, 144.9568});
+        locationMap.put("Old Melbourne Gaol", new double[]{-37.8060, 144.9654});
+
+        intent = getIntent();
+// 通过 key"Location" 获取传递的值
+        String location = intent.getStringExtra( "location");
+
+        if (location != null && locationMap.containsKey(location)) {
+            // 获取该 location 对应的经纬度
+            double[] coordinates = locationMap.get(location);
+            if (coordinates != null) {
+                latitude = coordinates[0];
+                longitude = coordinates[1];
+                targetLatLng = new LatLng(coordinates[0], coordinates[1]);
+                Log.d("MapsActivity2", "here with latitude" + latitude);
+
+
+            }
+        } else {
+            System.out.println("Location not found in locationMap.");
+        }
 
         binding = ActivityMaps2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -80,20 +120,20 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//
-//        // 启用地图的 UI 控件（放大缩小按钮）
-//        mMap.getUiSettings().setZoomControlsEnabled(true);
-//
-//        // 检查并请求位置权限
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            // 启用地图的当前位置功能
-//            mMap.setMyLocationEnabled(true);
-//            getDeviceLocation();
-//        } else {
-//            // 请求权限
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-//        }
+        mMap = googleMap;
+
+        // 启用地图的 UI 控件（放大缩小按钮）
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        // 检查并请求位置权限
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // 启用地图的当前位置功能
+            mMap.setMyLocationEnabled(true);
+            getDeviceLocation();
+        } else {
+            // 请求权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        }
 
 
         mMap = googleMap;
@@ -111,18 +151,6 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }
 
-        // 设置地图点击监听器，返回点击位置的经纬度
-        mMap.setOnMapClickListener(latLng -> {
-            double latitude = latLng.latitude;
-            double longitude = latLng.longitude;
-            Log.d("MapsActivity2", "Latitude: " + latitude + ", Longitude: " + longitude);
-            Toast.makeText(MapsActivity2.this, "Latitude: " + latitude + ", Longitude: " + longitude, Toast.LENGTH_LONG).show();
-
-            // 可选：点击后添加标记
-            mMap.clear();  // 清除之前的标记
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Clicked Location"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
-        });
     }
 
     // 根据用户输入的经纬度更新位置
@@ -146,7 +174,16 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                         String addressText = addresses != null && !addresses.isEmpty() ? addresses.get(0).getAddressLine(0) : "Unknown Address";
 
                         // 在当前位置添加标记并显示地址信息
-                        mMap.addMarker(new MarkerOptions().position(currentLatLng).title("Current Location").snippet(addressText));
+//                        mMap.addMarker(new MarkerOptions().position(currentLatLng).title("Current Location").snippet(addressText));
+                        mMap.addMarker(new MarkerOptions()
+                                .position(currentLatLng)
+                                .title("you are here")
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))); // 红色标记
+
+                        mMap.addMarker(new MarkerOptions()
+                                .position(targetLatLng)
+                                .title("your target")
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f));
                     } catch (IOException e) {
                         e.printStackTrace();
