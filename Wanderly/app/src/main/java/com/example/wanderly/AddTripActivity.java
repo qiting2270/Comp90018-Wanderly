@@ -4,16 +4,20 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,6 +27,9 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Gravity;
+import android.graphics.Typeface;
+
 
 
 import org.w3c.dom.Text;
@@ -57,6 +64,20 @@ public class AddTripActivity extends AppCompatActivity {
     LinearLayout addTripLinearLayout;
     private int tripDuration;
 
+    ConstraintLayout Day1;
+    ConstraintLayout Day2;
+
+    TextView day1DateText;
+    TextView day2DateText;
+
+    ConstraintLayout Day1AddStopBtn;
+
+    ConstraintLayout addStopPopup;
+    private Spinner timeFromSpinner, timeToSpinner;
+    private ArrayList<String> timeValues;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +100,14 @@ public class AddTripActivity extends AppCompatActivity {
 
         addTripLinearLayout = findViewById(R.id.add_trip_Horizontal_scroll_view_linearlayout);
         nothingSelectedText = findViewById(R.id.add_trip_nothing_selected_text);
+        //addStopBtn = insideHorizontalLayout.findViewById(R.id.addtrip_inside_add_stopBtn);
+        addStopPopup = findViewById(R.id.addtrip_inside_popup_layout);
+        Day1 = findViewById(R.id.add_trip_day_1);
+        Day2 = findViewById(R.id.add_trip_day_2);
+        Day1AddStopBtn = findViewById(R.id.addtrip__day1_inside_add_stopBtn);
+
+        timeFromSpinner = findViewById(R.id.add_trip_popup_spinner_time_from);
+        timeToSpinner = findViewById(R.id.add_trip_popup_spinner_time_to);
 
         //back icon logic
         ImageView backIcon = (ImageView) findViewById(R.id.back_icon);
@@ -178,6 +207,74 @@ public class AddTripActivity extends AppCompatActivity {
         View constraintLayout = inflater.inflate(R.layout.addtrip_inside_horizontal_layout, addTripLinearLayout, false);
         addTripLinearLayout.addView(constraintLayout);*/
 
+        Day1AddStopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addStopPopup.setVisibility(View.VISIBLE);
+            }
+        });
+
+        //time value
+        timeValues = new ArrayList<>();
+        timeValues.add("Select Time"); // Default selection option
+        timeValues.add("12:00 AM");
+        timeValues.add("1:00 AM");
+        timeValues.add("2:00 AM");
+        timeValues.add("3:00 AM");
+        timeValues.add("4:00 AM");
+        timeValues.add("5:00 AM");
+        timeValues.add("6:00 AM");
+        timeValues.add("7:00 AM");
+        timeValues.add("8:00 AM");
+        timeValues.add("9:00 AM");
+        timeValues.add("10:00 AM");
+        timeValues.add("11:00 AM");
+        timeValues.add("12:00 PM");
+        timeValues.add("1:00 PM");
+        timeValues.add("2:00 PM");
+        timeValues.add("3:00 PM");
+        timeValues.add("4:00 PM");
+        timeValues.add("5:00 PM");
+        timeValues.add("6:00 PM");
+        timeValues.add("7:00 PM");
+        timeValues.add("8:00 PM");
+        timeValues.add("9:00 PM");
+        timeValues.add("10:00 PM");
+        timeValues.add("11:00 PM");
+
+        ArrayAdapter<String> timeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, timeValues);
+        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        timeFromSpinner.setAdapter(timeAdapter);
+        timeToSpinner.setAdapter(timeAdapter);
+
+
+        timeFromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedFromTime = parent.getItemAtPosition(position).toString();
+                if (!selectedFromTime.equals("Select Time")) {
+                    Toast.makeText(AddTripActivity.this, "Selected From Time: " + selectedFromTime, Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+
+        timeToSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedToTime = parent.getItemAtPosition(position).toString();
+                if (!selectedToTime.equals("Select Time")) {
+                    Toast.makeText(AddTripActivity.this, "Selected To Time: " + selectedToTime, Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+      
 
 
 
@@ -220,38 +317,73 @@ public class AddTripActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    @SuppressLint("SetTextI18n")
-    private void updateInsideLayout() {
-        addTripLinearLayout.removeAllViews(); // Clear previous views to avoid duplicates
-
-        // Create a clone of the departure date to iterate through days
+    private void updateInsideLayout(){
         Calendar currentDay = (Calendar) departureCalendar.clone();
 
-        for (int i = 1; i <= tripDuration; i++) {
-            // Inflate the layout for each day
-            LayoutInflater inflater = LayoutInflater.from(this);
-            View constraintLayout = inflater.inflate(R.layout.addtrip_inside_horizontal_layout, addTripLinearLayout, false);
+        day1DateText = findViewById(R.id.addtrip_day1_inside_date_text);
+        day2DateText = findViewById(R.id.addtrip_day2_inside_date_text);
 
-            // Find the TextView for displaying day and date inside the newly inflated view
-            TextView dayText = constraintLayout.findViewById(R.id.addtrip_inside_day_text);
-            TextView dateText = constraintLayout.findViewById(R.id.addtrip_inside_date_text);
+        String formattedDate_Day1 = String.format(Locale.getDefault(), "%d-%02d-%02d",
+                currentDay.get(Calendar.YEAR),
+                currentDay.get(Calendar.MONTH) + 1,
+                currentDay.get(Calendar.DAY_OF_MONTH));
 
-            String formattedDate = String.format(Locale.getDefault(), "%d-%02d-%02d",
+        if (tripDuration == 1){
+            Day1.setVisibility(View.VISIBLE);
+            Day2.setVisibility(View.GONE);
+
+            day1DateText.setText(formattedDate_Day1);
+        }
+        else if (tripDuration == 2){
+            Day1.setVisibility(View.VISIBLE);
+            Day2.setVisibility(View.VISIBLE);
+
+            day1DateText.setText(formattedDate_Day1);
+
+            currentDay.add(Calendar.DAY_OF_MONTH, 1);
+
+            String formattedDate_Day2 = String.format(Locale.getDefault(), "%d-%02d-%02d",
                     currentDay.get(Calendar.YEAR),
                     currentDay.get(Calendar.MONTH) + 1,
                     currentDay.get(Calendar.DAY_OF_MONTH));
-
-            dayText.setText("Day " + i + " ");
-            dateText.setText(formattedDate);
-//            dayAndDateText.setText("Day " + i + "   " + currentDay.get(Calendar.YEAR) + "-"+
-//                    (currentDay.get(Calendar.MONTH) + 1) + "-" + currentDay.get(Calendar.DAY_OF_MONTH));
-
-            addTripLinearLayout.addView(constraintLayout);
-
-            // Move to the next day
-            currentDay.add(Calendar.DAY_OF_MONTH, 1);
+            day2DateText.setText(formattedDate_Day2);
         }
+
     }
+
+
+//    @SuppressLint("SetTextI18n")
+//    private void updateInsideLayout() {
+//        addTripLinearLayout.removeAllViews();
+//
+//        // Create a clone of the departure date to iterate through days
+//        Calendar currentDay = (Calendar) departureCalendar.clone();
+//
+//        for (int i = 1; i <= tripDuration; i++) {
+//            // Inflate the layout for each day
+//            LayoutInflater inflater = LayoutInflater.from(this);
+//            View insideHorizontalLayout = inflater.inflate(R.layout.addtrip_inside_horizontal_layout, addTripLinearLayout, false);
+//
+//            // Find the TextView for displaying day and date inside the newly inflated view
+//            TextView dayText = insideHorizontalLayout.findViewById(R.id.addtrip_inside_day_text);
+//            TextView dateText = insideHorizontalLayout.findViewById(R.id.addtrip_inside_date_text);
+//
+//            String formattedDate = String.format(Locale.getDefault(), "%d-%02d-%02d",
+//                    currentDay.get(Calendar.YEAR),
+//                    currentDay.get(Calendar.MONTH) + 1,
+//                    currentDay.get(Calendar.DAY_OF_MONTH));
+//
+//            dayText.setText("Day " + i + " ");
+//            dateText.setText(formattedDate);
+//
+//
+//
+//            addTripLinearLayout.addView(insideHorizontalLayout);
+//
+//            // Move to the next day
+//            currentDay.add(Calendar.DAY_OF_MONTH, 1);
+//        }
+//    }
 
 
 

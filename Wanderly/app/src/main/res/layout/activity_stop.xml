@@ -40,27 +40,16 @@
             app:layout_constraintTop_toTopOf="@+id/back_icon" />
 
         <TextView
-            android:id="@+id/textView35"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="day1"
-            android:fontFamily="@font/kulim_park"
-            app:layout_constraintEnd_toEndOf="@+id/textView29"
-            app:layout_constraintStart_toStartOf="@+id/textView29"
-            app:layout_constraintTop_toBottomOf="@+id/textView29" />
-
-        <TextView
             android:id="@+id/textView36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Indigo"
             android:fontFamily="@font/kulim_park"
-            android:textSize="36sp"
+            android:text="Indigo"
             android:textColor="#3B5667"
+            android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView35" />
+            tools:layout_editor_absoluteY="126dp" />
 
         <RatingBar
             android:id="@+id/ratingBar"

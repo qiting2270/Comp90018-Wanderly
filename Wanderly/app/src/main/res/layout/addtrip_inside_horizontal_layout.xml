@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/addtrip_inside_day_text"
+        android:id="@+id/addtrip_day1_inside_day_text"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/addtrip_inside_date_text"
+        android:id="@+id/addtrip_day1_inside_date_text"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginStart="88dp"
@@ -36,8 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="@+id/addtrip_inside_day_text"
-        app:layout_constraintTop_toBottomOf="@+id/addtrip_inside_day_text">
+        app:layout_constraintStart_toStartOf="@+id/addtrip_day1_inside_day_text"
+        app:layout_constraintTop_toBottomOf="@+id/addtrip_day1_inside_day_text">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/addtrip_inside_add_stopBtn"
+            android:id="@+id/addtrip__day1_inside_add_stopBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
