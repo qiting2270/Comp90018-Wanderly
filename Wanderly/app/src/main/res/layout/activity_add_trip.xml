@@ -143,132 +143,173 @@
             app:layout_constraintTop_toTopOf="@+id/add_trip_departure_date" />
 
         <TextView
-            android:id="@+id/add_trip_addflight"
-            android:layout_width="83dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/button_background"
-            android:backgroundTint="#ECB35E"
-            android:gravity="center"
-            android:text="+ Flight"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/imageView21"
-            app:layout_constraintTop_toBottomOf="@+id/imageView21" />
-
-        <TextView
             android:id="@+id/add_trip_addmembers"
             android:layout_width="109dp"
             android:layout_height="43dp"
-            android:layout_marginStart="16dp"
             android:background="@drawable/button_background"
             android:backgroundTint="#ECB35E"
             android:gravity="center"
             android:text="+ Members"
             android:textSize="15sp"
-            app:layout_constraintStart_toEndOf="@+id/add_trip_addflight"
-            app:layout_constraintTop_toTopOf="@+id/add_trip_addflight" />
-
-        <HorizontalScrollView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="24dp"
-            android:id="@+id/add_trip_Horizontal_scroll_view"
-            android:fillViewport="true"
-
             app:layout_constraintBottom_toBottomOf="@+id/imageView18"
             app:layout_constraintEnd_toEndOf="@+id/imageView18"
+            app:layout_constraintHorizontal_bias="0.11"
             app:layout_constraintStart_toStartOf="@+id/imageView18"
-            app:layout_constraintTop_toBottomOf="@+id/add_trip_addflight">
+            app:layout_constraintTop_toTopOf="@+id/imageView18"
+            app:layout_constraintVertical_bias="0.19" />
+
+        <HorizontalScrollView
+            android:id="@+id/add_trip_member_scroll_view"
+            android:layout_width="155dp"
+            android:layout_height="49dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView18"
+            app:layout_constraintEnd_toEndOf="@+id/imageView18"
+            app:layout_constraintStart_toEndOf="@+id/add_trip_addmembers"
+            app:layout_constraintTop_toTopOf="@+id/imageView18"
+            app:layout_constraintVertical_bias="0.18500002">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/add_trip_Horizontal_scroll_view_linearlayout">
+                android:layout_height="match_parent">
 
-<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                    android:layout_width="260dp"-->
-<!--                    android:layout_height="match_parent">-->
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/textView22"-->
-<!--                        android:layout_width="185dp"-->
-<!--                        android:layout_height="25dp"-->
-<!--                        android:layout_marginStart="16dp"-->
-<!--                        android:layout_marginTop="8dp"-->
-<!--                        android:fontFamily="@font/kulim_park"-->
-<!--                        android:text="Day 1 - 03/01"-->
-<!--                        android:textSize="20sp"-->
-<!--                        android:textStyle="bold"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
+                <ImageView
+                    android:id="@+id/imageView31"
+                    android:layout_width="42dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/user_1" />
 
-<!--                    <ImageView-->
-<!--                        android:id="@+id/imageView10"-->
-<!--                        android:layout_width="30dp"-->
-<!--                        android:layout_height="30dp"-->
-<!--                        android:layout_marginTop="16dp"-->
-<!--                        app:layout_constraintStart_toStartOf="@+id/textView22"-->
-<!--                        app:layout_constraintTop_toBottomOf="@+id/textView22"-->
-<!--                        app:srcCompat="@drawable/dining_icon" />-->
+                <ImageView
+                    android:id="@+id/imageView31"
+                    android:layout_width="42dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/user_1" />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/textView23"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="16dp"-->
-<!--                        android:fontFamily="@font/kulim_park"-->
-<!--                        android:text="Indigo"-->
-<!--                        android:textSize="15dp"-->
-<!--                        android:textColor="#3B5667"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@+id/imageView10"-->
-<!--                        app:layout_constraintStart_toEndOf="@+id/imageView10"-->
-<!--                        app:layout_constraintTop_toTopOf="@+id/imageView10" />-->
+                <ImageView
+                    android:id="@+id/imageView31"
+                    android:layout_width="42dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/user_1" />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/add_trip_addstops"-->
-<!--                        android:layout_width="30dp"-->
-<!--                        android:layout_height="30dp"-->
-<!--                        android:layout_marginTop="24dp"-->
-<!--                        android:background="@drawable/button_background"-->
-<!--                        android:backgroundTint="#ECB35E"-->
-<!--                        android:gravity="center"-->
-<!--                        android:text="+"-->
-<!--                        android:textSize="15sp"-->
-<!--                        app:layout_constraintStart_toStartOf="@+id/imageView10"-->
-<!--                        app:layout_constraintTop_toBottomOf="@+id/imageView10" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/add_trip_addstop_text"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="16dp"-->
-<!--                        android:fontFamily="@font/kulim_park"-->
-<!--                        android:text="Add stops"-->
-<!--                        android:textSize="15dp"-->
-<!--                        android:textColor="#803B5667"-->
-
-<!--                        app:layout_constraintBottom_toBottomOf="@+id/add_trip_addstops"-->
-<!--                        app:layout_constraintStart_toEndOf="@+id/add_trip_addstops"-->
-<!--                        app:layout_constraintTop_toTopOf="@+id/add_trip_addstops" />-->
-
-<!--                    <ImageView-->
-<!--                        android:id="@+id/imageView22"-->
-<!--                        android:layout_width="3dp"-->
-<!--                        android:layout_height="0dp"-->
-<!--                        android:layout_marginEnd="8dp"-->
-<!--                        android:layout_marginBottom="16dp"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"-->
-<!--                        app:srcCompat="@drawable/vertical_line" />-->
-
-<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+                <ImageView
+                    android:id="@+id/imageView31"
+                    android:layout_width="42dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/user_1" />
 
 
             </LinearLayout>
 
 
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:id="@+id/add_trip_Horizontal_scroll_view"
+            android:layout_width="363dp"
+            android:layout_height="570dp"
+            android:fillViewport="true"
+
+            app:layout_constraintBottom_toBottomOf="@+id/imageView18"
+            app:layout_constraintEnd_toEndOf="@+id/imageView18"
+            app:layout_constraintStart_toStartOf="@+id/imageView18"
+            app:layout_constraintTop_toTopOf="@+id/imageView18"
+            app:layout_constraintVertical_bias="0.98">
+
+            <LinearLayout
+                android:id="@+id/add_trip_Horizontal_scroll_view_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="260dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView22"
+                        android:layout_width="185dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/kulim_park"
+                        android:text="Template"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView10"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="@+id/textView22"
+                        app:layout_constraintTop_toBottomOf="@+id/textView22"
+                        app:srcCompat="@drawable/dining_icon" />
+
+                    <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/kulim_park"
+                        android:text="Indigo"
+                        android:textColor="#3B5667"
+                        android:textSize="15dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+                        app:layout_constraintStart_toEndOf="@+id/imageView10"
+                        app:layout_constraintTop_toTopOf="@+id/imageView10" />
+
+                    <TextView
+                        android:id="@+id/add_trip_addstops"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/button_background"
+                        android:backgroundTint="#ECB35E"
+                        android:gravity="center"
+                        android:text="+"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="@+id/imageView10"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+
+                    <TextView
+                        android:id="@+id/add_trip_addstop_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/kulim_park"
+                        android:text="Add stops"
+                        android:textColor="#803B5667"
+                        android:textSize="15dp"
+
+                        app:layout_constraintBottom_toBottomOf="@+id/add_trip_addstops"
+                        app:layout_constraintStart_toEndOf="@+id/add_trip_addstops"
+                        app:layout_constraintTop_toTopOf="@+id/add_trip_addstops" />
+
+                    <ImageView
+                        android:id="@+id/imageView22"
+                        android:layout_width="3dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/vertical_line" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+            </LinearLayout>
 
 
         </HorizontalScrollView>
