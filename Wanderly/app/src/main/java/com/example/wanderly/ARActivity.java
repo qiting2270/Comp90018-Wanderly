@@ -1,6 +1,7 @@
 package com.example.wanderly;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Looper;
@@ -14,9 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.Preview;
 import androidx.camera.view.PreviewView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.camera.lifecycle.ProcessCameraProvider;
@@ -37,6 +35,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 import java.util.concurrent.ExecutionException;
 
 public class ARActivity extends AppCompatActivity {
@@ -56,11 +56,28 @@ public class ARActivity extends AppCompatActivity {
     private Location targetLocation;
     private float bearingToTarget = 0f;
 
+    HashMap<String, double[]> locationMap = new HashMap<>();
+
+    // 添加每个地点的地名和经纬度
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        locationMap.put("Thai Town", new double[]{-33.8784, 151.2070});
+        locationMap.put("Billy's Central", new double[]{-37.8136, 144.9631});
+        locationMap.put("Bornga", new double[]{-37.8140, 144.9660});
+        locationMap.put("Sweet Canteen", new double[]{-37.8162, 144.9613});
+        locationMap.put("National Gallery of Victoria", new double[]{-37.8226, 144.9690});
+        locationMap.put("State Library of Victoria", new double[]{-37.8099, 144.9656});
+        locationMap.put("Queen Victoria Market", new double[]{-37.8076, 144.9568});
+        locationMap.put("Old Melbourne Gaol", new double[]{-37.8060, 144.9654});
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_aractivity);
+
+        Intent intent = getIntent();
+
+        // 通过 key "Location" 获取传递的值
+        String location = intent.getStringExtra("Location");
 
         previewView = findViewById(R.id.previewView);
         arrow = findViewById(R.id.arrow);
@@ -69,8 +86,24 @@ public class ARActivity extends AppCompatActivity {
 
         // !!!目的地 假设!!!
         targetLocation = new Location("");
-        targetLocation.setLatitude(37.7749);  // Example: Latitude of San Francisco
-        targetLocation.setLongitude(-122.4194); // Example: Longitude of San Francisco
+//        targetLocation.setLatitude(37.7749);  // Example: Latitude of San Francisco
+//        targetLocation.setLongitude(-122.4194); // Example: Longitude of San Francisco
+
+
+        if (location != null && locationMap.containsKey(location)) {
+            // 获取该 location 对应的经纬度
+            double[] coordinates = locationMap.get(location);
+            if (coordinates != null) {
+                double latitude = coordinates[0];
+                double longitude = coordinates[1];
+                targetLocation.setLatitude(latitude);
+                targetLocation.setLongitude(longitude);
+
+            }
+        } else {
+            System.out.println("Location not found in locationMap.");
+        }
+
 
 
         // Request camera permissions and start camera
@@ -80,10 +113,7 @@ public class ARActivity extends AppCompatActivity {
             startCamera();
         }
 
-        // show arrived page
-//        arrow.setVisibility(View.GONE);
-//        distanceText.setVisibility(View.GONE);
-//        arrivedLayout.setVisibility(View.VISIBLE);
+
 
 
         // Initialize location services and sensors

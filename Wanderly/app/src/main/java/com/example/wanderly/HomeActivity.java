@@ -85,10 +85,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, ARActivity.class);
+                intent.putExtra("Location", "National Gallery of Victoria");
                 startActivity(intent);
             }
         });
-
 
 
     }
