@@ -58,7 +58,7 @@
             android:name=".SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".BookmarkActivity"
+            android:name=".MapActivity"
             android:exported="false" />
         <activity
             android:name=".NotificationActivity"

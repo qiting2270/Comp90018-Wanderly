@@ -19,7 +19,7 @@ public class MyTripsActivity extends AppCompatActivity {
     private ImageView menuHomeBtn;
     private ImageView menuTripBtn;
     private TextView addTripBtn;
-    private ImageView menuBookmarkBtn;
+    private ImageView menuMapBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class MyTripsActivity extends AppCompatActivity {
         menuHomeBtn = findViewById(R.id.menu_homebutton);
         menuTripBtn = findViewById(R.id.menu_tripbutton);
         addTripBtn = findViewById(R.id.my_trips_add_icon);
-        menuBookmarkBtn = findViewById(R.id.menu_bookmark);
+        menuMapBtn = findViewById(R.id.menu_map);
 
         //menu navigation
         menuMyProfileBtn.setOnClickListener(new View.OnClickListener() {
@@ -57,10 +57,10 @@ public class MyTripsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        menuBookmarkBtn.setOnClickListener(new View.OnClickListener() {
+        menuMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyTripsActivity.this, BookmarkActivity.class);
+                Intent intent = new Intent(MyTripsActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });

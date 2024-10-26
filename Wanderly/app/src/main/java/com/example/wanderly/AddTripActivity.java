@@ -233,14 +233,16 @@ public class AddTripActivity extends AppCompatActivity {
             View constraintLayout = inflater.inflate(R.layout.addtrip_inside_horizontal_layout, addTripLinearLayout, false);
 
             // Find the TextView for displaying day and date inside the newly inflated view
-            TextView dayAndDateText = constraintLayout.findViewById(R.id.addtrip_inside_date_text);
+            TextView dayText = constraintLayout.findViewById(R.id.addtrip_inside_day_text);
+            TextView dateText = constraintLayout.findViewById(R.id.addtrip_inside_date_text);
 
             String formattedDate = String.format(Locale.getDefault(), "%d-%02d-%02d",
                     currentDay.get(Calendar.YEAR),
                     currentDay.get(Calendar.MONTH) + 1,
                     currentDay.get(Calendar.DAY_OF_MONTH));
 
-            dayAndDateText.setText("Day " + i + "   " + formattedDate);
+            dayText.setText("Day " + i + " ");
+            dateText.setText(formattedDate);
 //            dayAndDateText.setText("Day " + i + "   " + currentDay.get(Calendar.YEAR) + "-"+
 //                    (currentDay.get(Calendar.MONTH) + 1) + "-" + currentDay.get(Calendar.DAY_OF_MONTH));
 

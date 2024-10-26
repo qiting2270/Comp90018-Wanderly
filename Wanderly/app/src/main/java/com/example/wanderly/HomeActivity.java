@@ -1,9 +1,7 @@
 package com.example.wanderly;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,16 +9,12 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class HomeActivity extends AppCompatActivity {
@@ -29,7 +23,7 @@ public class HomeActivity extends AppCompatActivity {
     private String currentUserId;
     private TextView home_greeting;
     private ImageView menuMyProfileBtn;
-    private ImageView menuBookmarkBtn;
+    private ImageView menuMapBtn;
     private ImageView menuHomeBtn;
     private ImageView menuTripBtn;
     private String userLastName;
@@ -46,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         currentUserId = auth.getCurrentUser().getUid();
         home_greeting = findViewById(R.id.home_greeting);
         menuMyProfileBtn = findViewById(R.id.menu_profile);
-        menuBookmarkBtn = findViewById(R.id.menu_bookmark);
+        menuMapBtn = findViewById(R.id.menu_map);
         notificationBtn = findViewById(R.id.notification_btn);
         menuHomeBtn = findViewById(R.id.menu_homebutton);
         menuTripBtn = findViewById(R.id.menu_tripbutton);
@@ -107,10 +101,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        menuBookmarkBtn.setOnClickListener(new View.OnClickListener() {
+        menuMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, BookmarkActivity.class);
+                Intent intent = new Intent(HomeActivity.this, MapActivity.class);
                 //intent.putExtra("userLastName", userLastName);
                 //intent.putExtra("userFirstName", userFirstname);
                 startActivity(intent);

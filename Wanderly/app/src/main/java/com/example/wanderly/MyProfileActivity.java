@@ -45,7 +45,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     private ImageView menuMyProfileBtn;
     private ImageView menuHomeBtn;
-    private ImageView menuBookmarkBtn;
+    private ImageView menuMapBtn;
     private ImageView menuTripBtn;
 
     private TextView myProfileName;
@@ -105,8 +105,8 @@ public class MyProfileActivity extends AppCompatActivity {
 */
         menuMyProfileBtn = findViewById(R.id.menu_profile);
         menuHomeBtn = findViewById(R.id.menu_homebutton);
-        menuBookmarkBtn = findViewById(R.id.menu_bookmark);
         menuTripBtn = findViewById(R.id.menu_tripbutton);
+        menuMapBtn = findViewById(R.id.menu_map);
 
         myProfileName = findViewById(R.id.my_profile_name);
         myProfileSetting = findViewById(R.id.my_profile_setting);
@@ -158,10 +158,10 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        menuBookmarkBtn.setOnClickListener(new View.OnClickListener() {
+        menuMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyProfileActivity.this, BookmarkActivity.class);
+                Intent intent = new Intent(MyProfileActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });
