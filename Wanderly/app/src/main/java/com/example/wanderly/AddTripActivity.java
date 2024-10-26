@@ -1,8 +1,10 @@
 package com.example.wanderly;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -29,6 +32,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Gravity;
 import android.graphics.Typeface;
+import androidx.constraintlayout.widget.ConstraintSet;
+
 
 
 
@@ -71,10 +76,23 @@ public class AddTripActivity extends AppCompatActivity {
     TextView day2DateText;
 
     ConstraintLayout Day1AddStopBtn;
-
     ConstraintLayout addStopPopup;
+    ImageView popUpCloseBtn;
     private Spinner timeFromSpinner, timeToSpinner;
     private ArrayList<String> timeValues;
+
+    private String selectedPlace = "";
+    TextView restaurant_ThaiTown;
+    TextView restaurant_Billy;
+    TextView restaurant_Bornga;
+    TextView restaurant_sweetCanteen;
+
+    TextView attraction_ngv;
+    TextView attraction_library;
+    TextView attraction_QVM;
+    TextView attraction_Gaol;
+
+    LinearLayout stopsLinearLayout;
 
 
 
@@ -102,12 +120,24 @@ public class AddTripActivity extends AppCompatActivity {
         nothingSelectedText = findViewById(R.id.add_trip_nothing_selected_text);
         //addStopBtn = insideHorizontalLayout.findViewById(R.id.addtrip_inside_add_stopBtn);
         addStopPopup = findViewById(R.id.addtrip_inside_popup_layout);
+        popUpCloseBtn = findViewById(R.id.add_trip_pop_up_close_btn);
         Day1 = findViewById(R.id.add_trip_day_1);
         Day2 = findViewById(R.id.add_trip_day_2);
         Day1AddStopBtn = findViewById(R.id.addtrip__day1_inside_add_stopBtn);
 
         timeFromSpinner = findViewById(R.id.add_trip_popup_spinner_time_from);
         timeToSpinner = findViewById(R.id.add_trip_popup_spinner_time_to);
+
+        restaurant_ThaiTown = findViewById(R.id.stop_restaurant_thaiTown);
+        restaurant_Billy = findViewById(R.id.stop_restaurant_BillyCentral);
+        restaurant_Bornga = findViewById(R.id.stop_restaurant_Bornga);
+        restaurant_sweetCanteen = findViewById(R.id.stop_restaurant_sweetcanteen);
+        attraction_ngv = findViewById(R.id.stop_attraction_ngv);
+        attraction_library = findViewById(R.id.stop_attraction_statelibrary);
+        attraction_QVM = findViewById(R.id.stop_attraction_queenVictoriaMarket);
+        attraction_Gaol = findViewById(R.id.stop_attraction_oldMelGaol);
+        stopsLinearLayout = findViewById(R.id.stops_linear_layout);
+
 
         //back icon logic
         ImageView backIcon = (ImageView) findViewById(R.id.back_icon);
@@ -214,67 +244,98 @@ public class AddTripActivity extends AppCompatActivity {
             }
         });
 
-        //time value
-        timeValues = new ArrayList<>();
-        timeValues.add("Select Time"); // Default selection option
-        timeValues.add("12:00 AM");
-        timeValues.add("1:00 AM");
-        timeValues.add("2:00 AM");
-        timeValues.add("3:00 AM");
-        timeValues.add("4:00 AM");
-        timeValues.add("5:00 AM");
-        timeValues.add("6:00 AM");
-        timeValues.add("7:00 AM");
-        timeValues.add("8:00 AM");
-        timeValues.add("9:00 AM");
-        timeValues.add("10:00 AM");
-        timeValues.add("11:00 AM");
-        timeValues.add("12:00 PM");
-        timeValues.add("1:00 PM");
-        timeValues.add("2:00 PM");
-        timeValues.add("3:00 PM");
-        timeValues.add("4:00 PM");
-        timeValues.add("5:00 PM");
-        timeValues.add("6:00 PM");
-        timeValues.add("7:00 PM");
-        timeValues.add("8:00 PM");
-        timeValues.add("9:00 PM");
-        timeValues.add("10:00 PM");
-        timeValues.add("11:00 PM");
-
-        ArrayAdapter<String> timeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, timeValues);
-        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        timeFromSpinner.setAdapter(timeAdapter);
-        timeToSpinner.setAdapter(timeAdapter);
-
-
-        timeFromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        popUpCloseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedFromTime = parent.getItemAtPosition(position).toString();
-                if (!selectedFromTime.equals("Select Time")) {
-                    Toast.makeText(AddTripActivity.this, "Selected From Time: " + selectedFromTime, Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(View view) {
+                addStopPopup.setVisibility(View.GONE);
+                // Reset the color of each item to black
+                restaurant_ThaiTown.setTextColor(Color.BLACK);
+                restaurant_Billy.setTextColor(Color.BLACK);
+                restaurant_Bornga.setTextColor(Color.BLACK);
+                restaurant_sweetCanteen.setTextColor(Color.BLACK);
+                attraction_ngv.setTextColor(Color.BLACK);
+                attraction_library.setTextColor(Color.BLACK);
+                attraction_QVM.setTextColor(Color.BLACK);
+                attraction_Gaol.setTextColor(Color.BLACK);
+
+                //selectedPlace = null;
+                timeFromSpinner.setSelection(0);
+                timeToSpinner.setSelection(0);
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
 
-        timeToSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        restaurant_ThaiTown.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedToTime = parent.getItemAtPosition(position).toString();
-                if (!selectedToTime.equals("Select Time")) {
-                    Toast.makeText(AddTripActivity.this, "Selected To Time: " + selectedToTime, Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(View view) {
+                selectedPlace = restaurant_ThaiTown.getText().toString();
+                restaurant_ThaiTown.setTextColor(Color.RED);
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-      
+        restaurant_Billy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedPlace = restaurant_Billy.getText().toString();
+                restaurant_Billy.setTextColor(Color.RED);
+            }
+        });
+        restaurant_Bornga.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedPlace = restaurant_Bornga.getText().toString();
+                restaurant_Bornga.setTextColor(Color.RED);
+            }
+        });
+
+        restaurant_sweetCanteen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedPlace = restaurant_sweetCanteen.getText().toString();
+                restaurant_sweetCanteen.setTextColor(Color.RED);
+            }
+        });
+
+        attraction_ngv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedPlace = attraction_ngv.getText().toString();
+                attraction_ngv.setTextColor(Color.RED);
+            }
+        });
+
+        attraction_library.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedPlace = attraction_library.getText().toString();
+                attraction_library.setTextColor(Color.RED);
+            }
+        });
+
+        attraction_QVM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedPlace = attraction_QVM.getText().toString();
+                attraction_QVM.setTextColor(Color.RED);
+            }
+        });
+
+        attraction_Gaol.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedPlace = attraction_Gaol.getText().toString();
+                attraction_Gaol.setTextColor(Color.RED);
+            }
+        });
+
+        setUpSpinners();
+
+
+
+
+
+
+
 
 
 
@@ -427,6 +488,133 @@ public class AddTripActivity extends AppCompatActivity {
     }
 
 
+    private void setUpSpinners() {
+        //time value
+        timeValues = new ArrayList<>();
+        timeValues.add("Select Time"); // Default selection option
+        timeValues.add("12:00 AM");
+        timeValues.add("1:00 AM");
+        timeValues.add("2:00 AM");
+        timeValues.add("3:00 AM");
+        timeValues.add("4:00 AM");
+        timeValues.add("5:00 AM");
+        timeValues.add("6:00 AM");
+        timeValues.add("7:00 AM");
+        timeValues.add("8:00 AM");
+        timeValues.add("9:00 AM");
+        timeValues.add("10:00 AM");
+        timeValues.add("11:00 AM");
+        timeValues.add("12:00 PM");
+        timeValues.add("1:00 PM");
+        timeValues.add("2:00 PM");
+        timeValues.add("3:00 PM");
+        timeValues.add("4:00 PM");
+        timeValues.add("5:00 PM");
+        timeValues.add("6:00 PM");
+        timeValues.add("7:00 PM");
+        timeValues.add("8:00 PM");
+        timeValues.add("9:00 PM");
+        timeValues.add("10:00 PM");
+        timeValues.add("11:00 PM");
 
+        ArrayAdapter<String> timeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, timeValues);
+        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        timeFromSpinner.setAdapter(timeAdapter);
+        timeToSpinner.setAdapter(timeAdapter);
+
+        timeFromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                checkAndAddNewPlaceLayout();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        timeToSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                checkAndAddNewPlaceLayout();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
+
+    // Function to add a new place layout if both time spinners are selected and a place is selected
+    private void checkAndAddNewPlaceLayout() {
+        if (!selectedPlace.isEmpty() && timeFromSpinner.getSelectedItemPosition() > 0 && timeToSpinner.getSelectedItemPosition() > 0) {
+            // Add a new layout to the parent layout
+            addNewPlaceLayout(selectedPlace, stopsLinearLayout);
+        }
+    }
+
+    // Function to add a new ConstraintLayout to the parent layout
+    private void addNewPlaceLayout(String placeName, LinearLayout parentLayout) {
+        // Create a new ConstraintLayout
+        ConstraintLayout newLayout = new ConstraintLayout(this);
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.bottomMargin = (int) (15 * getResources().getDisplayMetrics().density); // Convert dp to pixels
+        newLayout.setLayoutParams(layoutParams);
+
+        // Create an ImageView
+        ImageView imageView = new ImageView(this);
+        int imageViewId = View.generateViewId();
+        imageView.setId(imageViewId);
+        imageView.setImageResource(R.drawable.dining_icon);
+        ConstraintLayout.LayoutParams imageLayoutParams = new ConstraintLayout.LayoutParams(
+                (int) (30 * getResources().getDisplayMetrics().density), // Convert dp to pixels
+                (int) (30 * getResources().getDisplayMetrics().density)  // Convert dp to pixels
+        );
+        imageView.setLayoutParams(imageLayoutParams);
+
+        // Add ImageView to ConstraintLayout
+        newLayout.addView(imageView);
+
+        // Create a TextView for place name
+        TextView placeTextView = new TextView(this);
+        int textViewId = View.generateViewId();
+        placeTextView.setId(textViewId);
+        placeTextView.setText(placeName);
+        placeTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        placeTextView.setTextColor(Color.parseColor("#3B5667"));
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.kulim_park); // Use ResourceCompat for compatibility
+        placeTextView.setTypeface(typeface);
+        ConstraintLayout.LayoutParams textLayoutParams = new ConstraintLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        textLayoutParams.setMargins((int) (16 * getResources().getDisplayMetrics().density), 0, 0, 0); // Left margin
+        textLayoutParams.startToEnd = imageViewId;
+        textLayoutParams.topToTop = imageViewId;
+        textLayoutParams.bottomToBottom = imageViewId;
+        placeTextView.setLayoutParams(textLayoutParams);
+
+        // Add TextView to ConstraintLayout
+        newLayout.addView(placeTextView);
+
+        // Set constraints using ConstraintSet
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(newLayout);
+        constraintSet.connect(imageViewId, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+        constraintSet.connect(imageViewId, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        constraintSet.connect(textViewId, ConstraintSet.START, imageViewId, ConstraintSet.END, (int) (16 * getResources().getDisplayMetrics().density));
+        constraintSet.connect(textViewId, ConstraintSet.TOP, imageViewId, ConstraintSet.TOP);
+        constraintSet.connect(textViewId, ConstraintSet.BOTTOM, imageViewId, ConstraintSet.BOTTOM);
+        constraintSet.applyTo(newLayout);
+
+        // Add the new ConstraintLayout to the parent layout
+        parentLayout.addView(newLayout);
+    }
 
 }
+
+
+
+
