@@ -37,12 +37,34 @@
         android:id="@+id/notification_content"
         android:layout_width="366dp"
         android:layout_height="120.5dp"
-        android:background="@drawable/frame5"
-        android:layout_marginTop="150dp"
         android:layout_marginLeft="23dp"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/frame5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/notify_content"
+        android:layout_width="322dp"
+        android:layout_height="68dp"
+        android:layout_marginBottom="12dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/notification_content"
+        app:layout_constraintEnd_toEndOf="@+id/notification_content"
+        app:layout_constraintStart_toStartOf="@+id/notification_content"
+        app:layout_constraintTop_toTopOf="@+id/notification_content"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/notify_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/notification_content"
+        app:layout_constraintTop_toTopOf="@+id/notification_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
