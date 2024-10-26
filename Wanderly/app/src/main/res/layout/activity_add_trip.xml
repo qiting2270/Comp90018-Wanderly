@@ -254,7 +254,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
-                        android:id="@+id/stops_linear_layout"
+                        android:id="@+id/stops_linear_layout_day1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -351,7 +351,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toStartOf="@+id/addtrip_day1_inside_day_text"
-                        app:layout_constraintTop_toBottomOf="@+id/stops_linear_layout">
+                        app:layout_constraintTop_toBottomOf="@+id/stops_linear_layout_day1">
 
                         <TextView
                             android:id="@+id/add_trip_addstops"
@@ -427,7 +427,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
-                        android:id="@+id/stops_linear_layout"
+                        android:id="@+id/stops_linear_layout_day2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -487,7 +487,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toStartOf="@+id/addtrip_day2_inside_day_text"
-                        app:layout_constraintTop_toBottomOf="@+id/stops_linear_layout">
+                        app:layout_constraintTop_toBottomOf="@+id/stops_linear_layout_day2">
 
                         <TextView
                             android:id="@+id/add_trip_addstops"

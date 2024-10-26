@@ -1,19 +1,15 @@
 package com.example.wanderly;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,28 +17,19 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 import android.app.DatePickerDialog;
-import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.Gravity;
 import android.graphics.Typeface;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 
-
-
-import org.w3c.dom.Text;
-
 import java.util.Calendar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class AddTripActivity extends AppCompatActivity {
@@ -92,10 +79,12 @@ public class AddTripActivity extends AppCompatActivity {
     TextView attraction_QVM;
     TextView attraction_Gaol;
 
-    LinearLayout stopsLinearLayout;
+    LinearLayout stopsLinearLayoutDay1;
 
     private String addstop_selectedTimeFrom;
     private String addstop_selectedTimeTo;
+
+    HashMap<String, Object> hashMap;
 
 
 
@@ -139,8 +128,9 @@ public class AddTripActivity extends AppCompatActivity {
         attraction_library = findViewById(R.id.stop_attraction_statelibrary);
         attraction_QVM = findViewById(R.id.stop_attraction_queenVictoriaMarket);
         attraction_Gaol = findViewById(R.id.stop_attraction_oldMelGaol);
-        stopsLinearLayout = findViewById(R.id.stops_linear_layout);
+        stopsLinearLayoutDay1 = findViewById(R.id.stops_linear_layout_day1);
 
+        hashMap = new HashMap<>();
 
         //back icon logic
         ImageView backIcon = (ImageView) findViewById(R.id.back_icon);
@@ -416,41 +406,6 @@ public class AddTripActivity extends AppCompatActivity {
     }
 
 
-//    @SuppressLint("SetTextI18n")
-//    private void updateInsideLayout() {
-//        addTripLinearLayout.removeAllViews();
-//
-//        // Create a clone of the departure date to iterate through days
-//        Calendar currentDay = (Calendar) departureCalendar.clone();
-//
-//        for (int i = 1; i <= tripDuration; i++) {
-//            // Inflate the layout for each day
-//            LayoutInflater inflater = LayoutInflater.from(this);
-//            View insideHorizontalLayout = inflater.inflate(R.layout.addtrip_inside_horizontal_layout, addTripLinearLayout, false);
-//
-//            // Find the TextView for displaying day and date inside the newly inflated view
-//            TextView dayText = insideHorizontalLayout.findViewById(R.id.addtrip_inside_day_text);
-//            TextView dateText = insideHorizontalLayout.findViewById(R.id.addtrip_inside_date_text);
-//
-//            String formattedDate = String.format(Locale.getDefault(), "%d-%02d-%02d",
-//                    currentDay.get(Calendar.YEAR),
-//                    currentDay.get(Calendar.MONTH) + 1,
-//                    currentDay.get(Calendar.DAY_OF_MONTH));
-//
-//            dayText.setText("Day " + i + " ");
-//            dateText.setText(formattedDate);
-//
-//
-//
-//            addTripLinearLayout.addView(insideHorizontalLayout);
-//
-//            // Move to the next day
-//            currentDay.add(Calendar.DAY_OF_MONTH, 1);
-//        }
-//    }
-
-
-
     private void calculateDuration() {
         long departureTimeInMillis = departureCalendar.getTimeInMillis();
         long returnTimeInMillis = returnCalendar.getTimeInMillis();
@@ -553,7 +508,7 @@ public class AddTripActivity extends AppCompatActivity {
     private void checkAndAddNewPlaceLayout() {
         if (!selectedPlace.isEmpty() && timeFromSpinner.getSelectedItemPosition() > 0 && timeToSpinner.getSelectedItemPosition() > 0) {
             // Add a new layout to the parent layout
-            addNewPlaceLayout(selectedPlace, stopsLinearLayout);
+            addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay1);
         }
     }
 
@@ -572,7 +527,14 @@ public class AddTripActivity extends AppCompatActivity {
         ImageView imageView = new ImageView(this);
         int imageViewId = View.generateViewId();
         imageView.setId(imageViewId);
-        imageView.setImageResource(R.drawable.dining_icon);
+        if (Objects.equals(placeName, "Thai Town") || Objects.equals(placeName, "Billy‘s Central")
+        || Objects.equals(placeName, "Bornga") || Objects.equals(placeName, "Sweet Canteen")){
+            imageView.setImageResource(R.drawable.dining_icon);
+        }
+        else{
+            imageView.setImageResource(R.drawable.attraction_icon);
+        }
+
         ConstraintLayout.LayoutParams imageLayoutParams = new ConstraintLayout.LayoutParams(
                 (int) (30 * getResources().getDisplayMetrics().density), // Convert dp to pixels
                 (int) (30 * getResources().getDisplayMetrics().density)  // Convert dp to pixels
