@@ -94,6 +94,9 @@ public class AddTripActivity extends AppCompatActivity {
 
     LinearLayout stopsLinearLayout;
 
+    private String addstop_selectedTimeFrom;
+    private String addstop_selectedTimeTo;
+
 
 
 
@@ -492,30 +495,30 @@ public class AddTripActivity extends AppCompatActivity {
         //time value
         timeValues = new ArrayList<>();
         timeValues.add("Select Time"); // Default selection option
-        timeValues.add("12:00 AM");
-        timeValues.add("1:00 AM");
-        timeValues.add("2:00 AM");
-        timeValues.add("3:00 AM");
-        timeValues.add("4:00 AM");
-        timeValues.add("5:00 AM");
-        timeValues.add("6:00 AM");
-        timeValues.add("7:00 AM");
-        timeValues.add("8:00 AM");
-        timeValues.add("9:00 AM");
-        timeValues.add("10:00 AM");
-        timeValues.add("11:00 AM");
-        timeValues.add("12:00 PM");
-        timeValues.add("1:00 PM");
-        timeValues.add("2:00 PM");
-        timeValues.add("3:00 PM");
-        timeValues.add("4:00 PM");
-        timeValues.add("5:00 PM");
-        timeValues.add("6:00 PM");
-        timeValues.add("7:00 PM");
-        timeValues.add("8:00 PM");
-        timeValues.add("9:00 PM");
-        timeValues.add("10:00 PM");
-        timeValues.add("11:00 PM");
+        timeValues.add("12 AM");
+        timeValues.add("1 AM");
+        timeValues.add("2 AM");
+        timeValues.add("3 AM");
+        timeValues.add("4 AM");
+        timeValues.add("5 AM");
+        timeValues.add("6 AM");
+        timeValues.add("7 AM");
+        timeValues.add("8 AM");
+        timeValues.add("9 AM");
+        timeValues.add("10 AM");
+        timeValues.add("11 AM");
+        timeValues.add("12 PM");
+        timeValues.add("1 PM");
+        timeValues.add("2 PM");
+        timeValues.add("3 PM");
+        timeValues.add("4 PM");
+        timeValues.add("5 PM");
+        timeValues.add("6 PM");
+        timeValues.add("7 PM");
+        timeValues.add("8 PM");
+        timeValues.add("9 PM");
+        timeValues.add("10 PM");
+        timeValues.add("11 PM");
 
         ArrayAdapter<String> timeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, timeValues);
         timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -526,6 +529,7 @@ public class AddTripActivity extends AppCompatActivity {
         timeFromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                addstop_selectedTimeFrom = parent.getItemAtPosition(position).toString();
                 checkAndAddNewPlaceLayout();
             }
 
@@ -536,6 +540,7 @@ public class AddTripActivity extends AppCompatActivity {
         timeToSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                addstop_selectedTimeTo = parent.getItemAtPosition(position).toString();
                 checkAndAddNewPlaceLayout();
             }
 
@@ -579,15 +584,15 @@ public class AddTripActivity extends AppCompatActivity {
 
         // Create a TextView for place name
         TextView placeTextView = new TextView(this);
-        int textViewId = View.generateViewId();
-        placeTextView.setId(textViewId);
+        int placeTextViewId = View.generateViewId();
+        placeTextView.setId(placeTextViewId);
         placeTextView.setText(placeName);
         placeTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         placeTextView.setTextColor(Color.parseColor("#3B5667"));
         Typeface typeface = ResourcesCompat.getFont(this, R.font.kulim_park); // Use ResourceCompat for compatibility
         placeTextView.setTypeface(typeface);
         ConstraintLayout.LayoutParams textLayoutParams = new ConstraintLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
+                (int) (120 * getResources().getDisplayMetrics().density),
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         textLayoutParams.setMargins((int) (16 * getResources().getDisplayMetrics().density), 0, 0, 0); // Left margin
@@ -599,18 +604,39 @@ public class AddTripActivity extends AppCompatActivity {
         // Add TextView to ConstraintLayout
         newLayout.addView(placeTextView);
 
+        // Create the second TextView for the time
+        TextView timeTextView = new TextView(this);
+        int timeTextViewId = View.generateViewId();
+        timeTextView.setId(timeTextViewId);
+        timeTextView.setText(addstop_selectedTimeFrom + " - " + addstop_selectedTimeTo);
+        timeTextView.setTextColor(Color.parseColor("#3B5667"));
+        timeTextView.setTextSize(12);  // This uses SP
+        ConstraintLayout.LayoutParams timeLayoutParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        timeTextView.setLayoutParams(timeLayoutParams);
+
+
+        newLayout.addView(timeTextView);
+
         // Set constraints using ConstraintSet
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(newLayout);
         constraintSet.connect(imageViewId, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
         constraintSet.connect(imageViewId, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
-        constraintSet.connect(textViewId, ConstraintSet.START, imageViewId, ConstraintSet.END, (int) (16 * getResources().getDisplayMetrics().density));
-        constraintSet.connect(textViewId, ConstraintSet.TOP, imageViewId, ConstraintSet.TOP);
-        constraintSet.connect(textViewId, ConstraintSet.BOTTOM, imageViewId, ConstraintSet.BOTTOM);
+        constraintSet.connect(placeTextViewId, ConstraintSet.START, imageViewId, ConstraintSet.END, (int) (16 * getResources().getDisplayMetrics().density));
+        constraintSet.connect(placeTextViewId, ConstraintSet.TOP, imageViewId, ConstraintSet.TOP);
+        constraintSet.connect(placeTextViewId, ConstraintSet.BOTTOM, imageViewId, ConstraintSet.BOTTOM);
+        constraintSet.connect(timeTextViewId, ConstraintSet.START, placeTextViewId, ConstraintSet.END);
+        constraintSet.connect(timeTextViewId, ConstraintSet.TOP, placeTextViewId, ConstraintSet.TOP);
+        constraintSet.connect(timeTextViewId, ConstraintSet.BOTTOM, placeTextViewId, ConstraintSet.BOTTOM);
+        constraintSet.connect(timeTextViewId, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);  // Add 0 margin
         constraintSet.applyTo(newLayout);
+
 
         // Add the new ConstraintLayout to the parent layout
         parentLayout.addView(newLayout);
+        // close the pop up
+        popUpCloseBtn.performClick();
     }
 
 }
