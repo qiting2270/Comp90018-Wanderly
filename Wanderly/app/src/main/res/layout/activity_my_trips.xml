@@ -285,16 +285,16 @@
             app:srcCompat="@drawable/airplane_ticket" />
 
         <ImageView
-            android:id="@+id/menu_bookmark"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:id="@+id/menu_map"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
             android:layout_marginStart="32dp"
             app:layout_constraintBottom_toBottomOf="@+id/menu_tripbutton"
             app:layout_constraintEnd_toEndOf="@+id/menu_background"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/menu_tripbutton"
             app:layout_constraintTop_toTopOf="@+id/menu_tripbutton"
-            app:srcCompat="@drawable/bookmark" />
+            app:srcCompat="@drawable/map" />
 
         <ImageView
             android:id="@+id/menu_profile"
@@ -304,11 +304,9 @@
             app:layout_constraintBottom_toBottomOf="@+id/menu_background"
             app:layout_constraintEnd_toEndOf="@+id/menu_background"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/menu_bookmark"
+            app:layout_constraintStart_toEndOf="@+id/menu_map"
             app:layout_constraintTop_toTopOf="@+id/menu_background"
             app:srcCompat="@drawable/icon_person" />
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

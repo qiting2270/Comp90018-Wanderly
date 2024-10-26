@@ -1,6 +1,8 @@
 package com.example.wanderly;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,6 +30,7 @@ import org.w3c.dom.Text;
 import java.util.Calendar;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class AddTripActivity extends AppCompatActivity {
@@ -35,9 +38,9 @@ public class AddTripActivity extends AppCompatActivity {
     private Spinner whereTo;
     private TextView departureDate;
     private TextView returnDate;
-    private TextView addFlightBtn;
     private TextView addMembersBtn;
     private HorizontalScrollView horizontalScrollView;
+    private HorizontalScrollView addTripMemberScrollView;
     private TextView nothingSelectedText;
 
     private String trip_from;
@@ -52,6 +55,7 @@ public class AddTripActivity extends AppCompatActivity {
     private boolean isReturnDateSet = false;
 
     LinearLayout addTripLinearLayout;
+    private int tripDuration;
 
 
     @Override
@@ -65,9 +69,9 @@ public class AddTripActivity extends AppCompatActivity {
         whereTo = findViewById(R.id.add_trip_spinner_whereTo);
         departureDate = findViewById(R.id.add_trip_departure_date);
         returnDate = findViewById(R.id.add_trip_return_date);
-        addFlightBtn = findViewById(R.id.add_trip_addflight);
         addMembersBtn = findViewById(R.id.add_trip_addmembers);
         horizontalScrollView = findViewById(R.id.add_trip_Horizontal_scroll_view);
+        addTripMemberScrollView = findViewById(R.id.add_trip_member_scroll_view);
 
         // Initialize Calendar objects
         departureCalendar = Calendar.getInstance();
@@ -167,12 +171,12 @@ public class AddTripActivity extends AppCompatActivity {
             }
         });
 
-        // Inflate the ConstraintLayout from XML
+
+
+        /*
         LayoutInflater inflater = LayoutInflater.from(this);
         View constraintLayout = inflater.inflate(R.layout.addtrip_inside_horizontal_layout, addTripLinearLayout, false);
-
-        // Now add the inflated ConstraintLayout to the LinearLayout
-        addTripLinearLayout.addView(constraintLayout);
+        addTripLinearLayout.addView(constraintLayout);*/
 
 
 
@@ -207,12 +211,49 @@ public class AddTripActivity extends AppCompatActivity {
                             calculateDuration();
                         }
                     }
+                    // the moment user select the date
                     updateVisibility();
+                    updateInsideLayout();
                 },
                 year, month, day);
 
         datePickerDialog.show();
     }
+
+    @SuppressLint("SetTextI18n")
+    private void updateInsideLayout() {
+        addTripLinearLayout.removeAllViews(); // Clear previous views to avoid duplicates
+
+        // Create a clone of the departure date to iterate through days
+        Calendar currentDay = (Calendar) departureCalendar.clone();
+
+        for (int i = 1; i <= tripDuration; i++) {
+            // Inflate the layout for each day
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View constraintLayout = inflater.inflate(R.layout.addtrip_inside_horizontal_layout, addTripLinearLayout, false);
+
+            // Find the TextView for displaying day and date inside the newly inflated view
+            TextView dayText = constraintLayout.findViewById(R.id.addtrip_inside_day_text);
+            TextView dateText = constraintLayout.findViewById(R.id.addtrip_inside_date_text);
+
+            String formattedDate = String.format(Locale.getDefault(), "%d-%02d-%02d",
+                    currentDay.get(Calendar.YEAR),
+                    currentDay.get(Calendar.MONTH) + 1,
+                    currentDay.get(Calendar.DAY_OF_MONTH));
+
+            dayText.setText("Day " + i + " ");
+            dateText.setText(formattedDate);
+//            dayAndDateText.setText("Day " + i + "   " + currentDay.get(Calendar.YEAR) + "-"+
+//                    (currentDay.get(Calendar.MONTH) + 1) + "-" + currentDay.get(Calendar.DAY_OF_MONTH));
+
+            addTripLinearLayout.addView(constraintLayout);
+
+            // Move to the next day
+            currentDay.add(Calendar.DAY_OF_MONTH, 1);
+        }
+    }
+
+
 
     private void calculateDuration() {
         long departureTimeInMillis = departureCalendar.getTimeInMillis();
@@ -224,9 +265,12 @@ public class AddTripActivity extends AppCompatActivity {
         // Convert milliseconds to days
         int daysBetween = (int) TimeUnit.MILLISECONDS.toDays(durationInMillis);
 
-        if (daysBetween >= 0) {
+        // make duration inclusive
+        tripDuration = daysBetween + 1;
+
+        if (tripDuration >= 0) {
             // Show the duration in a toast
-            Toast.makeText(AddTripActivity.this, "Duration: " + daysBetween + " days", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddTripActivity.this, "Duration: " + tripDuration + " days", Toast.LENGTH_SHORT).show();
         } else {
             // If the return date is before the departure date
             Toast.makeText(AddTripActivity.this, "Return date cannot be before departure date!", Toast.LENGTH_SHORT).show();
@@ -234,18 +278,19 @@ public class AddTripActivity extends AppCompatActivity {
     }
 
     private void updateVisibility() {
+        // all top info selected
         if (fromSelectionIndex != 0 && toSelectionIndex != 0 && isDepartureDateSet && isReturnDateSet) {
             addMembersBtn.setVisibility(View.VISIBLE);
-            addFlightBtn.setVisibility(View.VISIBLE);
             horizontalScrollView.setVisibility(View.VISIBLE);
+            addTripMemberScrollView.setVisibility(View.VISIBLE);
             nothingSelectedText.setVisibility(View.GONE);
-
-        } else {
+        }
+        else {
+            // nothing is selected
             addMembersBtn.setVisibility(View.GONE);
-            addFlightBtn.setVisibility(View.GONE);
             horizontalScrollView.setVisibility(View.GONE);
             nothingSelectedText.setVisibility(View.VISIBLE);
-
+            addTripMemberScrollView.setVisibility(View.GONE);
         }
     }
 
