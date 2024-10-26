@@ -23,6 +23,9 @@ import android.widget.TextView;
 import android.graphics.Typeface;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 import java.util.Calendar;
 
@@ -84,7 +87,14 @@ public class AddTripActivity extends AppCompatActivity {
     private String addstop_selectedTimeFrom;
     private String addstop_selectedTimeTo;
 
-    HashMap<String, Object> hashMap;
+    private DatabaseReference databaseReference;
+    private String uniqueTripId;
+
+    HashMap<String, Object> TripDetailsHashMap;
+    HashMap<String, Object> Day1HashMap;
+
+
+    TextView addTripDoneBtn;
 
 
 
@@ -130,13 +140,19 @@ public class AddTripActivity extends AppCompatActivity {
         attraction_Gaol = findViewById(R.id.stop_attraction_oldMelGaol);
         stopsLinearLayoutDay1 = findViewById(R.id.stops_linear_layout_day1);
 
-        hashMap = new HashMap<>();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        uniqueTripId = databaseReference.child("Trips").push().getKey();
+        TripDetailsHashMap = new HashMap<>();
+        Day1HashMap = new HashMap<>();
+        addTripDoneBtn = findViewById(R.id.add_trip_done);
 
         //back icon logic
         ImageView backIcon = (ImageView) findViewById(R.id.back_icon);
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                databaseReference.child("Trips").child(uniqueTripId).removeValue();
+
                 // go back to previous activity
                 finish();
             }
@@ -323,6 +339,14 @@ public class AddTripActivity extends AppCompatActivity {
 
         setUpSpinners();
 
+
+
+        addTripDoneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                storeTripDetails();
+            }
+        });
 
 
 
@@ -514,6 +538,19 @@ public class AddTripActivity extends AppCompatActivity {
 
     // Function to add a new ConstraintLayout to the parent layout
     private void addNewPlaceLayout(String placeName, LinearLayout parentLayout) {
+
+        Day1HashMap.put("placeName", placeName);
+        Day1HashMap.put("type", (Objects.equals(placeName, "Thai Town") || Objects.equals(placeName, "Billy‘s Central") || Objects.equals(placeName, "Bornga") || Objects.equals(placeName, "Sweet Canteen")) ? "restaurant" : "attraction");
+        Day1HashMap.put("timeFrom", addstop_selectedTimeFrom);
+        Day1HashMap.put("timeTo", addstop_selectedTimeTo);
+
+        // Save the activity details immediately to Firebase under the specified trip and day
+        databaseReference.child("Trips").child(uniqueTripId).child("activities").child("Day1").push().setValue(Day1HashMap)
+                .addOnSuccessListener(aVoid -> Toast.makeText(AddTripActivity.this, "Activity saved successfully", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(AddTripActivity.this, "Failed to save activity", Toast.LENGTH_SHORT).show());
+
+
+
         // Create a new ConstraintLayout
         ConstraintLayout newLayout = new ConstraintLayout(this);
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
@@ -600,6 +637,25 @@ public class AddTripActivity extends AppCompatActivity {
         // close the pop up
         popUpCloseBtn.performClick();
     }
+
+
+    private void storeTripDetails() {
+        //String uniqueTripId = databaseReference.child("Trips").push().getKey();  // Generates a unique ID for the trip
+
+        TripDetailsHashMap.put("departureDate", departureDate.getText().toString());
+        TripDetailsHashMap.put("returnDate", returnDate.getText().toString());
+        TripDetailsHashMap.put("tripDuration", tripDuration);
+        TripDetailsHashMap.put("departure", trip_from);
+        TripDetailsHashMap.put("destination", "Melbourne");
+
+        databaseReference.child("Trips").child(uniqueTripId).updateChildren(TripDetailsHashMap)
+                .addOnSuccessListener(aVoid -> Toast.makeText(AddTripActivity.this, "Trip details saved successfully", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(AddTripActivity.this, "Failed to save trip details", Toast.LENGTH_SHORT).show());
+        //storeActivities(tripId);  // Call to store activities after trip details
+
+
+    }
+
 
 }
 
