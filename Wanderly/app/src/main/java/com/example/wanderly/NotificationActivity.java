@@ -51,7 +51,7 @@ public class NotificationActivity extends AppCompatActivity {
 
         // Set content
         notificationTextView = findViewById(R.id.notify_content);
-        tripsRef = FirebaseDatabase.getInstance().getReference("Trips/TripID1");
+        tripsRef = FirebaseDatabase.getInstance().getReference("Trips");
 
         displayNotification();
     }
