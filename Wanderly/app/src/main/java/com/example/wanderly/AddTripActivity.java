@@ -68,7 +68,9 @@ public class AddTripActivity extends AppCompatActivity {
     ConstraintLayout Day1AddStopBtn;
     ConstraintLayout Day2AddStopBtn;
     ConstraintLayout addStopPopup;
+    ConstraintLayout addMemberPopup;
     ImageView popUpCloseBtn;
+    ImageView addMembersCloseBtn;
     private Spinner timeFromSpinner, timeToSpinner;
     private ArrayList<String> timeValues;
 
@@ -96,8 +98,8 @@ public class AddTripActivity extends AppCompatActivity {
     HashMap<String, Object> DayHashMap;
     private int tripDay;
 
-
     TextView addTripDoneBtn;
+
 
 
 
@@ -125,7 +127,9 @@ public class AddTripActivity extends AppCompatActivity {
         nothingSelectedText = findViewById(R.id.add_trip_nothing_selected_text);
         //addStopBtn = insideHorizontalLayout.findViewById(R.id.addtrip_inside_add_stopBtn);
         addStopPopup = findViewById(R.id.addtrip_inside_popup_layout);
+        addMemberPopup = findViewById(R.id.add_trip_addmembers_popup_layout);
         popUpCloseBtn = findViewById(R.id.add_trip_pop_up_close_btn);
+        addMembersCloseBtn = findViewById(R.id.add_trip_addmembers_closeBtn);
         Day1 = findViewById(R.id.add_trip_day_1);
         Day2 = findViewById(R.id.add_trip_day_2);
         Day1AddStopBtn = findViewById(R.id.addtrip__day1_inside_add_stopBtn);
@@ -406,9 +410,24 @@ public class AddTripActivity extends AppCompatActivity {
             }
         });
 
+        addMembersBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addMemberPopup.setVisibility(View.VISIBLE);
+            }
+        });
+
+        addMembersCloseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addMemberPopup.setVisibility(View.GONE);
+            }
+        });
+
+
+
+
         setUpSpinners();
-
-
 
         addTripDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -416,14 +435,6 @@ public class AddTripActivity extends AppCompatActivity {
                 storeTripDetails();
             }
         });
-
-
-
-
-
-
-
-
 
 
     }

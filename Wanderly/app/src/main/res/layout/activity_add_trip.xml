@@ -555,6 +555,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+<!--    add stop pop up-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/addtrip_inside_popup_layout"
         android:layout_width="match_parent"
@@ -760,6 +761,76 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    add member pop up -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/add_trip_addmembers_popup_layout"
+        android:visibility="gone">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="317dp"
+            android:layout_height="200dp"
+            android:background="@drawable/button_background"
+            android:backgroundTint="#FCFCFC"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/textView35"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kulim_park"
+                android:text="Enter email address to add members:"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.19999999" />
+
+            <EditText
+                android:id="@+id/add_trip_addmembers_email"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/rounded_edittext_background"
+                android:hint="Email Address"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView35"
+                app:layout_constraintVertical_bias="0.17000002" />
+
+            <Button
+                android:id="@+id/addtrip_add_members_Btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#ECB35E"
+                android:text="Add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_trip_addmembers_email"
+                app:layout_constraintVertical_bias="0.45" />
+
+            <ImageView
+                android:id="@+id/add_trip_addmembers_closeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_close_24" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 
