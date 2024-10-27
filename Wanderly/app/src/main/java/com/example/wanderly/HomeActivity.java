@@ -31,14 +31,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private String currentUserId;
-    private TextView home_greeting;
-    private ImageView menuMyProfileBtn;
-    private ImageView menuMapBtn;
-    private ImageView menuHomeBtn;
-    private ImageView menuTripBtn;
-    private String userLastName;
-    private String userFirstname;
-    private ImageView notificationBtn;
+    private TextView home_greeting, foodPageBtn, attractionPageBtn;
+    private ImageView menuMyProfileBtn, menuMapBtn, menuHomeBtn, menuTripBtn, notificationBtn, recFoodBorder, recAttractionBorder;
+    private String userLastName, userFirstname;
 
     ViewPager mSlideViewPager;
     LinearLayout mDotLayout;
@@ -74,6 +69,12 @@ public class HomeActivity extends AppCompatActivity {
         setUpIndicator(0);
         mSlideViewPager.addOnPageChangeListener(viewListener);
 
+        // recommendation section
+        foodPageBtn = findViewById(R.id.rec_food);
+        attractionPageBtn = findViewById(R.id.rec_attraction);
+        recFoodBorder = findViewById(R.id.rec_food_border);
+        recAttractionBorder = findViewById(R.id.rec_attraction_border);
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -95,7 +96,25 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        //navigate to notifications page
+        // navigate to food section
+        foodPageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recFoodBorder.setVisibility(View.VISIBLE);
+                recAttractionBorder.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        // navigate to attraction section
+        attractionPageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recAttractionBorder.setVisibility(View.VISIBLE);
+                recFoodBorder.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        // navigate to notifications page
         notificationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,7 +123,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        //menu navigation
+        // menu navigation
         menuMyProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
