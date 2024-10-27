@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="dot_active">#ECB35E</color>
+    <color name="dot_inactive">#CCD1D5</color>
 </resources>
