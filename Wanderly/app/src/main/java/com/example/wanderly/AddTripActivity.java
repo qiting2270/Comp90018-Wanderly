@@ -66,6 +66,7 @@ public class AddTripActivity extends AppCompatActivity {
     TextView day2DateText;
 
     ConstraintLayout Day1AddStopBtn;
+    ConstraintLayout Day2AddStopBtn;
     ConstraintLayout addStopPopup;
     ImageView popUpCloseBtn;
     private Spinner timeFromSpinner, timeToSpinner;
@@ -83,6 +84,7 @@ public class AddTripActivity extends AppCompatActivity {
     TextView attraction_Gaol;
 
     LinearLayout stopsLinearLayoutDay1;
+    LinearLayout stopsLinearLayoutDay2;
 
     private String addstop_selectedTimeFrom;
     private String addstop_selectedTimeTo;
@@ -91,7 +93,8 @@ public class AddTripActivity extends AppCompatActivity {
     private String uniqueTripId;
 
     HashMap<String, Object> TripDetailsHashMap;
-    HashMap<String, Object> Day1HashMap;
+    HashMap<String, Object> DayHashMap;
+    private int tripDay;
 
 
     TextView addTripDoneBtn;
@@ -126,6 +129,7 @@ public class AddTripActivity extends AppCompatActivity {
         Day1 = findViewById(R.id.add_trip_day_1);
         Day2 = findViewById(R.id.add_trip_day_2);
         Day1AddStopBtn = findViewById(R.id.addtrip__day1_inside_add_stopBtn);
+        Day2AddStopBtn = findViewById(R.id.addtrip__day2_inside_add_stopBtn);
 
         timeFromSpinner = findViewById(R.id.add_trip_popup_spinner_time_from);
         timeToSpinner = findViewById(R.id.add_trip_popup_spinner_time_to);
@@ -139,11 +143,12 @@ public class AddTripActivity extends AppCompatActivity {
         attraction_QVM = findViewById(R.id.stop_attraction_queenVictoriaMarket);
         attraction_Gaol = findViewById(R.id.stop_attraction_oldMelGaol);
         stopsLinearLayoutDay1 = findViewById(R.id.stops_linear_layout_day1);
+        stopsLinearLayoutDay2 = findViewById(R.id.stops_linear_layout_day2);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         uniqueTripId = databaseReference.child("Trips").push().getKey();
         TripDetailsHashMap = new HashMap<>();
-        Day1HashMap = new HashMap<>();
+        DayHashMap = new HashMap<>();
         addTripDoneBtn = findViewById(R.id.add_trip_done);
 
         //back icon logic
@@ -249,6 +254,14 @@ public class AddTripActivity extends AppCompatActivity {
         Day1AddStopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tripDay = 1;
+                addStopPopup.setVisibility(View.VISIBLE);
+            }
+        });
+        Day2AddStopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tripDay = 2;
                 addStopPopup.setVisibility(View.VISIBLE);
             }
         });
@@ -279,6 +292,13 @@ public class AddTripActivity extends AppCompatActivity {
             public void onClick(View view) {
                 selectedPlace = restaurant_ThaiTown.getText().toString();
                 restaurant_ThaiTown.setTextColor(Color.RED);
+                restaurant_Billy.setTextColor(Color.BLACK);
+                restaurant_Bornga.setTextColor(Color.BLACK);
+                restaurant_sweetCanteen.setTextColor(Color.BLACK);
+                attraction_ngv.setTextColor(Color.BLACK);
+                attraction_library.setTextColor(Color.BLACK);
+                attraction_QVM.setTextColor(Color.BLACK);
+                attraction_Gaol.setTextColor(Color.BLACK);
             }
         });
 
@@ -287,6 +307,13 @@ public class AddTripActivity extends AppCompatActivity {
             public void onClick(View view) {
                 selectedPlace = restaurant_Billy.getText().toString();
                 restaurant_Billy.setTextColor(Color.RED);
+                restaurant_ThaiTown.setTextColor(Color.BLACK);
+                restaurant_Bornga.setTextColor(Color.BLACK);
+                restaurant_sweetCanteen.setTextColor(Color.BLACK);
+                attraction_ngv.setTextColor(Color.BLACK);
+                attraction_library.setTextColor(Color.BLACK);
+                attraction_QVM.setTextColor(Color.BLACK);
+                attraction_Gaol.setTextColor(Color.BLACK);
             }
         });
         restaurant_Bornga.setOnClickListener(new View.OnClickListener() {
@@ -294,6 +321,13 @@ public class AddTripActivity extends AppCompatActivity {
             public void onClick(View view) {
                 selectedPlace = restaurant_Bornga.getText().toString();
                 restaurant_Bornga.setTextColor(Color.RED);
+                restaurant_ThaiTown.setTextColor(Color.BLACK);
+                restaurant_Billy.setTextColor(Color.BLACK);
+                restaurant_sweetCanteen.setTextColor(Color.BLACK);
+                attraction_ngv.setTextColor(Color.BLACK);
+                attraction_library.setTextColor(Color.BLACK);
+                attraction_QVM.setTextColor(Color.BLACK);
+                attraction_Gaol.setTextColor(Color.BLACK);
             }
         });
 
@@ -302,6 +336,13 @@ public class AddTripActivity extends AppCompatActivity {
             public void onClick(View view) {
                 selectedPlace = restaurant_sweetCanteen.getText().toString();
                 restaurant_sweetCanteen.setTextColor(Color.RED);
+                restaurant_ThaiTown.setTextColor(Color.BLACK);
+                restaurant_Billy.setTextColor(Color.BLACK);
+                restaurant_Bornga.setTextColor(Color.BLACK);
+                attraction_ngv.setTextColor(Color.BLACK);
+                attraction_library.setTextColor(Color.BLACK);
+                attraction_QVM.setTextColor(Color.BLACK);
+                attraction_Gaol.setTextColor(Color.BLACK);
             }
         });
 
@@ -310,6 +351,13 @@ public class AddTripActivity extends AppCompatActivity {
             public void onClick(View view) {
                 selectedPlace = attraction_ngv.getText().toString();
                 attraction_ngv.setTextColor(Color.RED);
+                restaurant_ThaiTown.setTextColor(Color.BLACK);
+                restaurant_Billy.setTextColor(Color.BLACK);
+                restaurant_Bornga.setTextColor(Color.BLACK);
+                restaurant_sweetCanteen.setTextColor(Color.BLACK);
+                attraction_library.setTextColor(Color.BLACK);
+                attraction_QVM.setTextColor(Color.BLACK);
+                attraction_Gaol.setTextColor(Color.BLACK);
             }
         });
 
@@ -318,6 +366,13 @@ public class AddTripActivity extends AppCompatActivity {
             public void onClick(View view) {
                 selectedPlace = attraction_library.getText().toString();
                 attraction_library.setTextColor(Color.RED);
+                restaurant_ThaiTown.setTextColor(Color.BLACK);
+                restaurant_Billy.setTextColor(Color.BLACK);
+                restaurant_Bornga.setTextColor(Color.BLACK);
+                restaurant_sweetCanteen.setTextColor(Color.BLACK);
+                attraction_ngv.setTextColor(Color.BLACK);
+                attraction_QVM.setTextColor(Color.BLACK);
+                attraction_Gaol.setTextColor(Color.BLACK);
             }
         });
 
@@ -326,6 +381,13 @@ public class AddTripActivity extends AppCompatActivity {
             public void onClick(View view) {
                 selectedPlace = attraction_QVM.getText().toString();
                 attraction_QVM.setTextColor(Color.RED);
+                restaurant_ThaiTown.setTextColor(Color.BLACK);
+                restaurant_Billy.setTextColor(Color.BLACK);
+                restaurant_Bornga.setTextColor(Color.BLACK);
+                restaurant_sweetCanteen.setTextColor(Color.BLACK);
+                attraction_ngv.setTextColor(Color.BLACK);
+                attraction_library.setTextColor(Color.BLACK);
+                attraction_Gaol.setTextColor(Color.BLACK);
             }
         });
 
@@ -334,6 +396,13 @@ public class AddTripActivity extends AppCompatActivity {
             public void onClick(View view) {
                 selectedPlace = attraction_Gaol.getText().toString();
                 attraction_Gaol.setTextColor(Color.RED);
+                restaurant_ThaiTown.setTextColor(Color.BLACK);
+                restaurant_Billy.setTextColor(Color.BLACK);
+                restaurant_Bornga.setTextColor(Color.BLACK);
+                restaurant_sweetCanteen.setTextColor(Color.BLACK);
+                attraction_ngv.setTextColor(Color.BLACK);
+                attraction_library.setTextColor(Color.BLACK);
+                attraction_QVM.setTextColor(Color.BLACK);
             }
         });
 
@@ -532,20 +601,26 @@ public class AddTripActivity extends AppCompatActivity {
     private void checkAndAddNewPlaceLayout() {
         if (!selectedPlace.isEmpty() && timeFromSpinner.getSelectedItemPosition() > 0 && timeToSpinner.getSelectedItemPosition() > 0) {
             // Add a new layout to the parent layout
-            addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay1);
+            if (tripDay == 1){
+                addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay1);
+            }
+            else if (tripDay == 2){
+                addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay2);
+            }
+
         }
     }
 
     // Function to add a new ConstraintLayout to the parent layout
     private void addNewPlaceLayout(String placeName, LinearLayout parentLayout) {
 
-        Day1HashMap.put("placeName", placeName);
-        Day1HashMap.put("type", (Objects.equals(placeName, "Thai Town") || Objects.equals(placeName, "Billy‘s Central") || Objects.equals(placeName, "Bornga") || Objects.equals(placeName, "Sweet Canteen")) ? "restaurant" : "attraction");
-        Day1HashMap.put("timeFrom", addstop_selectedTimeFrom);
-        Day1HashMap.put("timeTo", addstop_selectedTimeTo);
+        DayHashMap.put("placeName", placeName);
+        DayHashMap.put("type", (Objects.equals(placeName, "Thai Town") || Objects.equals(placeName, "Billy‘s Central") || Objects.equals(placeName, "Bornga") || Objects.equals(placeName, "Sweet Canteen")) ? "restaurant" : "attraction");
+        DayHashMap.put("timeFrom", addstop_selectedTimeFrom);
+        DayHashMap.put("timeTo", addstop_selectedTimeTo);
 
         // Save the activity details immediately to Firebase under the specified trip and day
-        databaseReference.child("Trips").child(uniqueTripId).child("activities").child("Day1").push().setValue(Day1HashMap)
+        databaseReference.child("Trips").child(uniqueTripId).child("activities").child("Day"+tripDay).push().setValue(DayHashMap)
                 .addOnSuccessListener(aVoid -> Toast.makeText(AddTripActivity.this, "Activity saved successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(AddTripActivity.this, "Failed to save activity", Toast.LENGTH_SHORT).show());
 
