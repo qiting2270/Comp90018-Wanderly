@@ -1,5 +1,7 @@
 package com.example.wanderly;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -7,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
@@ -23,8 +29,12 @@ import android.widget.TextView;
 import android.graphics.Typeface;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.Calendar;
@@ -99,6 +109,12 @@ public class AddTripActivity extends AppCompatActivity {
     private int tripDay;
 
     TextView addTripDoneBtn;
+    EditText memberEmail;
+    Button addMemberEmailBtn;
+
+    private FirebaseAuth auth;
+    private String currentUserId;
+    private String currentUserEmail;
 
 
 
@@ -154,6 +170,34 @@ public class AddTripActivity extends AppCompatActivity {
         TripDetailsHashMap = new HashMap<>();
         DayHashMap = new HashMap<>();
         addTripDoneBtn = findViewById(R.id.add_trip_done);
+        memberEmail = findViewById(R.id.add_trip_addmembers_email);
+        addMemberEmailBtn = findViewById(R.id.addtrip_add_members_Btn);
+
+        auth = FirebaseAuth.getInstance();
+        currentUserId = auth.getCurrentUser().getUid();
+
+        // get current user email by its id.
+        databaseReference.child("User Information").child(currentUserId).child("email")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Retrieve the email value from the database
+                        if (dataSnapshot.exists()) {
+                            currentUserEmail = dataSnapshot.getValue(String.class);
+                            // store current user email first.
+                            checkEmailAndStore(currentUserEmail);
+                        }
+                        else {
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle possible errors
+                        Toast.makeText(AddTripActivity.this, "Failed to retrieve email: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
 
         //back icon logic
         ImageView backIcon = (ImageView) findViewById(R.id.back_icon);
@@ -421,6 +465,15 @@ public class AddTripActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 addMemberPopup.setVisibility(View.GONE);
+            }
+        });
+
+        addMemberEmailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email_txt = memberEmail.getText().toString();
+                checkEmailAndStore(email_txt);
+
             }
         });
 
@@ -737,10 +790,66 @@ public class AddTripActivity extends AppCompatActivity {
         databaseReference.child("Trips").child(uniqueTripId).updateChildren(TripDetailsHashMap)
                 .addOnSuccessListener(aVoid -> Toast.makeText(AddTripActivity.this, "Trip details saved successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(AddTripActivity.this, "Failed to save trip details", Toast.LENGTH_SHORT).show());
-        //storeActivities(tripId);  // Call to store activities after trip details
-
 
     }
+
+    public void checkEmailAndStore(String email) {
+        databaseReference.child("User Information").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Email found, store it under the trip
+                    storeEmailUnderTrip(email);
+                    if (!Objects.equals(email, currentUserEmail)){
+                        addEmailSuccessDialog();
+                    }
+
+                } else {
+                   addEmailNotFoundDialog();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle possible errors
+                Toast.makeText(getApplicationContext(), "Error checking email: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void storeEmailUnderTrip(String email) {
+        databaseReference.child("Trips").child(uniqueTripId).child("Members").push().setValue(email)
+                .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Email added to trip successfully", Toast.LENGTH_LONG).show())
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to add email to trip", Toast.LENGTH_LONG).show());
+    }
+
+    private void addEmailSuccessDialog(){
+        //store email successful dialog
+        AlertDialog.Builder dialog = new AlertDialog.Builder(AddTripActivity.this);
+        dialog.setMessage("Add Member Successful!");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        dialog.show();
+    }
+    private void addEmailNotFoundDialog(){
+        //store email successful dialog
+        AlertDialog.Builder dialog = new AlertDialog.Builder(AddTripActivity.this);
+        dialog.setMessage("Email Not Found, Please Try Again!");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        dialog.show();
+    }
+
 
 
 }
