@@ -1,23 +1,19 @@
 package com.example.wanderly;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.content.SharedPreferences;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.text.HtmlCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +28,8 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String currentUserId;
     private TextView home_greeting, foodPageBtn, attractionPageBtn;
-    private ImageView menuMyProfileBtn, menuMapBtn, menuHomeBtn, menuTripBtn, notificationBtn, recFoodBorder, recAttractionBorder;
+    private ImageView menuMyProfileBtn, menuMapBtn, menuHomeBtn, menuTripBtn, notificationBtn,
+            recFoodBorder, recAttractionBorder;
     private String userLastName, userFirstname;
 
     ViewPager mSlideViewPager;
@@ -56,8 +53,10 @@ public class HomeActivity extends AppCompatActivity {
         menuMyProfileBtn = findViewById(R.id.menu_profile);
         menuMapBtn = findViewById(R.id.menu_map);
 
+        // notification
         notificationBtn = findViewById(R.id.notification_btn);
 
+        // Your Schedule
         mSlideViewPager = (ViewPager) findViewById(R.id.slide_viewPager);
         mDotLayout = (LinearLayout) findViewById(R.id.indicator_layout);
 
@@ -75,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         recFoodBorder = findViewById(R.id.rec_food_border);
         recAttractionBorder = findViewById(R.id.rec_attraction_border);
 
+        // get username
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -157,6 +157,23 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    // notification icon
+    protected void onResume() {
+        super.onResume();
+        updateNotificationIcon();
+    }
+
+    private void updateNotificationIcon() {
+        SharedPreferences preferences = getSharedPreferences("NotificationPrefs", MODE_PRIVATE);
+        boolean hasNotification = preferences.getBoolean("hasNotification", false);
+
+        if (hasNotification) {
+            notificationBtn.setImageResource(R.drawable.notification_red);
+        } else {
+            notificationBtn.setImageResource(R.drawable.notification);
+        }
     }
 
     // dots

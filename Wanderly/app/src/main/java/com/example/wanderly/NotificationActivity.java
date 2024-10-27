@@ -1,5 +1,6 @@
 package com.example.wanderly;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -60,9 +61,13 @@ public class NotificationActivity extends AppCompatActivity {
         tripsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                SharedPreferences preferences = getSharedPreferences("NotificationPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+
                 if (!dataSnapshot.hasChildren()) {
-                    // 如果没有行程数据，显示提示信息
                     notificationTextView.setText("You do not have any current trips.");
+                    editor.putBoolean("hasNotification", false); // No notification
+                    editor.apply();
                     return;
                 }
 
@@ -103,17 +108,25 @@ public class NotificationActivity extends AppCompatActivity {
                     if (formattedNearestDate.equals(formattedTomorrowDate)) {
                         String message = "Get ready for tomorrow! Tomorrow you have a trip to " + nearestDestination + ".";
                         notificationTextView.setText(message);
+                        editor.putBoolean("hasNotification", true);
                     } else {
                         notificationTextView.setText("No upcoming trips tomorrow: " + formattedTomorrowDate);
+                        editor.putBoolean("hasNotification", false);
                     }
                 } else {
                     notificationTextView.setText("No upcoming trips found.");
+                    editor.putBoolean("hasNotification", false);
                 }
+                editor.apply();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 notificationTextView.setText("Failed to load trip information.");
+                SharedPreferences preferences = getSharedPreferences("NotificationPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("hasNotification", false);
+                editor.apply();
             }
         });
     }
