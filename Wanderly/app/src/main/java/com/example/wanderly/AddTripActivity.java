@@ -1,12 +1,17 @@
 package com.example.wanderly;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
@@ -23,11 +30,16 @@ import android.widget.TextView;
 import android.graphics.Typeface;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.Calendar;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,7 +111,15 @@ public class AddTripActivity extends AppCompatActivity {
     private int tripDay;
 
     TextView addTripDoneBtn;
+    EditText memberEmail;
+    Button addMemberEmailBtn;
 
+    private FirebaseAuth auth;
+    private String currentUserId;
+    private String currentUserEmail;
+
+    LinearLayout addMemberLinearLayout;
+    private Boolean noProfileImg = false;
 
 
 
@@ -154,6 +174,36 @@ public class AddTripActivity extends AppCompatActivity {
         TripDetailsHashMap = new HashMap<>();
         DayHashMap = new HashMap<>();
         addTripDoneBtn = findViewById(R.id.add_trip_done);
+        memberEmail = findViewById(R.id.add_trip_addmembers_email);
+        addMemberEmailBtn = findViewById(R.id.addtrip_add_members_Btn);
+
+        auth = FirebaseAuth.getInstance();
+        currentUserId = auth.getCurrentUser().getUid();
+
+        addMemberLinearLayout = findViewById(R.id.add_member_linearlayout);
+
+        // get current user email by its id.
+        databaseReference.child("User Information").child(currentUserId).child("email")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Retrieve the email value from the database
+                        if (dataSnapshot.exists()) {
+                            currentUserEmail = dataSnapshot.getValue(String.class);
+                            // store current user email first.
+                            checkEmailAndStore(currentUserEmail);
+                        }
+                        else {
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle possible errors
+                        Toast.makeText(AddTripActivity.this, "Failed to retrieve email: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
 
         //back icon logic
         ImageView backIcon = (ImageView) findViewById(R.id.back_icon);
@@ -424,6 +474,15 @@ public class AddTripActivity extends AppCompatActivity {
             }
         });
 
+        addMemberEmailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email_txt = memberEmail.getText().toString();
+                checkEmailAndStore(email_txt);
+
+            }
+        });
+
 
 
 
@@ -433,6 +492,8 @@ public class AddTripActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 storeTripDetails();
+                Intent intent = new Intent(AddTripActivity.this, MyTripsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -737,11 +798,203 @@ public class AddTripActivity extends AppCompatActivity {
         databaseReference.child("Trips").child(uniqueTripId).updateChildren(TripDetailsHashMap)
                 .addOnSuccessListener(aVoid -> Toast.makeText(AddTripActivity.this, "Trip details saved successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(AddTripActivity.this, "Failed to save trip details", Toast.LENGTH_SHORT).show());
-        //storeActivities(tripId);  // Call to store activities after trip details
+
+    }
+
+    public void checkEmailAndStore(String email) {
+        //check if email(member) already exists in db to avoid duplicate members
+        databaseReference.child("Trips").child(uniqueTripId).child("Members").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Email already exists in trip members, show a dialog or Toast
+                    memberAlreadyExistDialog();
+                } else {
+                    // Email(member) not found in db, proceed to add to database
+                    databaseReference.child("User Information").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                // Email found, store it under the trip
+                                storeEmailUnderTrip(email);
+                                updateMemberImage();
+
+                                if (!Objects.equals(email, currentUserEmail)){
+                                    addEmailSuccessDialog();
+                                }
+
+                            } else {
+                                addEmailNotFoundDialog();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // Handle possible errors
+                            Toast.makeText(getApplicationContext(), "Error checking email: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("AddTripActivity", "Failed to check if email exists: " + databaseError.getMessage());
+            }
+        });
+
 
 
     }
 
+    private void storeEmailUnderTrip(String email) {
+        HashMap<String, Object> emailDetails = new HashMap<>();
+        emailDetails.put("email", email);
+
+        databaseReference.child("Trips").child(uniqueTripId).child("Members").push().setValue(emailDetails)
+                .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Email added to trip successfully", Toast.LENGTH_LONG).show())
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to add email to trip", Toast.LENGTH_LONG).show());
+    }
+
+    private void addEmailSuccessDialog(){
+        //store email successful dialog
+        AlertDialog.Builder dialog = new AlertDialog.Builder(AddTripActivity.this);
+        dialog.setMessage("Add Member Successful!");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        dialog.show();
+    }
+
+    private void addEmailNotFoundDialog(){
+        //store email successful dialog
+        AlertDialog.Builder dialog = new AlertDialog.Builder(AddTripActivity.this);
+        dialog.setMessage("Email Not Found, Please Try Again!");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        dialog.show();
+    }
+
+    private void memberAlreadyExistDialog(){
+        //store email successful dialog
+        AlertDialog.Builder dialog = new AlertDialog.Builder(AddTripActivity.this);
+        dialog.setMessage("Member already exists in the Trip! No need to add it again!");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        dialog.show();
+    }
+
+    private void updateMemberImage(){
+        addMemberLinearLayout.removeAllViews();
+        // get the users' email first
+        databaseReference.child("Trips").child(uniqueTripId).child("Members")
+            .orderByChild("email").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    // Get the email field of each child
+                    String email_txt = childSnapshot.child("email").getValue().toString();
+                    Log.d("Member List", email_txt);
+                    if (email_txt != null){
+                        // then get profile pic for every user
+                        fetchUserProfilePicByEmail(email_txt);
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void fetchUserProfilePicByEmail(String email) {
+        databaseReference.child("User Information").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        // Safely obtain the profile picture URL, check if it's null first
+                        Object profilePicObj = child.child("profile_pic").getValue();
+                        String profilePicUrl = profilePicObj != null ? profilePicObj.toString() : null;
+
+                        //String profilePicUrl = child.child("profile_pic").getValue().toString();
+
+                        // Check if the URL is null or empty and use a default image
+                        if (profilePicUrl == null || profilePicUrl.isEmpty()) {
+                            noProfileImg = true;
+                            //random text
+                            String text = "abc";
+                            addImageViewToLayout(text);
+                        }
+                        else{
+                            addImageViewToLayout(profilePicUrl);
+                        }
+
+                    }
+                } else {
+                    Log.d("Firebase", "Email not found in user database");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Firebase", "Error fetching user data", databaseError.toException());
+            }
+        });
+    }
+
+    private void addImageViewToLayout(String imageUrl) {
+        ImageView imageView = new ImageView(this);
+        imageView.setId(View.generateViewId());
+        // Set both width and height to 49dp converted to pixels
+        int sizeInPixels = convertDpToPx(49);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(
+                sizeInPixels, // Width in pixels
+                sizeInPixels  // Height in pixels
+        ));
+        imageView.setPadding(
+                convertDpToPx(5), 0, convertDpToPx(5), 0
+        );
+
+        if (noProfileImg){
+            Glide.with(this).load(R.drawable.vector).into(imageView);
+            noProfileImg = false;
+        }
+        else{
+            // Use Glide or Picasso to load the image from URL
+            Glide.with(this)
+                    .load(imageUrl).placeholder(R.drawable.vector)
+                    .into(imageView);
+        }
+
+
+        addMemberLinearLayout.addView(imageView);
+    }
+
+    private int convertDpToPx(int dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density);
+    }
 
 }
 
