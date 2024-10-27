@@ -800,29 +800,51 @@ public class AddTripActivity extends AppCompatActivity {
     }
 
     public void checkEmailAndStore(String email) {
-        databaseReference.child("User Information").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+        //check if email(member) already exists in db to avoid duplicate members
+        databaseReference.child("Trips").child(uniqueTripId).child("Members").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Email found, store it under the trip
-                    storeEmailUnderTrip(email);
-                    updateMemberImage();
-
-                    if (!Objects.equals(email, currentUserEmail)){
-                        addEmailSuccessDialog();
-                    }
-
+                    // Email already exists in trip members, show a dialog or Toast
+                    memberAlreadyExistDialog();
                 } else {
-                   addEmailNotFoundDialog();
+                    // Email(member) not found in db, proceed to add to database
+                    databaseReference.child("User Information").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                // Email found, store it under the trip
+                                storeEmailUnderTrip(email);
+                                updateMemberImage();
+
+                                if (!Objects.equals(email, currentUserEmail)){
+                                    addEmailSuccessDialog();
+                                }
+
+                            } else {
+                                addEmailNotFoundDialog();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // Handle possible errors
+                            Toast.makeText(getApplicationContext(), "Error checking email: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Handle possible errors
-                Toast.makeText(getApplicationContext(), "Error checking email: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("AddTripActivity", "Failed to check if email exists: " + databaseError.getMessage());
             }
         });
+
+
+
     }
 
     private void storeEmailUnderTrip(String email) {
@@ -847,10 +869,25 @@ public class AddTripActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
     private void addEmailNotFoundDialog(){
         //store email successful dialog
         AlertDialog.Builder dialog = new AlertDialog.Builder(AddTripActivity.this);
         dialog.setMessage("Email Not Found, Please Try Again!");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        dialog.show();
+    }
+
+    private void memberAlreadyExistDialog(){
+        //store email successful dialog
+        AlertDialog.Builder dialog = new AlertDialog.Builder(AddTripActivity.this);
+        dialog.setMessage("Member already exists in the Trip! No need to add it again!");
         dialog.setCancelable(true);
         dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -895,16 +932,21 @@ public class AddTripActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        String profilePicUrl = child.child("profile_pic").getValue().toString();
+                        // Safely obtain the profile picture URL, check if it's null first
+                        Object profilePicObj = child.child("profile_pic").getValue();
+                        String profilePicUrl = profilePicObj != null ? profilePicObj.toString() : null;
+
+                        //String profilePicUrl = child.child("profile_pic").getValue().toString();
+
                         // Check if the URL is null or empty and use a default image
                         if (profilePicUrl == null || profilePicUrl.isEmpty()) {
                             noProfileImg = true;
+                            //random text
                             String text = "abc";
                             addImageViewToLayout(text);
                         }
                         else{
                             addImageViewToLayout(profilePicUrl);
-                            //addImageViewToLayout("https://firebasestorage.googleapis.com/v0/b/wanderly-ce7ee.appspot.com/o/Uploads%2Fvector.png?alt=media&token=bc818f3e-19a2-45c1-a132-ef087edfd23f");
                         }
 
                     }
@@ -923,9 +965,11 @@ public class AddTripActivity extends AppCompatActivity {
     private void addImageViewToLayout(String imageUrl) {
         ImageView imageView = new ImageView(this);
         imageView.setId(View.generateViewId());
+        // Set both width and height to 49dp converted to pixels
+        int sizeInPixels = convertDpToPx(49);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(
-                convertDpToPx(42), // Width in DP
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                sizeInPixels, // Width in pixels
+                sizeInPixels  // Height in pixels
         ));
         imageView.setPadding(
                 convertDpToPx(5), 0, convertDpToPx(5), 0

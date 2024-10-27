@@ -166,37 +166,32 @@
             android:layout_width="155dp"
             android:layout_height="49dp"
             android:fillViewport="true"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView18"
+            app:layout_constraintBottom_toBottomOf="@+id/add_trip_addmembers"
             app:layout_constraintEnd_toEndOf="@+id/imageView18"
             app:layout_constraintStart_toEndOf="@+id/add_trip_addmembers"
-            app:layout_constraintTop_toTopOf="@+id/imageView18"
-            app:layout_constraintVertical_bias="0.18500002">
+            app:layout_constraintTop_toTopOf="@+id/add_trip_addmembers"
+            app:layout_constraintVertical_bias="0.19">
 
             <LinearLayout
+                android:id="@+id/add_member_linearlayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/add_member_linearlayout">
+                android:layout_height="match_parent">
 
 
                 <ImageView
                     android:id="@+id/imageView31"
-                    android:layout_width="42dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="49dp"
+                    android:layout_height="49dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:src="@drawable/user_1" />
-
                 <ImageView
                     android:id="@+id/imageView31"
-                    android:layout_width="42dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="49dp"
+                    android:layout_height="49dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:src="@drawable/user_1" />
-
-
-
-
+                    android:src="@drawable/vector" />
 
 
             </LinearLayout>
@@ -408,7 +403,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/kulim_park"
-                        android:text="Day 1 -"
+                        android:text="Day 2 -"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
