@@ -43,6 +43,9 @@ public class MyTripsActivity extends AppCompatActivity {
     private LinearLayout pastTripContainer;
     private DatabaseReference databaseReference;
     String profilePicUrl = new String();
+    private String tripImageUrl;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +147,7 @@ public class MyTripsActivity extends AppCompatActivity {
 
     private void addTripView(DataSnapshot tripSnapshot, String numberOfPeople) {
         upcomingTripsContainer.removeAllViews();
-        //pastTripContainer.removeAllViews();
+        pastTripContainer.removeAllViews();
 
         View tripView = LayoutInflater.from(this).inflate(R.layout.trip_overview_template, upcomingTripsContainer, false);
 
@@ -154,6 +157,7 @@ public class MyTripsActivity extends AppCompatActivity {
         TextView inHowmanyDays = tripView.findViewById(R.id.inhowmanydays);
         TextView memberNum = tripView.findViewById(R.id.trippeople_number);
         ImageView userImage = tripView.findViewById(R.id.user_profile_image_tem);
+        ImageView tripImage = tripView.findViewById(R.id.trip_image);
 
 
         String departureDate = tripSnapshot.child("departureDate").getValue(String.class);
@@ -196,13 +200,10 @@ public class MyTripsActivity extends AppCompatActivity {
 
         // handle image
         fetchUserProfilePicByEmail(currentUserEmail, userImage);
+        tripImageUrl = "https://firebasestorage.googleapis.com/v0/b/wanderly-ce7ee.appspot.com/o/Uploads%2FMEL_header_2-1.webp?alt=media&token=a6dd3547-74cb-4637-b3d3-6f566503224c";
 
-//        if (profilePicUrl == null || profilePicUrl.isEmpty()){
-//            Glide.with(this).load(R.drawable.vector).circleCrop().into(userImage);
-//        }
-//        else{
-//            Glide.with(this).load(profilePicUrl).circleCrop().into(userImage);
-//        }
+        Glide.with(MyTripsActivity.this).load(tripImageUrl).into(tripImage);
+
 
         upcomingTripsContainer.addView(tripView);
 

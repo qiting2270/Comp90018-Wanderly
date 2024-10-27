@@ -51,7 +51,8 @@
 
             <ImageView
                 android:id="@+id/trip_image"
-                android:layout_width="225dp"
+                android:scaleType="fitXY"
+                android:layout_width="200dp"
                 android:layout_height="73dp"
                 android:layout_marginStart="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView16"
