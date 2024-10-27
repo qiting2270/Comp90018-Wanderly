@@ -492,6 +492,8 @@ public class AddTripActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 storeTripDetails();
+                Intent intent = new Intent(AddTripActivity.this, MyTripsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -993,11 +995,6 @@ public class AddTripActivity extends AppCompatActivity {
     private int convertDpToPx(int dp) {
         return (int) (dp * getResources().getDisplayMetrics().density);
     }
-
-
-
-
-
 
 }
 

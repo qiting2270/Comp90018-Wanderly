@@ -64,11 +64,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/my_trips_add_icon" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="#F2F2F2"
-                android:paddingBottom="100dp"
+                android:paddingBottom="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -88,140 +89,36 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                <LinearLayout
+                    android:id="@+id/upcomingtriplinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView27">
 
 
-                    <ImageView
-                        android:id="@+id/imageView16"
-                        android:layout_width="367dp"
-                        android:layout_height="139dp"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/trip_background" />
 
-                    <TextView
-                        android:id="@+id/trip_country_background"
-                        android:layout_width="29dp"
-                        android:layout_height="139dp"
-                        android:background="@drawable/trip_text_background"
-                        android:backgroundTint="#E5EDEF"
-                        android:text=""
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView16"
-                        app:layout_constraintStart_toStartOf="@+id/imageView16"
-                        app:layout_constraintTop_toTopOf="@+id/imageView16"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <TextView
-                        android:id="@+id/trip_country"
-                        android:layout_width="wrap_content"
-                        android:layout_height="139dp"
-                        android:layout_marginStart="40dp"
-                        android:fontFamily="@font/kulim_park"
-                        android:rotation="-90"
-                        android:text="Australia"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView16"
-                        app:layout_constraintStart_toStartOf="@+id/imageView16"
-                        app:layout_constraintTop_toTopOf="@+id/imageView16"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <ImageView
-                        android:id="@+id/trip_image"
-                        android:layout_width="95dp"
-                        android:layout_height="130dp"
-                        android:layout_marginStart="4dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView16"
-                        app:layout_constraintStart_toEndOf="@+id/trip_country_background"
-                        app:layout_constraintTop_toTopOf="@+id/imageView16"
-                        app:srcCompat="@drawable/placeholder_image" />
-
-                    <TextView
-                        android:id="@+id/textView30"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:fontFamily="@font/kulim_park"
-                        android:text="MEL - SYD"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView16"
-                        app:layout_constraintStart_toEndOf="@+id/trip_image"
-                        app:layout_constraintTop_toTopOf="@+id/imageView16"
-                        app:layout_constraintVertical_bias="0.120000005" />
-
-                    <TextView
-                        android:id="@+id/textView31"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/kulim_park"
-                        android:text="03-08 JAN"
-                        android:textSize="16sp"
-                        app:layout_constraintEnd_toEndOf="@+id/imageView16"
-                        app:layout_constraintHorizontal_bias="0.769"
-                        app:layout_constraintStart_toEndOf="@+id/textView30"
-                        app:layout_constraintTop_toTopOf="@+id/textView30" />
-
-                    <TextView
-                        android:id="@+id/textView32"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/kulim_park"
-                        android:text="2024"
-                        app:layout_constraintEnd_toEndOf="@+id/textView31"
-                        app:layout_constraintTop_toBottomOf="@+id/textView31" />
-
-                    <TextView
-                        android:id="@+id/textView33"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/kulim_park"
-                        android:text="in 2 days"
-                        android:textColor="#ECB35E"
-                        app:layout_constraintStart_toStartOf="@+id/textView30"
-                        app:layout_constraintTop_toBottomOf="@+id/textView30" />
-
-                    <ImageView
-                        android:id="@+id/imageView19"
-                        android:layout_width="105dp"
-                        android:layout_height="42dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginBottom="16dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/trip_image"
-                        app:layout_constraintTop_toBottomOf="@+id/textView33"
-                        app:layout_constraintVertical_bias="1.0"
-                        app:srcCompat="@drawable/trip_users" />
-
-                    <TextView
-                        android:id="@+id/textView34"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+2"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/kulim_park"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView19"
-                        app:layout_constraintEnd_toEndOf="@+id/imageView19"
-                        app:layout_constraintHorizontal_bias="0.85"
-                        app:layout_constraintStart_toStartOf="@+id/imageView19"
-                        app:layout_constraintTop_toTopOf="@+id/imageView19"
-                        app:layout_constraintVertical_bias="0.42000002" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/past_trip_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/kulim_park"
+                android:text="Past Trips"
+                android:textColor="#262627"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
