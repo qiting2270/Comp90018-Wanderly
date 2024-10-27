@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -146,10 +147,7 @@ public class MyTripsActivity extends AppCompatActivity {
 
 
     private void addTripView(DataSnapshot tripSnapshot, String numberOfPeople) {
-        upcomingTripsContainer.removeAllViews();
-        pastTripContainer.removeAllViews();
-
-        View tripView = LayoutInflater.from(this).inflate(R.layout.trip_overview_template, upcomingTripsContainer, false);
+        View tripView = LayoutInflater.from(this).inflate(R.layout.trip_overview_template, null, false);
 
         TextView tripStartDate = tripView.findViewById(R.id.trip_start_date);
         TextView tripEndDate = tripView.findViewById(R.id.trip_end_date);
@@ -158,57 +156,60 @@ public class MyTripsActivity extends AppCompatActivity {
         TextView memberNum = tripView.findViewById(R.id.trippeople_number);
         ImageView userImage = tripView.findViewById(R.id.user_profile_image_tem);
         ImageView tripImage = tripView.findViewById(R.id.trip_image);
+        ImageView displayTripBackground = tripView.findViewById(R.id.display_trip_background);
 
 
         String departureDate = tripSnapshot.child("departureDate").getValue(String.class);
         String returnDate = tripSnapshot.child("returnDate").getValue(String.class);
-
         String tripFromText = tripSnapshot.child("departure").getValue(String.class);
 
         String formattedDepartureDate = DateConverter.convertDate(departureDate);
         String formattedReturnDate = DateConverter.convertDate(returnDate);
-        String formattedTripFromText = new String();
-
-
-        if (Objects.equals(tripFromText, "Melbourne")){
-             formattedTripFromText = "MEL";
-        }
-        else if (Objects.equals(tripFromText, "Sydney")){
-            formattedTripFromText = "SYD";
-        }
-        else if (Objects.equals(tripFromText, "Canberra")){
-            formattedTripFromText = "CBR";
-        }
-        else if (Objects.equals(tripFromText, "Perth")){
-            formattedTripFromText = "PER";
-        }
-        else if (Objects.equals(tripFromText, "Gold Coast")){
-            formattedTripFromText = "OOL";
-        }
-        else if (Objects.equals(tripFromText, "Brisbane")){
-            formattedTripFromText = "BNE";
-        }
+        String formattedTripFromText = formatCityCode(tripFromText);
 
         long daysUntil = DateUtils.daysUntil(departureDate);
-
 
         tripStartDate.setText(formattedDepartureDate);
         tripEndDate.setText(formattedReturnDate);
         tripFrom.setText(formattedTripFromText);
-        inHowmanyDays.setText("in " + String.valueOf(daysUntil) + " days");
         memberNum.setText(numberOfPeople);
 
-        // handle image
+        if (daysUntil < 0) {
+            inHowmanyDays.setText("Past trip");
+            displayTripBackground.setImageResource(R.drawable.tripbackground_past);
+            ViewGroup.LayoutParams layoutParams = displayTripBackground.getLayoutParams();
+            layoutParams.height = convertDpToPx(150); // Adjust the height
+            displayTripBackground.setLayoutParams(layoutParams);
+            pastTripContainer.addView(tripView);  // Add to past trip container
+        }
+        else {
+            inHowmanyDays.setText("in " + daysUntil + " days");
+            upcomingTripsContainer.addView(tripView);  // Add to upcoming trip container
+        }
+
+        // Load profile and trip images
         fetchUserProfilePicByEmail(currentUserEmail, userImage);
-        tripImageUrl = "https://firebasestorage.googleapis.com/v0/b/wanderly-ce7ee.appspot.com/o/Uploads%2FMEL_header_2-1.webp?alt=media&token=a6dd3547-74cb-4637-b3d3-6f566503224c";
-
-        Glide.with(MyTripsActivity.this).load(tripImageUrl).into(tripImage);
-
-
-        upcomingTripsContainer.addView(tripView);
-
-
+        String tripImageUrl = "https://firebasestorage.googleapis.com/v0/b/wanderly-ce7ee.appspot.com/o/Uploads%2FMEL_header_2-1.webp?alt=media&token=a6dd3547-74cb-4637-b3d3-6f566503224c";
+        Glide.with(this).load(tripImageUrl).into(tripImage);
     }
+
+    private String formatCityCode(String city) {
+        switch(city) {
+            case "Melbourne": return "MEL";
+            case "Sydney": return "SYD";
+            case "Canberra": return "CBR";
+            case "Perth": return "PER";
+            case "Gold Coast": return "OOL";
+            case "Brisbane": return "BNE";
+            default: return ""; // Default case if city is not matched
+        }
+    }
+
+    private int convertDpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return (int) (dp * density);
+    }
+
 
     private void fetchUserProfilePicByEmail(String email, ImageView userImage) {
         databaseReference.child("User Information").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
