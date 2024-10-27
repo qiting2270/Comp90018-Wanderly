@@ -1,5 +1,7 @@
 package com.example.wanderly;
 
+import static com.bumptech.glide.load.resource.bitmap.TransformationUtils.circleCrop;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -978,13 +980,13 @@ public class AddTripActivity extends AppCompatActivity {
         );
 
         if (noProfileImg){
-            Glide.with(this).load(R.drawable.vector).into(imageView);
+            Glide.with(this).load(R.drawable.vector).circleCrop().into(imageView);
             noProfileImg = false;
         }
         else{
             // Use Glide or Picasso to load the image from URL
             Glide.with(this)
-                    .load(imageUrl).placeholder(R.drawable.vector)
+                    .load(imageUrl).circleCrop()
                     .into(imageView);
         }
 

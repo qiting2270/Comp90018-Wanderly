@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView16"
+                android:layout_width="367dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/tripbackground_past" />
+
+            <TextView
+                android:id="@+id/trip_country_background"
+                android:layout_width="29dp"
+                android:layout_height="139dp"
+                android:background="@drawable/trip_text_background"
+                android:backgroundTint="#E5EDEF"
+                android:text=""
+                app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+                app:layout_constraintStart_toStartOf="@+id/imageView16"
+                app:layout_constraintTop_toTopOf="@+id/imageView16"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/trip_country"
+                android:layout_width="wrap_content"
+                android:layout_height="139dp"
+                android:layout_marginStart="40dp"
+                android:fontFamily="@font/kulim_park"
+                android:rotation="-90"
+                android:text="Australia"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+                app:layout_constraintStart_toStartOf="@+id/imageView16"
+                app:layout_constraintTop_toTopOf="@+id/imageView16"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/trip_image"
+                android:layout_width="225dp"
+                android:layout_height="73dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+                app:layout_constraintStart_toEndOf="@+id/trip_country_background"
+                app:layout_constraintTop_toTopOf="@+id/imageView16"
+                app:layout_constraintVertical_bias="0.136"
+                app:srcCompat="@drawable/placeholder_image" />
+
+            <TextView
+                android:id="@+id/tripFrom_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:fontFamily="@font/kulim_park"
+                android:text="SYD"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+                app:layout_constraintStart_toStartOf="@+id/trip_country"
+                app:layout_constraintTop_toBottomOf="@+id/trip_image"
+                app:layout_constraintVertical_bias="0.09" />
+
+            <TextView
+                android:id="@+id/tripTo_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/kulim_park"
+                android:text="- MEL"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tripFrom_text"
+                app:layout_constraintStart_toEndOf="@+id/tripFrom_text"
+                app:layout_constraintTop_toTopOf="@+id/tripFrom_text"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/trip_To_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kulim_park"
+                android:text="-"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/trip_end_date"
+                app:layout_constraintEnd_toStartOf="@+id/trip_end_date"
+                app:layout_constraintHorizontal_bias="0.96"
+                app:layout_constraintStart_toEndOf="@+id/tripFrom_text"
+                app:layout_constraintTop_toTopOf="@+id/trip_end_date"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/trip_start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kulim_park"
+                android:text="10/27"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView16"
+                app:layout_constraintHorizontal_bias="0.945"
+                app:layout_constraintStart_toEndOf="@+id/tripFrom_text"
+                app:layout_constraintTop_toTopOf="@+id/trip_image" />
+
+            <TextView
+                android:id="@+id/trip_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kulim_park"
+                android:text="10/30"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView19"
+                app:layout_constraintEnd_toEndOf="@+id/trip_start_date"
+                app:layout_constraintHorizontal_bias="0.776"
+                app:layout_constraintStart_toStartOf="@+id/trip_start_date"
+                app:layout_constraintTop_toBottomOf="@+id/trip_start_date"
+                app:layout_constraintVertical_bias="0.069" />
+
+            <TextView
+                android:id="@+id/inhowmanydays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/kulim_park"
+                android:text="in 2 days"
+                android:textColor="#ECB35E"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/tripFrom_text"
+                app:layout_constraintTop_toBottomOf="@+id/tripFrom_text" />
+
+            <ImageView
+                android:id="@+id/user_profile_image_tem"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+                app:layout_constraintStart_toEndOf="@+id/trip_image"
+                app:layout_constraintTop_toBottomOf="@+id/trip_image"
+                app:layout_constraintVertical_bias="0.19999999"
+                app:srcCompat="@drawable/user_1" />
+
+            <ImageView
+                android:id="@+id/imageView19"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.666"
+                app:layout_constraintStart_toEndOf="@+id/trip_image"
+                app:layout_constraintTop_toBottomOf="@+id/trip_image"
+                app:layout_constraintVertical_bias="0.19"
+                app:srcCompat="@drawable/numpeople_background" />
+
+            <TextView
+                android:id="@+id/trippeople_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kulim_park"
+                android:text="+2"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView19"
+                app:layout_constraintEnd_toEndOf="@+id/imageView19"
+                app:layout_constraintStart_toStartOf="@+id/imageView19"
+                app:layout_constraintTop_toTopOf="@+id/imageView19"
+                app:layout_constraintVertical_bias="0.48000002" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

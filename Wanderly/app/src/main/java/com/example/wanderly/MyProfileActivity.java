@@ -239,7 +239,7 @@ public class MyProfileActivity extends AppCompatActivity {
                         String profilePicUrl = snapshot.child("profile_pic").getValue(String.class);
                         if(profilePicUrl != null){
                             // display profile pic
-                            Glide.with(MyProfileActivity.this).load(profilePicUrl).into(myProfilePic);
+                            Glide.with(MyProfileActivity.this).load(profilePicUrl).circleCrop().into(myProfilePic);
                         }
 
                         //display bio

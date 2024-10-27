@@ -52,41 +52,42 @@
 
         <ImageView
             android:id="@+id/trip_image"
-            android:layout_width="95dp"
-            android:layout_height="130dp"
-            android:layout_marginStart="4dp"
+            android:layout_width="225dp"
+            android:layout_height="73dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView16"
             app:layout_constraintStart_toEndOf="@+id/trip_country_background"
             app:layout_constraintTop_toTopOf="@+id/imageView16"
+            app:layout_constraintVertical_bias="0.136"
             app:srcCompat="@drawable/placeholder_image" />
 
         <TextView
             android:id="@+id/tripFrom_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:fontFamily="@font/kulim_park"
             android:text="SYD"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView16"
-            app:layout_constraintStart_toEndOf="@+id/trip_image"
-            app:layout_constraintTop_toTopOf="@+id/imageView16"
-            app:layout_constraintVertical_bias="0.120000005" />
+            app:layout_constraintStart_toStartOf="@+id/trip_country"
+            app:layout_constraintTop_toBottomOf="@+id/trip_image"
+            app:layout_constraintVertical_bias="0.09" />
 
         <TextView
             android:id="@+id/tripTo_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="56dp"
+            android:layout_marginStart="4dp"
             android:fontFamily="@font/kulim_park"
             android:text="- MEL"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView16"
-            app:layout_constraintStart_toEndOf="@+id/trip_image"
-            app:layout_constraintTop_toTopOf="@+id/imageView16"
-            app:layout_constraintVertical_bias="0.121" />
+            app:layout_constraintBottom_toBottomOf="@+id/tripFrom_text"
+            app:layout_constraintStart_toEndOf="@+id/tripFrom_text"
+            app:layout_constraintTop_toTopOf="@+id/tripFrom_text"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/trip_To_text"
@@ -110,9 +111,9 @@
             android:text="10/27"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/imageView16"
-            app:layout_constraintHorizontal_bias="0.891"
+            app:layout_constraintHorizontal_bias="0.945"
             app:layout_constraintStart_toEndOf="@+id/tripFrom_text"
-            app:layout_constraintTop_toTopOf="@+id/tripFrom_text" />
+            app:layout_constraintTop_toTopOf="@+id/trip_image" />
 
         <TextView
             android:id="@+id/trip_end_date"
@@ -132,24 +133,37 @@
             android:id="@+id/inhowmanydays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/kulim_park"
-            android:textSize="16sp"
             android:text="in 2 days"
             android:textColor="#ECB35E"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/tripFrom_text"
             app:layout_constraintTop_toBottomOf="@+id/tripFrom_text" />
 
         <ImageView
-            android:id="@+id/imageView19"
-            android:layout_width="105dp"
+            android:id="@+id/user_profile_image_tem"
+            android:layout_width="42dp"
             android:layout_height="42dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView16"
             app:layout_constraintStart_toEndOf="@+id/trip_image"
-            app:layout_constraintTop_toBottomOf="@+id/inhowmanydays"
-            app:layout_constraintVertical_bias="0.52"
-            app:srcCompat="@drawable/trip_users" />
+            app:layout_constraintTop_toBottomOf="@+id/trip_image"
+            app:layout_constraintVertical_bias="0.19999999"
+            app:srcCompat="@drawable/user_1" />
+
+        <ImageView
+            android:id="@+id/imageView19"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toEndOf="@+id/trip_image"
+            app:layout_constraintTop_toBottomOf="@+id/trip_image"
+            app:layout_constraintVertical_bias="0.19"
+            app:srcCompat="@drawable/numpeople_background" />
 
         <TextView
             android:id="@+id/trippeople_number"
@@ -160,10 +174,10 @@
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@+id/imageView19"
             app:layout_constraintEnd_toEndOf="@+id/imageView19"
-            app:layout_constraintHorizontal_bias="0.85"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/imageView19"
             app:layout_constraintTop_toTopOf="@+id/imageView19"
-            app:layout_constraintVertical_bias="0.45" />
+            app:layout_constraintVertical_bias="0.48" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
