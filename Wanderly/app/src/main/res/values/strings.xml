@@ -23,4 +23,11 @@
 
     <string name="saved"><b>Saved</b></string>
     <string name="notifications"><b>Notifications</b></string>
+
+    <!-- Home page -->
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="next_week">Next Week</string>
+    <string name="details_none">You have no plans today!</string>
+
 </resources>

@@ -1,14 +1,24 @@
 package com.example.wanderly;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +40,11 @@ public class HomeActivity extends AppCompatActivity {
     private String userFirstname;
     private ImageView notificationBtn;
 
+    ViewPager mSlideViewPager;
+    LinearLayout mDotLayout;
+    TextView[] dots;
+    ViewPagerAdapter viewPagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +54,25 @@ public class HomeActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         currentUserId = auth.getCurrentUser().getUid();
         home_greeting = findViewById(R.id.home_greeting);
-        menuMyProfileBtn = findViewById(R.id.menu_profile);
-        menuMapBtn = findViewById(R.id.menu_map);
-        notificationBtn = findViewById(R.id.notification_btn);
+
+        // bottom navbar
         menuHomeBtn = findViewById(R.id.menu_homebutton);
         menuTripBtn = findViewById(R.id.menu_tripbutton);
+        menuMyProfileBtn = findViewById(R.id.menu_profile);
+        menuMapBtn = findViewById(R.id.menu_map);
 
+        notificationBtn = findViewById(R.id.notification_btn);
+
+        mSlideViewPager = (ViewPager) findViewById(R.id.slide_viewPager);
+        mDotLayout = (LinearLayout) findViewById(R.id.indicator_layout);
+
+        viewPagerAdapter = new ViewPagerAdapter(this);
+
+        mSlideViewPager.setAdapter(viewPagerAdapter);
+
+        // set up dots
+        setUpIndicator(0);
+        mSlideViewPager.addOnPageChangeListener(viewListener);
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
         reference.addValueEventListener(new ValueEventListener() {
@@ -110,7 +138,45 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
+    // dots
+    private void setUpIndicator(int position) {
+        dots = new TextView[3];
+        mDotLayout.removeAllViews();
 
+        for (int i = 0; i < dots.length; i++) {
+            dots[i] = new TextView(this);
+            dots[i].setText(".");
+            dots[i].setTextSize(45);
+            dots[i].setTypeface(null, Typeface.BOLD);
+            dots[i].setTextColor(ContextCompat.getColor(this, R.color.dot_inactive));
+            mDotLayout.addView(dots[i]);
+        }
+
+        if (dots.length > 0) {
+            dots[position].setTextColor(ContextCompat.getColor(this, R.color.dot_active));
+        }
+    }
+
+    ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            setUpIndicator(position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
+
+    private int getItem(int i) {
+        return mSlideViewPager.getCurrentItem() + i;
     }
 }

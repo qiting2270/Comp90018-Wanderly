@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfc">
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="365dp"
+            android:layout_height="275dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/home_schedule" />
+
+        <TextView
+            android:id="@+id/day_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:width="245dp"
+            android:height="270dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@font/kulim_park"
+            android:text="@string/details_none"
+            android:textSize="16sp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/home_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:width="100dp"
+            android:height="45dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="259dp"
+            android:background="@drawable/button_background"
+            android:backgroundTint="#B7C0C6"
+            android:fontFamily="@font/kulim_park"
+            android:gravity="center"
+            android:text="@string/today"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+
+
+<!--            <ImageView-->
+<!--                android:id="@+id/home_desc_icon"-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginLeft="40dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.094"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:srcCompat="@drawable/home_desc"-->
+<!--                tools:layout_editor_absoluteY="32dp" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/home_desc_place"-->
+<!--                android:layout_width="223dp"-->
+<!--                android:layout_height="203dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginLeft="65dp"-->
+<!--                android:fontFamily="@font/kulim_park"-->
+<!--                android:text=" "-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.351"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                tools:layout_editor_absoluteY="32dp" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/home_desc_time"-->
+<!--                android:layout_width="223dp"-->
+<!--                android:layout_height="203dp"-->
+<!--                android:layout_marginTop="40dp"-->
+<!--                android:layout_marginLeft="65dp"-->
+<!--                android:fontFamily="@font/kulim_park"-->
+<!--                android:text=" "-->
+<!--                android:textSize="16sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.351"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                tools:layout_editor_absoluteY="52dp" />-->
+</RelativeLayout>
