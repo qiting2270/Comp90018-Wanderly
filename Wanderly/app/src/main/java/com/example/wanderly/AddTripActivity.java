@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.Calendar;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,6 +118,8 @@ public class AddTripActivity extends AppCompatActivity {
     private String currentUserId;
     private String currentUserEmail;
 
+    LinearLayout addMemberLinearLayout;
+    private Boolean noProfileImg = false;
 
 
 
@@ -175,6 +179,8 @@ public class AddTripActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         currentUserId = auth.getCurrentUser().getUid();
+
+        addMemberLinearLayout = findViewById(R.id.add_member_linearlayout);
 
         // get current user email by its id.
         databaseReference.child("User Information").child(currentUserId).child("email")
@@ -800,6 +806,8 @@ public class AddTripActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     // Email found, store it under the trip
                     storeEmailUnderTrip(email);
+                    updateMemberImage();
+
                     if (!Objects.equals(email, currentUserEmail)){
                         addEmailSuccessDialog();
                     }
@@ -818,7 +826,10 @@ public class AddTripActivity extends AppCompatActivity {
     }
 
     private void storeEmailUnderTrip(String email) {
-        databaseReference.child("Trips").child(uniqueTripId).child("Members").push().setValue(email)
+        HashMap<String, Object> emailDetails = new HashMap<>();
+        emailDetails.put("email", email);
+
+        databaseReference.child("Trips").child(uniqueTripId).child("Members").push().setValue(emailDetails)
                 .addOnSuccessListener(aVoid -> Toast.makeText(getApplicationContext(), "Email added to trip successfully", Toast.LENGTH_LONG).show())
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to add email to trip", Toast.LENGTH_LONG).show());
     }
@@ -849,6 +860,98 @@ public class AddTripActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
+    private void updateMemberImage(){
+        addMemberLinearLayout.removeAllViews();
+        // get the users' email first
+        databaseReference.child("Trips").child(uniqueTripId).child("Members")
+            .orderByChild("email").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    // Get the email field of each child
+                    String email_txt = childSnapshot.child("email").getValue().toString();
+                    Log.d("Member List", email_txt);
+                    if (email_txt != null){
+                        // then get profile pic for every user
+                        fetchUserProfilePicByEmail(email_txt);
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void fetchUserProfilePicByEmail(String email) {
+        databaseReference.child("User Information").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        String profilePicUrl = child.child("profile_pic").getValue().toString();
+                        // Check if the URL is null or empty and use a default image
+                        if (profilePicUrl == null || profilePicUrl.isEmpty()) {
+                            noProfileImg = true;
+                            String text = "abc";
+                            addImageViewToLayout(text);
+                        }
+                        else{
+                            addImageViewToLayout(profilePicUrl);
+                            //addImageViewToLayout("https://firebasestorage.googleapis.com/v0/b/wanderly-ce7ee.appspot.com/o/Uploads%2Fvector.png?alt=media&token=bc818f3e-19a2-45c1-a132-ef087edfd23f");
+                        }
+
+                    }
+                } else {
+                    Log.d("Firebase", "Email not found in user database");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Firebase", "Error fetching user data", databaseError.toException());
+            }
+        });
+    }
+
+    private void addImageViewToLayout(String imageUrl) {
+        ImageView imageView = new ImageView(this);
+        imageView.setId(View.generateViewId());
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(
+                convertDpToPx(42), // Width in DP
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        imageView.setPadding(
+                convertDpToPx(5), 0, convertDpToPx(5), 0
+        );
+
+        if (noProfileImg){
+            Glide.with(this).load(R.drawable.vector).into(imageView);
+            noProfileImg = false;
+        }
+        else{
+            // Use Glide or Picasso to load the image from URL
+            Glide.with(this)
+                    .load(imageUrl).placeholder(R.drawable.vector)
+                    .into(imageView);
+        }
+
+
+        addMemberLinearLayout.addView(imageView);
+    }
+
+    private int convertDpToPx(int dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density);
+    }
+
+
+
 
 
 
