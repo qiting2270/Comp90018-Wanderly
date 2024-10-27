@@ -208,7 +208,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
-            <!-- food recommendation 1 -->
+            <!-- recommendation 1 -->
             <ImageView
                 android:id="@+id/rec_bg1"
                 android:layout_width="332dp"
@@ -224,7 +224,7 @@
                 android:layout_width="270dp"
                 android:layout_height="21dp"
                 android:layout_marginTop="10dp"
-                android:text="name"
+                android:text=""
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:contentDescription="name of stop"
@@ -233,18 +233,48 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rec_bg1" />
 
+            <RatingBar
+                android:id="@+id/rec_rating1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="-20dp"
+                android:numStars="5"
+                android:stepSize="0.1"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
+                android:visibility="invisible"
+                android:isIndicator="true"
+                android:progressTint="@color/dot_active"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rec_bg1" />
+
             <TextView
                 android:id="@+id/rec_desc1"
                 android:layout_width="300dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="50dp"
-                android:text="Ducimus unde eveniet. Consequatur voluptates nemo nam voluptatum omnis. Expedita perspiciatis laudantium. Quod eos quas nulla."
+                android:text=""
                 android:textSize="13sp"
                 android:contentDescription="description of stop"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.49"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rec_bg1" />
+
+            <ImageView
+                android:id="@+id/rec_unsaved1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="300dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rec_bg1"
+                app:srcCompat="@drawable/unsaved_icon" />
 
             <ImageView
                 android:id="@+id/rec_saved1"
@@ -258,7 +288,7 @@
                 app:layout_constraintTop_toTopOf="@+id/rec_bg1"
                 app:srcCompat="@drawable/saved_icon" />
 
-            <!-- food recommendation 2 -->
+            <!-- recommendation 2 -->
             <ImageView
                 android:id="@+id/rec_bg2"
                 android:layout_width="332dp"
@@ -274,7 +304,7 @@
                 android:layout_width="270dp"
                 android:layout_height="21dp"
                 android:layout_marginTop="10dp"
-                android:text="name"
+                android:text=""
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:contentDescription="name of stop"
@@ -283,18 +313,48 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rec_bg2" />
 
+            <RatingBar
+                android:id="@+id/rec_rating2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="-20dp"
+                android:numStars="5"
+                android:stepSize="0.1"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
+                android:visibility="invisible"
+                android:isIndicator="true"
+                android:progressTint="@color/dot_active"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rec_bg2" />
+
             <TextView
                 android:id="@+id/rec_desc2"
                 android:layout_width="300dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="50dp"
-                android:text="Ducimus unde eveniet. Consequatur voluptates nemo nam voluptatum omnis. Expedita perspiciatis laudantium. Quod eos quas nulla."
+                android:text=""
                 android:textSize="13sp"
                 android:contentDescription="description of stop"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.49"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rec_bg2" />
+
+            <ImageView
+                android:id="@+id/rec_unsaved2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="300dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rec_bg2"
+                app:srcCompat="@drawable/unsaved_icon" />
 
             <ImageView
                 android:id="@+id/rec_saved2"
@@ -308,7 +368,7 @@
                 app:layout_constraintTop_toTopOf="@+id/rec_bg2"
                 app:srcCompat="@drawable/saved_icon" />
 
-            <!-- food recommendation 3 -->
+            <!-- recommendation 3 -->
             <ImageView
                 android:id="@+id/rec_bg3"
                 android:layout_width="332dp"
@@ -324,7 +384,7 @@
                 android:layout_width="270dp"
                 android:layout_height="21dp"
                 android:layout_marginTop="10dp"
-                android:text="name"
+                android:text=""
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:contentDescription="name of stop"
@@ -333,21 +393,51 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rec_bg3" />
 
+            <RatingBar
+                android:id="@+id/rec_rating3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="-20dp"
+                android:numStars="5"
+                android:stepSize="0.1"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
+                android:visibility="invisible"
+                android:isIndicator="true"
+                android:progressTint="@color/dot_active"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rec_bg3" />
+
             <TextView
                 android:id="@+id/rec_desc3"
                 android:layout_width="300dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="50dp"
-                android:text="Ducimus unde eveniet. Consequatur voluptates nemo nam voluptatum omnis. Expedita perspiciatis laudantium. Quod eos quas nulla."
+                android:text=""
                 android:textSize="13sp"
                 android:contentDescription="description of stop"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.49"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rec_bg3" />
 
             <ImageView
-                android:id="@+id/rec_saved"
+                android:id="@+id/rec_unsaved3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="300dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rec_bg3"
+                app:srcCompat="@drawable/unsaved_icon" />
+
+            <ImageView
+                android:id="@+id/rec_saved3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

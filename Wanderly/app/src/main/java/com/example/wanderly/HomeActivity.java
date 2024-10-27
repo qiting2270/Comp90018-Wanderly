@@ -1,11 +1,15 @@
 package com.example.wanderly;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.content.SharedPreferences;
 
@@ -23,14 +27,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class HomeActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private String currentUserId;
-    private TextView home_greeting, foodPageBtn, attractionPageBtn;
+    private TextView home_greeting, foodPageBtn, attractionPageBtn,
+            recName1, recDesc1, recName2, recDesc2, recName3, recDesc3;
     private ImageView menuMyProfileBtn, menuMapBtn, menuHomeBtn, menuTripBtn, notificationBtn,
-            recFoodBorder, recAttractionBorder;
-    private String userLastName, userFirstname;
+            recFoodBorder, recAttractionBorder,
+            recSaved1, recUnsaved1, recSaved2, recUnsaved2, recSaved3, recUnsaved3;
+    private String userLastName, userFirstname,
+            foodName, foodDesc, attrName, attrDesc;
+    private float foodRating, attrRating;
+    RatingBar recRating1, recRating2, recRating3,
+            attrRating1, attrRating2, attrRating3;
+    String[] saved;
 
     ViewPager mSlideViewPager;
     LinearLayout mDotLayout;
@@ -74,20 +87,36 @@ public class HomeActivity extends AppCompatActivity {
         recFoodBorder = findViewById(R.id.rec_food_border);
         recAttractionBorder = findViewById(R.id.rec_attraction_border);
 
-        // get username
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
-        reference.addValueEventListener(new ValueEventListener() {
+        recName1 = findViewById(R.id.rec_name1);
+        recRating1 = findViewById(R.id.rec_rating1);
+        recDesc1 = findViewById(R.id.rec_desc1);
+        recSaved1 = findViewById(R.id.rec_saved1);
+        recUnsaved1 = findViewById(R.id.rec_unsaved1);
+        recName2 = findViewById(R.id.rec_name2);
+        recRating2 = findViewById(R.id.rec_rating2);
+        recDesc2 = findViewById(R.id.rec_desc2);
+        recSaved2 = findViewById(R.id.rec_saved2);
+        recUnsaved2 = findViewById(R.id.rec_unsaved2);
+        recName3 = findViewById(R.id.rec_name3);
+        recRating3 = findViewById(R.id.rec_rating3);
+        recDesc3 = findViewById(R.id.rec_desc3);
+        recSaved3 = findViewById(R.id.rec_saved3);
+        recUnsaved3 = findViewById(R.id.rec_unsaved3);
+
+        // get user
+        DatabaseReference reference_username = FirebaseDatabase.getInstance().getReference("User Information");
+        reference_username.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    if(snapshot.getKey().equals(currentUserId)){
+                    if (snapshot.getKey().equals(currentUserId)){
                         userLastName = snapshot.child("lastname").getValue(String.class);
                         userFirstname = snapshot.child("firstname").getValue(String.class);
                         home_greeting.setText("Bon Voyage, " + userFirstname + "!");
                         break; // Exit the loop once the user is found
                     }
                 }
+
 
             }
 
@@ -96,21 +125,53 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        // navigate to food section
+        // get user saved
+//        DatabaseReference reference_saved = FirebaseDatabase.getInstance().getReference();
+//        reference_saved.child("User Information").child(currentUserId).child("saved")
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                saved = new String[8];
+//                int count = 0;
+//
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+//                    // store all of user's saved places to 'saved'
+//                    if (count >= 8) break; // Stop if the array is full
+//
+//                    // Get the stop_name value for the current snapshot
+//                    String savedValue = snapshot.child("stop_name").getValue(String.class);
+//                    Log.d(TAG, "                    saving");
+//                    if (savedValue != null) { // Ensure savedValue is not null
+//                        saved[count] = savedValue; // Store it in the array
+//                        count++; // Increment the counter
+//                    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//            }
+//        });
+
+        fetchRecommendations();
+        // recommendation: navigate to food section
         foodPageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 recFoodBorder.setVisibility(View.VISIBLE);
                 recAttractionBorder.setVisibility(View.INVISIBLE);
+                fetchRecommendations();
             }
         });
 
-        // navigate to attraction section
+        // recommendation: navigate to attraction section
         attractionPageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 recAttractionBorder.setVisibility(View.VISIBLE);
                 recFoodBorder.setVisibility(View.INVISIBLE);
+                fetchRecommendations();
             }
         });
 
@@ -215,4 +276,122 @@ public class HomeActivity extends AppCompatActivity {
     private int getItem(int i) {
         return mSlideViewPager.getCurrentItem() + i;
     }
+
+    // get recommendation details
+    public void fetchRecommendations() {
+        DatabaseReference reference_rec = FirebaseDatabase.getInstance().getReference("Stops");
+        reference_rec.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                int fcount = 0, acount = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    if (fcount >= 3 && acount >= 3) break; // only want first three
+
+                    // get food recommendation places
+                    if (recFoodBorder.getVisibility() == View.VISIBLE) {
+                        if (Objects.equals(snapshot.child("type").getValue(String.class), "food")) {
+                            foodName =  snapshot.child("name").getValue(String.class);
+                            foodDesc =  snapshot.child("description").getValue(String.class);
+                            foodRating = snapshot.child("rating").getValue(Float.class);
+                            if (fcount == 0) {
+                                recName1.setText(foodName);
+                                recDesc1.setText(foodDesc);
+
+                                recRating1.setVisibility(View.VISIBLE);
+                                recRating1.setRating(foodRating);
+
+                            } else if (fcount == 1) {
+                                recName2.setText(foodName);
+                                recDesc2.setText(foodDesc);
+
+                                recRating2.setVisibility(View.VISIBLE);
+                                recRating2.setRating(foodRating);
+
+                            } else if (fcount == 2){
+                                recName3.setText(foodName);
+                                recDesc3.setText(foodDesc);
+
+                                recRating3.setVisibility(View.VISIBLE);
+                                recRating3.setRating(foodRating);
+                            }
+
+                            // check if user saved the place
+//                            for (String string : saved) {
+//                                if (string != null) {
+//                                    if (recName1.getText().toString().equals(string)) {
+//                                        recSaved1.setVisibility(View.VISIBLE);
+//                                        recUnsaved1.setVisibility(View.INVISIBLE);
+//                                    } else if (recName2.getText().toString().equals(string)) {
+//                                        recSaved2.setVisibility(View.VISIBLE);
+//                                        recUnsaved2.setVisibility(View.INVISIBLE);
+//                                    } else if (recName3.getText().toString().equals(string)) {
+//                                        recSaved3.setVisibility(View.VISIBLE);
+//                                        recUnsaved3.setVisibility(View.INVISIBLE);
+//                                    }
+//                                }
+//                            }
+
+                            fcount++;
+                        }
+                    }
+
+                    // get attraction recommendation places
+                    if (recAttractionBorder.getVisibility() == View.VISIBLE) {
+                        if (Objects.equals(snapshot.child("type").getValue(String.class), "attraction")) {
+                            attrName =  snapshot.child("name").getValue(String.class);
+                            attrDesc =  snapshot.child("description").getValue(String.class);
+                            attrRating = snapshot.child("rating").getValue(Float.class);
+                            if (acount == 0) {
+                                recName1.setText(attrName);
+                                recDesc1.setText(attrDesc);
+
+                                recRating1.setVisibility(View.VISIBLE);
+                                recRating1.setRating(attrRating);
+
+                            } else if (acount == 1) {
+                                recName2.setText(attrName);
+                                recDesc2.setText(attrDesc);
+
+                                recRating2.setVisibility(View.VISIBLE);
+                                recRating2.setRating(attrRating);
+
+                            } else if (acount == 2){
+                                recName3.setText(attrName);
+                                recDesc3.setText(attrDesc);
+
+                                recRating3.setVisibility(View.VISIBLE);
+                                recRating3.setRating(attrRating);
+
+                            }
+
+                            // check if user saved the place
+//                            for (String string : saved) {
+//                                if (string != null) {
+//                                    if (recName1.getText().toString().equals(string)) {
+//                                        recSaved1.setVisibility(View.VISIBLE);
+//                                        recUnsaved1.setVisibility(View.INVISIBLE);
+//                                    } else if (recName2.getText().toString().equals(string)) {
+//                                        recSaved2.setVisibility(View.VISIBLE);
+//                                        recUnsaved2.setVisibility(View.INVISIBLE);
+//                                    } else if (recName3.getText().toString().equals(string)) {
+//                                        recSaved3.setVisibility(View.VISIBLE);
+//                                        recUnsaved3.setVisibility(View.INVISIBLE);
+//                                    }
+//                                }
+//                            }
+
+                            acount++;
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
 }
