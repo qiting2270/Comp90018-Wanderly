@@ -16,18 +16,57 @@
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/home_schedule" />
 
+        <RelativeLayout
+            android:layout_width="245dp"
+            android:layout_height="270dp"
+            android:padding="17dp"
+            android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/imageView34"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/home_desc" />
+
+                <TextView
+                    android:id="@+id/day_details_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="27dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/kulim_park"
+                    android:text="Indigo"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/day_details_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="27dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/kulim_park"
+                    android:text="8 am - 930 am"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/day_details_name" />
+
+        </RelativeLayout>
+
         <TextView
-            android:id="@+id/day_details"
+            android:id="@+id/day_details_none"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:width="245dp"
-            android:height="270dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginTop="125dp"
+            android:layout_marginLeft="110dp"
             android:fontFamily="@font/kulim_park"
             android:text="@string/details_none"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:gravity="center"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
