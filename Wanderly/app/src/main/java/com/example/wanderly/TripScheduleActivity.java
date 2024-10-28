@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +18,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class TripScheduleActivity extends AppCompatActivity {
     private String tripId = new String();
@@ -26,6 +31,13 @@ public class TripScheduleActivity extends AppCompatActivity {
     TextView tripToDay, tripToMonth;
 
     LinearLayout memberLinearLayout;
+
+    TextView day1DateText, day2DateText;
+
+    ConstraintLayout TripDay1, TripDay2;
+
+    private int trip_duration;
+    String departureDate = new String(), returnDate = new String();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +53,13 @@ public class TripScheduleActivity extends AppCompatActivity {
         tripToMonth = findViewById(R.id.trip_schedule_to_month);
 
         memberLinearLayout = findViewById(R.id.trip_schedule_member_linearlayout);
+
+        day1DateText = findViewById(R.id.trip_day1_inside_date_text);
+        day2DateText = findViewById(R.id.trip_day2_inside_date_text);
+
+        TripDay1 = findViewById(R.id.trip_day_1);
+        TripDay2 = findViewById(R.id.trip_day_2);
+
 
         // read trip ID from previous intent
         tripId = getIntent().getStringExtra("TRIP_ID");
@@ -60,9 +79,11 @@ public class TripScheduleActivity extends AppCompatActivity {
         databaseReference.child("Trips").child(tripId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String departureDate = snapshot.child("departureDate").getValue(String.class);
-                String returnDate = snapshot.child("returnDate").getValue(String.class);
+                departureDate = snapshot.child("departureDate").getValue(String.class);
+                Log.d("12345", departureDate);
+                returnDate = snapshot.child("returnDate").getValue(String.class);
                 String departureCity = snapshot.child("departure").getValue(String.class);
+                trip_duration = snapshot.child("tripDuration").getValue(Long.class).intValue();
 
                 // set top text
                 String formattedCity = formatCityCode(departureCity);
@@ -80,6 +101,12 @@ public class TripScheduleActivity extends AppCompatActivity {
                 tripToDay.setText(returnDay);
                 tripToMonth.setText(returnMonth);
 
+                updateInsideLayout();
+
+
+
+
+                // search member through email, add member's profile image
                 for (DataSnapshot memberSnapshot : snapshot.child("Members").getChildren()) {
                     String email = memberSnapshot.child("email").getValue(String.class);
                     if (email != null) {
@@ -160,6 +187,28 @@ public class TripScheduleActivity extends AppCompatActivity {
     private int convertDpToPx(int dp) {
         float density = getResources().getDisplayMetrics().density;
         return (int) (dp * density);
+    }
+
+    private void updateInsideLayout(){
+        // Get all dates including departure and subsequent ones based on the trip duration
+        List<String> allDates = DateUtils.getSubsequentDates(departureDate, trip_duration);
+
+
+
+        if (trip_duration == 1){
+            TripDay1.setVisibility(View.VISIBLE);
+            TripDay2.setVisibility(View.GONE);
+
+            day1DateText.setText(allDates.get(0));
+        }
+        else if (trip_duration == 2){
+            TripDay1.setVisibility(View.VISIBLE);
+            TripDay2.setVisibility(View.VISIBLE);
+            day1DateText.setText(allDates.get(0));
+            day2DateText.setText(allDates.get(1));
+
+        }
+
     }
 
 
