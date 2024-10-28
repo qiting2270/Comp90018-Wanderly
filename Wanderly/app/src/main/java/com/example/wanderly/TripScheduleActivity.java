@@ -1,5 +1,6 @@
 package com.example.wanderly;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -52,6 +54,8 @@ public class TripScheduleActivity extends AppCompatActivity {
     LinearLayout stopsLinearLayoutDay2;
     LinearLayout stopsLinearLayoutDay3;
 
+    ImageView deleteBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,8 @@ public class TripScheduleActivity extends AppCompatActivity {
         stopsLinearLayoutDay1 = findViewById(R.id.stops_linear_layout_day1);
         stopsLinearLayoutDay2 = findViewById(R.id.stops_linear_layout_day2);
         stopsLinearLayoutDay3 = findViewById(R.id.stops_linear_layout_day3);
+
+        deleteBtn = findViewById(R.id.trip_schedule_delete_icon);
 
 
         // read trip ID from previous intent
@@ -156,6 +162,16 @@ public class TripScheduleActivity extends AppCompatActivity {
         });
 
 
+        //delete the trip from db
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseReference.child("Trips").child(tripId).removeValue();
+
+                deleteSuccessDialog();
+
+            }
+        });
 
 
 
@@ -272,7 +288,7 @@ public class TripScheduleActivity extends AppCompatActivity {
                     String timeFrom = activitySnapshot.child("timeFrom").getValue(String.class);
                     String timeTo = activitySnapshot.child("timeTo").getValue(String.class);
 
-                    addNewPlaceLayout(placeName, timeFrom, timeTo, parentLayout);
+                    addNewPlaceLayout(placeName, timeFrom, timeTo, parentLayout, day);
                 }
             }
 
@@ -284,7 +300,7 @@ public class TripScheduleActivity extends AppCompatActivity {
     }
 
     // Function to add a new ConstraintLayout to the parent layout
-    private void addNewPlaceLayout(String placeName, String timeFrom, String timeTo, LinearLayout parentLayout) {
+    private void addNewPlaceLayout(String placeName, String timeFrom, String timeTo, LinearLayout parentLayout, String day) {
         // Create a new ConstraintLayout
         ConstraintLayout newLayout = new ConstraintLayout(this);
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
@@ -298,9 +314,10 @@ public class TripScheduleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TripScheduleActivity.this, StopActivity.class);
-                intent.putExtra("PLACE_NAME", placeName);
-                intent.putExtra("TIME_FROM", timeFrom);
-                intent.putExtra("TIME_TO", timeTo);
+                intent.putExtra("placeName", placeName);
+                intent.putExtra("timeFrom", timeFrom);
+                intent.putExtra("timeTo", timeTo);
+                intent.putExtra("day", day);
                 startActivity(intent);
             }
         });
@@ -379,6 +396,20 @@ public class TripScheduleActivity extends AppCompatActivity {
 
         // Add the new ConstraintLayout to the parent layout
         parentLayout.addView(newLayout);
+    }
+
+    private void deleteSuccessDialog(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(TripScheduleActivity.this);
+        dialog.setMessage("Delete Trip Successful!");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(TripScheduleActivity.this, MyTripsActivity.class);
+                startActivity(intent);
+            }
+        });
+        dialog.show();
     }
 
 

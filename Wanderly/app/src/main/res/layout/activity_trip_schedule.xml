@@ -58,6 +58,7 @@
         app:srcCompat="@drawable/frame_add_trip" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
         android:layout_width="338dp"
         android:layout_height="73dp"
         android:background="@drawable/button_background"
@@ -78,6 +79,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.52"
             app:srcCompat="@drawable/line_black" />
+
         <ImageView
             android:id="@+id/imageView21"
             android:layout_width="35dp"
@@ -92,8 +94,8 @@
             android:id="@+id/trip_schedule_from_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="03"
             android:fontFamily="@font/kulim_park"
+            android:text="03"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageView16"
@@ -105,8 +107,8 @@
             android:id="@+id/trip_schedule_from_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="JAN"
             android:fontFamily="@font/kulim_park"
+            android:text="JAN"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/trip_schedule_from_day"
@@ -118,8 +120,8 @@
             android:id="@+id/trip_schedule_to_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="05"
             android:fontFamily="@font/kulim_park"
+            android:text="05"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/trip_schedule_from_day"
             app:layout_constraintEnd_toEndOf="parent"
@@ -130,8 +132,8 @@
             android:id="@+id/trip_schedule_to_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="JAN"
             android:fontFamily="@font/kulim_park"
+            android:text="JAN"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/trip_schedule_from_month"
             app:layout_constraintEnd_toEndOf="@+id/trip_schedule_to_day"
@@ -236,6 +238,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/trip_day1_inside_day_text"
                     app:layout_constraintTop_toBottomOf="@+id/trip_day1_inside_day_text">
+
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -524,6 +527,7 @@
 
 
     </HorizontalScrollView>
+
 
 
 
