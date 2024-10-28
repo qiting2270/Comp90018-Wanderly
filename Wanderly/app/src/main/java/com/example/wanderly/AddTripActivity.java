@@ -75,12 +75,16 @@ public class AddTripActivity extends AppCompatActivity {
 
     ConstraintLayout Day1;
     ConstraintLayout Day2;
+    ConstraintLayout Day3;
 
     TextView day1DateText;
     TextView day2DateText;
+    TextView day3DateText;
 
     ConstraintLayout Day1AddStopBtn;
     ConstraintLayout Day2AddStopBtn;
+    ConstraintLayout Day3AddStopBtn;
+
     ConstraintLayout addStopPopup;
     ConstraintLayout addMemberPopup;
     ImageView popUpCloseBtn;
@@ -101,6 +105,7 @@ public class AddTripActivity extends AppCompatActivity {
 
     LinearLayout stopsLinearLayoutDay1;
     LinearLayout stopsLinearLayoutDay2;
+    LinearLayout stopsLinearLayoutDay3;
 
     private String addstop_selectedTimeFrom;
     private String addstop_selectedTimeTo;
@@ -154,8 +159,10 @@ public class AddTripActivity extends AppCompatActivity {
         addMembersCloseBtn = findViewById(R.id.add_trip_addmembers_closeBtn);
         Day1 = findViewById(R.id.add_trip_day_1);
         Day2 = findViewById(R.id.add_trip_day_2);
+        Day3 = findViewById(R.id.add_trip_day_3);
         Day1AddStopBtn = findViewById(R.id.addtrip__day1_inside_add_stopBtn);
         Day2AddStopBtn = findViewById(R.id.addtrip__day2_inside_add_stopBtn);
+        Day3AddStopBtn = findViewById(R.id.addtrip__day3_inside_add_stopBtn);
 
         timeFromSpinner = findViewById(R.id.add_trip_popup_spinner_time_from);
         timeToSpinner = findViewById(R.id.add_trip_popup_spinner_time_to);
@@ -170,6 +177,7 @@ public class AddTripActivity extends AppCompatActivity {
         attraction_Gaol = findViewById(R.id.stop_attraction_oldMelGaol);
         stopsLinearLayoutDay1 = findViewById(R.id.stops_linear_layout_day1);
         stopsLinearLayoutDay2 = findViewById(R.id.stops_linear_layout_day2);
+        stopsLinearLayoutDay3 = findViewById(R.id.stops_linear_layout_day3);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         uniqueTripId = databaseReference.child("Trips").push().getKey();
@@ -318,6 +326,13 @@ public class AddTripActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tripDay = 2;
+                addStopPopup.setVisibility(View.VISIBLE);
+            }
+        });
+        Day3AddStopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tripDay = 3;
                 addStopPopup.setVisibility(View.VISIBLE);
             }
         });
@@ -543,6 +558,7 @@ public class AddTripActivity extends AppCompatActivity {
 
         day1DateText = findViewById(R.id.addtrip_day1_inside_date_text);
         day2DateText = findViewById(R.id.addtrip_day2_inside_date_text);
+        day3DateText = findViewById(R.id.addtrip_day3_inside_date_text);
 
         String formattedDate_Day1 = String.format(Locale.getDefault(), "%d-%02d-%02d",
                 currentDay.get(Calendar.YEAR),
@@ -552,12 +568,14 @@ public class AddTripActivity extends AppCompatActivity {
         if (tripDuration == 1){
             Day1.setVisibility(View.VISIBLE);
             Day2.setVisibility(View.GONE);
+            Day3.setVisibility(View.GONE);
 
             day1DateText.setText(formattedDate_Day1);
         }
         else if (tripDuration == 2){
             Day1.setVisibility(View.VISIBLE);
             Day2.setVisibility(View.VISIBLE);
+            Day3.setVisibility(View.GONE);
 
             day1DateText.setText(formattedDate_Day1);
 
@@ -568,6 +586,31 @@ public class AddTripActivity extends AppCompatActivity {
                     currentDay.get(Calendar.MONTH) + 1,
                     currentDay.get(Calendar.DAY_OF_MONTH));
             day2DateText.setText(formattedDate_Day2);
+        }
+        else if (tripDuration == 3){
+            Day1.setVisibility(View.VISIBLE);
+            Day2.setVisibility(View.VISIBLE);
+            Day3.setVisibility(View.VISIBLE);
+            day1DateText.setText(formattedDate_Day1);
+
+            currentDay.add(Calendar.DAY_OF_MONTH, 1);
+            String formattedDate_Day2 = String.format(Locale.getDefault(), "%d-%02d-%02d",
+                    currentDay.get(Calendar.YEAR),
+                    currentDay.get(Calendar.MONTH) + 1,
+                    currentDay.get(Calendar.DAY_OF_MONTH));
+            day2DateText.setText(formattedDate_Day2);
+
+            currentDay.add(Calendar.DAY_OF_MONTH, 1);
+            String formattedDate_Day3 = String.format(Locale.getDefault(), "%d-%02d-%02d",
+                    currentDay.get(Calendar.YEAR),
+                    currentDay.get(Calendar.MONTH) + 1,
+                    currentDay.get(Calendar.DAY_OF_MONTH));
+            day3DateText.setText(formattedDate_Day3);
+
+
+
+
+
         }
 
     }
@@ -680,6 +723,9 @@ public class AddTripActivity extends AppCompatActivity {
             }
             else if (tripDay == 2){
                 addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay2);
+            }
+            else if (tripDay == 3){
+                addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay3);
             }
 
         }

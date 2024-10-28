@@ -390,7 +390,7 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
+<!--                day2-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="260dp"
                     android:layout_height="match_parent"
@@ -526,7 +526,99 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                day3-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="260dp"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    android:id="@+id/add_trip_day_3">
 
+                    <TextView
+                        android:id="@+id/addtrip_day3_inside_day_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/kulim_park"
+                        android:text="Day 3 -"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/addtrip_day3_inside_date_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="88dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/kulim_park"
+                        android:text="03/01"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/stops_linear_layout_day3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/addtrip_day3_inside_day_text"
+                        app:layout_constraintTop_toBottomOf="@+id/addtrip_day3_inside_day_text">
+
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/addtrip__day3_inside_add_stopBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@+id/addtrip_day3_inside_day_text"
+                        app:layout_constraintTop_toBottomOf="@+id/stops_linear_layout_day3">
+
+                        <TextView
+                            android:id="@+id/add_trip_addstops"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/button_background"
+                            android:backgroundTint="#ECB35E"
+                            android:gravity="center"
+                            android:text="+"
+                            android:textSize="15sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/add_trip_addstop_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:fontFamily="@font/kulim_park"
+                            android:text="Add stops"
+                            android:textColor="#803B5667"
+                            android:textSize="15dp"
+
+                            app:layout_constraintBottom_toBottomOf="@+id/add_trip_addstops"
+                            app:layout_constraintStart_toEndOf="@+id/add_trip_addstops"
+                            app:layout_constraintTop_toTopOf="@+id/add_trip_addstops" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/imageView22"
+                        android:layout_width="3dp"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/vertical_line" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

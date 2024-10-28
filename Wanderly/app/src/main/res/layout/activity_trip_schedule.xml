@@ -301,9 +301,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
 <!--            day 2-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="260dp"
@@ -412,6 +409,113 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+<!--            day 3 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="260dp"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:id="@+id/trip_day_3">
+
+                <TextView
+                    android:id="@+id/trip_day3_inside_day_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/kulim_park"
+                    android:text="Day 3 -"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/trip_day3_inside_date_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="88dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/kulim_park"
+                    android:text="03/01"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/stops_linear_layout_day3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/trip_day3_inside_day_text"
+                    app:layout_constraintTop_toBottomOf="@+id/trip_day3_inside_day_text">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_marginBottom="15dp">
+
+                        <ImageView
+                            android:id="@+id/imageView10"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/dining_icon" />
+
+                        <TextView
+                            android:id="@+id/trip_inside_stop_name"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:fontFamily="@font/kulim_park"
+                            android:text="National Gallery Of Vicoria"
+                            android:textColor="#3B5667"
+                            android:textSize="15dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+                            app:layout_constraintStart_toEndOf="@+id/imageView10"
+                            app:layout_constraintTop_toTopOf="@+id/imageView10"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <TextView
+                            android:id="@+id/trip_inside_stop_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="7dp"
+                            android:text="9AM - 10AM"
+                            android:textColor="#3B5667"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/trip_inside_stop_name"
+                            app:layout_constraintTop_toTopOf="@+id/imageView10" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/imageView22"
+                    android:layout_width="3dp"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/vertical_line" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

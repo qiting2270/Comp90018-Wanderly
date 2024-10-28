@@ -1,5 +1,6 @@
 package com.example.wanderly;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -40,15 +41,16 @@ public class TripScheduleActivity extends AppCompatActivity {
 
     LinearLayout memberLinearLayout;
 
-    TextView day1DateText, day2DateText;
+    TextView day1DateText, day2DateText, day3DateText;
 
-    ConstraintLayout TripDay1, TripDay2;
+    ConstraintLayout TripDay1, TripDay2, TripDay3;
 
     private int trip_duration;
     String departureDate = new String(), returnDate = new String();
 
     LinearLayout stopsLinearLayoutDay1;
     LinearLayout stopsLinearLayoutDay2;
+    LinearLayout stopsLinearLayoutDay3;
 
 
     @Override
@@ -68,11 +70,14 @@ public class TripScheduleActivity extends AppCompatActivity {
 
         day1DateText = findViewById(R.id.trip_day1_inside_date_text);
         day2DateText = findViewById(R.id.trip_day2_inside_date_text);
+        day3DateText = findViewById(R.id.trip_day3_inside_date_text);
 
         TripDay1 = findViewById(R.id.trip_day_1);
         TripDay2 = findViewById(R.id.trip_day_2);
+        TripDay3 = findViewById(R.id.trip_day_3);
         stopsLinearLayoutDay1 = findViewById(R.id.stops_linear_layout_day1);
         stopsLinearLayoutDay2 = findViewById(R.id.stops_linear_layout_day2);
+        stopsLinearLayoutDay3 = findViewById(R.id.stops_linear_layout_day3);
 
 
         // read trip ID from previous intent
@@ -134,6 +139,11 @@ public class TripScheduleActivity extends AppCompatActivity {
                 else if (trip_duration == 2){
                     loadActivities(tripId, stopsLinearLayoutDay1, "Day1");
                     loadActivities(tripId, stopsLinearLayoutDay2, "Day2");
+                }
+                else if (trip_duration == 3){
+                    loadActivities(tripId, stopsLinearLayoutDay1, "Day1");
+                    loadActivities(tripId, stopsLinearLayoutDay2, "Day2");
+                    loadActivities(tripId, stopsLinearLayoutDay3, "Day3");
                 }
 
 
@@ -228,6 +238,7 @@ public class TripScheduleActivity extends AppCompatActivity {
         if (trip_duration == 1){
             TripDay1.setVisibility(View.VISIBLE);
             TripDay2.setVisibility(View.GONE);
+            TripDay3.setVisibility(View.GONE);
             day1DateText.setText(allDates.get(0));
 
 
@@ -235,9 +246,18 @@ public class TripScheduleActivity extends AppCompatActivity {
         else if (trip_duration == 2){
             TripDay1.setVisibility(View.VISIBLE);
             TripDay2.setVisibility(View.VISIBLE);
+            TripDay3.setVisibility(View.GONE);
             day1DateText.setText(allDates.get(0));
             day2DateText.setText(allDates.get(1));
 
+        }
+        else if (trip_duration == 3){
+            TripDay1.setVisibility(View.VISIBLE);
+            TripDay2.setVisibility(View.VISIBLE);
+            TripDay3.setVisibility(View.VISIBLE);
+            day1DateText.setText(allDates.get(0));
+            day2DateText.setText(allDates.get(1));
+            day3DateText.setText(allDates.get(2));
         }
 
     }
@@ -273,6 +293,17 @@ public class TripScheduleActivity extends AppCompatActivity {
         );
         layoutParams.bottomMargin = (int) (15 * getResources().getDisplayMetrics().density); // Convert dp to pixels
         newLayout.setLayoutParams(layoutParams);
+
+        newLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TripScheduleActivity.this, StopActivity.class);
+                intent.putExtra("PLACE_NAME", placeName);
+                intent.putExtra("TIME_FROM", timeFrom);
+                intent.putExtra("TIME_TO", timeTo);
+                startActivity(intent);
+            }
+        });
 
         // Create an ImageView
         ImageView imageView = new ImageView(this);
