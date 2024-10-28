@@ -28,6 +28,7 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="day_after">In 2 days</string>
+    <string name="next_week">Next Week</string>
     <string name="details_none">You have no plans!</string>
 
     <!-- No trips -->
