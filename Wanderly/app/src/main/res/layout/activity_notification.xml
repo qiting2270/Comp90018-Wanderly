@@ -40,6 +40,7 @@
         android:layout_marginLeft="23dp"
         android:layout_marginTop="150dp"
         android:background="@drawable/frame5"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +51,7 @@
         android:layout_width="322dp"
         android:layout_height="68dp"
         android:layout_marginBottom="12dp"
-        android:text="TextView"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="@+id/notification_content"
         app:layout_constraintEnd_toEndOf="@+id/notification_content"
         app:layout_constraintStart_toStartOf="@+id/notification_content"
@@ -63,7 +64,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:text=""
+        app:layout_constraintStart_toStartOf="@+id/notification_content"
+        app:layout_constraintTop_toTopOf="@+id/notification_content" />
+
+    <TextView
+        android:id="@+id/notify_none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/trip_none"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/notification_content"
         app:layout_constraintTop_toTopOf="@+id/notification_content" />
 
