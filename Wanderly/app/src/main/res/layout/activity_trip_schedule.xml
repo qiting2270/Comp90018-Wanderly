@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/kulim_park"
-        android:text="MEL-SYD"
+        android:text="SYD - MEL"
         android:textColor="#3B5667"
         android:textSize="34sp"
         android:textStyle="bold"
