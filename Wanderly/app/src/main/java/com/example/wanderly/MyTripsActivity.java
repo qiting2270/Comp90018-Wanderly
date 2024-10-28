@@ -149,6 +149,18 @@ public class MyTripsActivity extends AppCompatActivity {
     private void addTripView(DataSnapshot tripSnapshot, String numberOfPeople) {
         View tripView = LayoutInflater.from(this).inflate(R.layout.trip_overview_template, null, false);
 
+        tripView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // pass the trip ID to schedule activity
+                Intent intent = new Intent(MyTripsActivity.this, TripScheduleActivity.class);
+                String tripId = tripSnapshot.getKey(); // Get the unique trip ID
+                intent.putExtra("TRIP_ID", tripId);
+                startActivity(intent);
+            }
+        });
+
+
         TextView tripStartDate = tripView.findViewById(R.id.trip_start_date);
         TextView tripEndDate = tripView.findViewById(R.id.trip_end_date);
         TextView tripFrom = tripView.findViewById(R.id.tripFrom_text);
