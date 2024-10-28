@@ -56,7 +56,6 @@ public class HomeActivity extends AppCompatActivity {
     LinearLayout mDotLayout;
     TextView[] dots;
     ViewPagerAdapter viewPagerAdapter;
-//    IFirebaseLoadDone iFirebaseLoadDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -281,7 +280,6 @@ public class HomeActivity extends AppCompatActivity {
     private void loadSchedule() {
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("User Information");
         DatabaseReference scheduleReference = FirebaseDatabase.getInstance().getReference("Trips");
-//        iFirebaseLoadDone = (IFirebaseLoadDone) this;
 
         userReference.child(currentUserId).child("email").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -395,7 +393,6 @@ public class HomeActivity extends AppCompatActivity {
 //                                    scheduleList.add(scheduleSnapshot.getValue(HomeSchedule.class));
 //                                    Log.d("2", "                    "+scheduleList.toString());
 //                                }
-//                                                     iFirebaseLoadDone.onFirebaseLoadSuccess(scheduleList);
 //                                DaySchedule schedule = new DaySchedule(days, dates, stops);
                                 onFirebaseLoadSuccess((List<HomeSchedule>) stops);
                             }
