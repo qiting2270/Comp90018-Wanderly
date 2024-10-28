@@ -438,7 +438,7 @@
             android:layout_height="56dp"
             app:layout_constraintBottom_toBottomOf="@+id/menu_background"
             app:layout_constraintEnd_toEndOf="@+id/menu_background"
-            app:layout_constraintHorizontal_bias="0.875"
+            app:layout_constraintHorizontal_bias="0.865"
             app:layout_constraintStart_toStartOf="@+id/menu_background"
             app:layout_constraintTop_toTopOf="@+id/menu_background"
             app:layout_constraintVertical_bias="0.69"

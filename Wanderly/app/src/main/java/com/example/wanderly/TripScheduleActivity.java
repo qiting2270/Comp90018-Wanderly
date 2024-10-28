@@ -9,6 +9,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,6 +56,9 @@ public class TripScheduleActivity extends AppCompatActivity {
     LinearLayout stopsLinearLayoutDay3;
 
     ImageView deleteBtn;
+    ConstraintLayout deletePopup;
+    private Button delete_cancelBtn;
+    private Button delete_confirmBtn;
 
 
     @Override
@@ -84,6 +88,9 @@ public class TripScheduleActivity extends AppCompatActivity {
         stopsLinearLayoutDay3 = findViewById(R.id.stops_linear_layout_day3);
 
         deleteBtn = findViewById(R.id.trip_schedule_delete_icon);
+        deletePopup = findViewById(R.id.delete_trip_pop_up);
+        delete_cancelBtn = findViewById(R.id.delete_cancel_btn);
+        delete_confirmBtn = findViewById(R.id.delete_confirm_btn);
 
 
         // read trip ID from previous intent
@@ -166,10 +173,22 @@ public class TripScheduleActivity extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                deletePopup.setVisibility(View.VISIBLE);
+            }
+        });
+
+        delete_confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 databaseReference.child("Trips").child(tripId).removeValue();
+                Toast.makeText(TripScheduleActivity.this, "Delete Trip Successful!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-                deleteSuccessDialog();
-
+        delete_cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deletePopup.setVisibility(View.GONE);
             }
         });
 
@@ -398,19 +417,7 @@ public class TripScheduleActivity extends AppCompatActivity {
         parentLayout.addView(newLayout);
     }
 
-    private void deleteSuccessDialog(){
-        AlertDialog.Builder dialog = new AlertDialog.Builder(TripScheduleActivity.this);
-        dialog.setMessage("Delete Trip Successful!");
-        dialog.setCancelable(true);
-        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(TripScheduleActivity.this, MyTripsActivity.class);
-                startActivity(intent);
-            }
-        });
-        dialog.show();
-    }
+
 
 
 
