@@ -1,16 +1,23 @@
 package com.example.wanderly;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class TripScheduleActivity extends AppCompatActivity {
     private String tripId = new String();
@@ -38,6 +46,10 @@ public class TripScheduleActivity extends AppCompatActivity {
 
     private int trip_duration;
     String departureDate = new String(), returnDate = new String();
+
+    LinearLayout stopsLinearLayoutDay1;
+    LinearLayout stopsLinearLayoutDay2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +71,8 @@ public class TripScheduleActivity extends AppCompatActivity {
 
         TripDay1 = findViewById(R.id.trip_day_1);
         TripDay2 = findViewById(R.id.trip_day_2);
+        stopsLinearLayoutDay1 = findViewById(R.id.stops_linear_layout_day1);
+        stopsLinearLayoutDay2 = findViewById(R.id.stops_linear_layout_day2);
 
 
         // read trip ID from previous intent
@@ -96,15 +110,11 @@ public class TripScheduleActivity extends AppCompatActivity {
                 String[] formattedReturnDate = DateFormatter.getDayAndMonth(returnDate);
                 String returnDay = formattedReturnDate[0];
                 String returnMonth = formattedReturnDate[1];
+
                 tripFromDay.setText(departureDay);
                 tripFromMonth.setText(departureMonth);
                 tripToDay.setText(returnDay);
                 tripToMonth.setText(returnMonth);
-
-                updateInsideLayout();
-
-
-
 
                 // search member through email, add member's profile image
                 for (DataSnapshot memberSnapshot : snapshot.child("Members").getChildren()) {
@@ -112,6 +122,18 @@ public class TripScheduleActivity extends AppCompatActivity {
                     if (email != null) {
                         addImageToLayout(email, memberLinearLayout);
                     }
+                }
+
+                updateInsideLayoutVisibilty();
+
+                // load trip activity data
+                if (trip_duration == 1){
+                    // load day 1 activity data from db to the linear layout
+                    loadActivities(tripId, stopsLinearLayoutDay1, "Day1");
+                }
+                else if (trip_duration == 2){
+                    loadActivities(tripId, stopsLinearLayoutDay1, "Day1");
+                    loadActivities(tripId, stopsLinearLayoutDay2, "Day2");
                 }
 
 
@@ -122,6 +144,16 @@ public class TripScheduleActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
+
+
+
+
+
+
 
     }
 
@@ -189,17 +221,16 @@ public class TripScheduleActivity extends AppCompatActivity {
         return (int) (dp * density);
     }
 
-    private void updateInsideLayout(){
+    private void updateInsideLayoutVisibilty(){
         // Get all dates including departure and subsequent ones based on the trip duration
         List<String> allDates = DateUtils.getSubsequentDates(departureDate, trip_duration);
-
-
 
         if (trip_duration == 1){
             TripDay1.setVisibility(View.VISIBLE);
             TripDay2.setVisibility(View.GONE);
-
             day1DateText.setText(allDates.get(0));
+
+
         }
         else if (trip_duration == 2){
             TripDay1.setVisibility(View.VISIBLE);
@@ -210,6 +241,117 @@ public class TripScheduleActivity extends AppCompatActivity {
         }
 
     }
+
+    // read activity from database
+    private void loadActivities(String tripId, LinearLayout parentLayout, String day) {
+        databaseReference.child("Trips").child(tripId).child("activities").child(day).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot activitySnapshot : dataSnapshot.getChildren()) {
+                    String placeName = activitySnapshot.child("placeName").getValue(String.class);
+                    String timeFrom = activitySnapshot.child("timeFrom").getValue(String.class);
+                    String timeTo = activitySnapshot.child("timeTo").getValue(String.class);
+
+                    addNewPlaceLayout(placeName, timeFrom, timeTo, parentLayout);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("DB_ERROR", "Failed to read activities", databaseError.toException());
+            }
+        });
+    }
+
+    // Function to add a new ConstraintLayout to the parent layout
+    private void addNewPlaceLayout(String placeName, String timeFrom, String timeTo, LinearLayout parentLayout) {
+        // Create a new ConstraintLayout
+        ConstraintLayout newLayout = new ConstraintLayout(this);
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.bottomMargin = (int) (15 * getResources().getDisplayMetrics().density); // Convert dp to pixels
+        newLayout.setLayoutParams(layoutParams);
+
+        // Create an ImageView
+        ImageView imageView = new ImageView(this);
+        int imageViewId = View.generateViewId();
+        imageView.setId(imageViewId);
+        if (Objects.equals(placeName, "Thai Town") || Objects.equals(placeName, "Billy‘s Central")
+                || Objects.equals(placeName, "Bornga") || Objects.equals(placeName, "Sweet Canteen")){
+            imageView.setImageResource(R.drawable.dining_icon);
+        }
+        else{
+            imageView.setImageResource(R.drawable.attraction_icon);
+        }
+
+        ConstraintLayout.LayoutParams imageLayoutParams = new ConstraintLayout.LayoutParams(
+                (int) (30 * getResources().getDisplayMetrics().density), // Convert dp to pixels
+                (int) (30 * getResources().getDisplayMetrics().density)  // Convert dp to pixels
+        );
+        imageView.setLayoutParams(imageLayoutParams);
+
+        // Add ImageView to ConstraintLayout
+        newLayout.addView(imageView);
+
+        // Create a TextView for place name
+        TextView placeTextView = new TextView(this);
+        int placeTextViewId = View.generateViewId();
+        placeTextView.setId(placeTextViewId);
+        placeTextView.setText(placeName);
+        placeTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        placeTextView.setTextColor(Color.parseColor("#3B5667"));
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.kulim_park); // Use ResourceCompat for compatibility
+        placeTextView.setTypeface(typeface);
+        ConstraintLayout.LayoutParams textLayoutParams = new ConstraintLayout.LayoutParams(
+                (int) (120 * getResources().getDisplayMetrics().density),
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        textLayoutParams.setMargins((int) (16 * getResources().getDisplayMetrics().density), 0, 0, 0); // Left margin
+        textLayoutParams.startToEnd = imageViewId;
+        textLayoutParams.topToTop = imageViewId;
+        textLayoutParams.bottomToBottom = imageViewId;
+        placeTextView.setLayoutParams(textLayoutParams);
+
+        // Add TextView to ConstraintLayout
+        newLayout.addView(placeTextView);
+
+        // Create the second TextView for the time
+        TextView timeTextView = new TextView(this);
+        int timeTextViewId = View.generateViewId();
+        timeTextView.setId(timeTextViewId);
+        timeTextView.setText(timeFrom + " - " + timeTo);
+        timeTextView.setTextColor(Color.parseColor("#3B5667"));
+        timeTextView.setTextSize(12);  // This uses SP
+        ConstraintLayout.LayoutParams timeLayoutParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        timeTextView.setLayoutParams(timeLayoutParams);
+
+
+        newLayout.addView(timeTextView);
+
+        // Set constraints using ConstraintSet
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(newLayout);
+        constraintSet.connect(imageViewId, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+        constraintSet.connect(imageViewId, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        constraintSet.connect(placeTextViewId, ConstraintSet.START, imageViewId, ConstraintSet.END, (int) (16 * getResources().getDisplayMetrics().density));
+        constraintSet.connect(placeTextViewId, ConstraintSet.TOP, imageViewId, ConstraintSet.TOP);
+        constraintSet.connect(placeTextViewId, ConstraintSet.BOTTOM, imageViewId, ConstraintSet.BOTTOM);
+        constraintSet.connect(timeTextViewId, ConstraintSet.START, placeTextViewId, ConstraintSet.END);
+        constraintSet.connect(timeTextViewId, ConstraintSet.TOP, placeTextViewId, ConstraintSet.TOP);
+        constraintSet.connect(timeTextViewId, ConstraintSet.BOTTOM, placeTextViewId, ConstraintSet.BOTTOM);
+        constraintSet.connect(timeTextViewId, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);  // Add 0 margin
+        constraintSet.applyTo(newLayout);
+
+
+        // Add the new ConstraintLayout to the parent layout
+        parentLayout.addView(newLayout);
+    }
+
+
+
 
 
 
