@@ -5,6 +5,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
@@ -25,6 +26,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +41,8 @@ import com.google.firebase.storage.UploadTask;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 public class StopActivity extends AppCompatActivity {
@@ -64,6 +68,7 @@ public class StopActivity extends AppCompatActivity {
     private FirebaseAuth auth;
 
     ImageView stop_uploadImageBtn;
+    private ArrayList<String> posts_list = new ArrayList<>();
 
     /*
     private String timeFrom = new String();
@@ -84,6 +89,7 @@ public class StopActivity extends AppCompatActivity {
             }
         }
     });
+    
 
 
     @Override
@@ -162,11 +168,67 @@ public class StopActivity extends AppCompatActivity {
         });
 
 
+        // fetch images from database and display it in the gridlayout.
+        databaseReference.child("Trips").child(tripID).child("activities").child(day).child(stopID).child("stop_images").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                posts_list.clear();
+
+                // keep the first element
+                for (int i = gridLayout.getChildCount() - 1; i > 0; i--) {
+                    View child = gridLayout.getChildAt(i);
+                    gridLayout.removeView(child);
+                }
+
+                for(DataSnapshot data : snapshot.getChildren()){
+                    // add each image url in the list.
+                    posts_list.add(Objects.requireNonNull(data.getValue()).toString());
+                }
+                addImagesInLayout();
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
 
 
 
 
     }
+
+    private void addImagesInLayout() {
+        if (!isFinishing() && !isDestroyed()) {  // Ensure activity is still running
+            for (String url : posts_list) {
+                ImageView imageView = new ImageView(StopActivity.this);
+
+                int widthInDp = 118;
+                int heightInDp = 118;
+                int widthInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthInDp, getResources().getDisplayMetrics());
+                int heightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, heightInDp, getResources().getDisplayMetrics());
+
+                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                params.width = widthInPx;
+                params.height = heightInPx;
+                int marginInDp = 5;
+                int marginInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginInDp, getResources().getDisplayMetrics());
+                params.setMargins(marginInPx, marginInPx, marginInPx, marginInPx);
+
+                imageView.setLayoutParams(params);
+                Glide.with(StopActivity.this).load(url).into(imageView);
+                gridLayout.addView(imageView);
+            }
+        } else {
+            Log.d("GlideError", "Activity is either finishing or destroyed, not loading image.");
+        }
+    }
+
 
     private void uploadImage(Uri image) {
         StorageReference fileRef = FirebaseStorage.getInstance().getReference("Uploads").child("images/" + UUID.randomUUID().toString());
@@ -178,7 +240,6 @@ public class StopActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         String imageUrl = uri.toString();
-                        Log.d("urllink", imageUrl);
                         // save url to real time database
                         saveUrlToDB(imageUrl);
                         dismissProgressDialog();

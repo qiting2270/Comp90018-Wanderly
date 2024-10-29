@@ -263,7 +263,7 @@ public class MyProfileActivity extends AppCompatActivity {
         });
 
 
-        // access db
+        // access db display relevant user info and posts
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User Information");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -306,7 +306,7 @@ public class MyProfileActivity extends AppCompatActivity {
                         }
                     }
                 }
-
+                //loop the list, display images under posts.
                 for (String url : posts_list){
                     // display all images under posts (gridlayout).
                     ImageView imageView = new ImageView(MyProfileActivity.this);
