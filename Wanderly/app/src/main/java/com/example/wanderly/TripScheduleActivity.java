@@ -309,9 +309,9 @@ public class TripScheduleActivity extends AppCompatActivity {
                     String placeName = activitySnapshot.child("placeName").getValue(String.class);
                     String timeFrom = activitySnapshot.child("timeFrom").getValue(String.class);
                     String timeTo = activitySnapshot.child("timeTo").getValue(String.class);
-                    String activity_ID = activitySnapshot.getKey();
+                    String stop_ID = activitySnapshot.getKey();
 
-                    addNewPlaceLayout(placeName, timeFrom, timeTo, parentLayout, day, activity_ID);
+                    addNewPlaceLayout(placeName, timeFrom, timeTo, parentLayout, day, stop_ID);
                 }
             }
 
@@ -323,7 +323,7 @@ public class TripScheduleActivity extends AppCompatActivity {
     }
 
     // Function to add a new ConstraintLayout to the parent layout
-    private void addNewPlaceLayout(String placeName, String timeFrom, String timeTo, LinearLayout parentLayout, String day, String activity_ID) {
+    private void addNewPlaceLayout(String placeName, String timeFrom, String timeTo, LinearLayout parentLayout, String day, String stopID) {
         // Create a new ConstraintLayout
         ConstraintLayout newLayout = new ConstraintLayout(this);
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
@@ -337,9 +337,10 @@ public class TripScheduleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TripScheduleActivity.this, StopActivity.class);
-                intent.putExtra("activity_ID", activity_ID);
+                intent.putExtra("stopID", stopID);
                 intent.putExtra("placeName", placeName);
                 intent.putExtra("day", day);
+                intent.putExtra("tripID", tripId);
                 /*
                 intent.putExtra("timeFrom", timeFrom);
                 intent.putExtra("timeTo", timeTo);

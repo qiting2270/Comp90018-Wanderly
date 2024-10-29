@@ -108,6 +108,7 @@
             app:layout_constraintTop_toBottomOf="@+id/stop_text_description" />
 
         <GridLayout
+            android:id="@+id/stop_grid_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -121,7 +122,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView39">
 
             <ImageView
-                android:id="@+id/imageView28"
+                android:id="@+id/stop_upload_image_btn"
                 android:layout_width="118dp"
                 android:layout_height="118dp"
                 android:layout_margin="5dp"
@@ -133,25 +134,6 @@
                 android:layout_height="118dp"
                 android:layout_margin="5dp"
                 tools:srcCompat="@tools:sample/avatars" />
-            <ImageView
-                android:id="@+id/imageView30"
-                android:layout_width="118dp"
-                android:layout_height="118dp"
-                android:layout_margin="5dp"
-                tools:srcCompat="@tools:sample/avatars" />
-            <ImageView
-                android:id="@+id/imageView29"
-                android:layout_width="118dp"
-                android:layout_height="118dp"
-                android:layout_margin="5dp"
-                tools:srcCompat="@tools:sample/avatars" />
-            <ImageView
-                android:id="@+id/imageView29"
-                android:layout_width="118dp"
-                android:layout_height="118dp"
-                android:layout_margin="5dp"
-                tools:srcCompat="@tools:sample/avatars" />
-
 
 
         </GridLayout>
