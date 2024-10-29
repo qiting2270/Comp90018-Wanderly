@@ -26,39 +26,30 @@
             app:srcCompat="@drawable/back_button" />
 
         <TextView
-            android:id="@+id/stop_day_text"
-            android:layout_width="wrap_content"
+            android:id="@+id/stop_place_name"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/kulim_park"
-            android:text="Day 1"
-            android:textSize="20sp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#3B5667"
+            android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="@+id/back_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/back_icon" />
-
-        <TextView
-            android:id="@+id/stop_place_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/kulim_park"
-            android:text="Indigo"
-            android:textColor="#3B5667"
-            android:textSize="36sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/back_icon" />
+            app:layout_constraintTop_toTopOf="@+id/back_icon"
+            app:layout_constraintVertical_bias="0.0" />
 
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/stop_ratingbar"
             android:layout_width="245dp"
             android:layout_height="49dp"
-            android:numStars="5"
-            android:stepSize="0.1"
+            android:layout_marginTop="24dp"
             android:isIndicator="true"
+            android:numStars="5"
             android:scaleX="0.5"
             android:scaleY="0.5"
+            android:stepSize="0.1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/stop_place_name" />
@@ -72,8 +63,9 @@
             android:layout_marginEnd="24dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mapView" />
+            app:layout_constraintTop_toBottomOf="@+id/get_direction_btn" />
 
         <TextView
             android:id="@+id/textView37"
@@ -168,11 +160,11 @@
             android:id="@+id/mapView"
             android:layout_width="365dp"
             android:layout_height="162dp"
-
-
+            android:background="#D9EFCC"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+            app:layout_constraintTop_toBottomOf="@+id/stop_ratingbar" />
 
         <ImageView
             android:id="@+id/stop_save_Btn"
@@ -181,10 +173,25 @@
             android:layout_marginEnd="32dp"
             app:layout_constraintBottom_toBottomOf="@+id/back_icon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/stop_day_text"
             app:layout_constraintTop_toTopOf="@+id/back_icon"
             app:srcCompat="@drawable/unsaved_icon" />
+
+        <Button
+            android:id="@+id/get_direction_btn"
+            android:layout_width="155dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_background"
+            app:backgroundTint="#ECB35E"
+            android:text="Get Direction"
+            android:textColor="@color/black"
+            android:fontFamily="@font/kulim_park"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mapView" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

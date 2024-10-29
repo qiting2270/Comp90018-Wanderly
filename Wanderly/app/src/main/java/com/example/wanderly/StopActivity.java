@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -25,16 +26,18 @@ import org.w3c.dom.Text;
 public class StopActivity extends AppCompatActivity {
     private String activity_ID = new String();
     private String placeName = new String();
-    private String dayNum = new String();
+    //private String dayNum = new String();
 
     private TextView stopPlaceName;
     private ImageView stop_save_btn;
-    private TextView DayText;
+    //private TextView DayText;
 
     private TextView stopTextDescription;
     private String textDescription;
 
     private DatabaseReference databaseReference;
+    RatingBar stopRating;
+    private float rating;
 
     /*
     private String timeFrom = new String();
@@ -49,14 +52,15 @@ public class StopActivity extends AppCompatActivity {
 
         placeName = getIntent().getStringExtra("placeName");
         activity_ID = getIntent().getStringExtra("activity_ID");
-        dayNum = getIntent().getStringExtra("day");
+        //dayNum = getIntent().getStringExtra("day");
 
         stopPlaceName = findViewById(R.id.stop_place_name);
         stop_save_btn = findViewById(R.id.stop_save_Btn);
-        DayText = findViewById(R.id.stop_day_text);
         stopTextDescription = findViewById(R.id.stop_text_description);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        stopRating = findViewById(R.id.stop_ratingbar);
 
 
         //back icon logic
@@ -70,7 +74,7 @@ public class StopActivity extends AppCompatActivity {
         });
 
         stopPlaceName.setText(placeName);
-        DayText.setText(dayNum);
+
 
         // display description of the place from database
         databaseReference.child("Stops").orderByChild("name").equalTo(placeName).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -79,12 +83,16 @@ public class StopActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()){
                     for (DataSnapshot snapShot : dataSnapshot.getChildren()) {
                         textDescription = snapShot.child("description").getValue(String.class);
+                        rating = snapShot.child("rating").getValue(float.class);
+                        stopRating.setRating(rating);
+
                         if (textDescription != null){
                             stopTextDescription.setText(textDescription);
                         }
                         else{
                             stopTextDescription.setText("Description not available.");
                         }
+
 
                     }
 

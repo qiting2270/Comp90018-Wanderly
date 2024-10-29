@@ -760,7 +760,7 @@ public class AddTripActivity extends AppCompatActivity {
         ImageView imageView = new ImageView(this);
         int imageViewId = View.generateViewId();
         imageView.setId(imageViewId);
-        if (Objects.equals(placeName, "Thai Town") || Objects.equals(placeName, "Billy‘s Central")
+        if (Objects.equals(placeName, "Thai Town") || Objects.equals(placeName, "Billy's Central")
         || Objects.equals(placeName, "Bornga") || Objects.equals(placeName, "Sweet Canteen")){
             imageView.setImageResource(R.drawable.dining_icon);
         }
