@@ -274,21 +274,29 @@ public class MyProfileActivity extends AppCompatActivity {
                     // display all images under posts (gridlayout).
                     ImageView imageView = new ImageView(MyProfileActivity.this);
 
-                    int widthInDp = 118;
                     int heightInDp = 118;
                     // Convert dp to pixels programmatically
-                    int widthInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthInDp, getResources().getDisplayMetrics());
                     int heightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, heightInDp, getResources().getDisplayMetrics());
                     // Create LayoutParams
                     GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                    params.width = widthInPx;
+                    params.width = 0;
                     params.height = heightInPx;
                     // Set margins (5dp converted to pixels)
                     int marginInDp = 5;
                     int marginInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginInDp, getResources().getDisplayMetrics());
                     params.setMargins(marginInPx, marginInPx, marginInPx, marginInPx);
 
+
+                    // Specify the row and column index, and column weight
+                    int columnIndex = gridLayout.getChildCount() % 3; // Assuming 3 columns, modify if your column count is different
+                    GridLayout.Spec rowSpec = GridLayout.spec(GridLayout.UNDEFINED);
+                    GridLayout.Spec colSpec = GridLayout.spec(columnIndex, 1.0f); // Use a weight of 1 for even distribution
+
+                    params.rowSpec = rowSpec;
+                    params.columnSpec = colSpec;
+
                     imageView.setLayoutParams(params);
+
                     // Set scale type
                     imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                     //load img to ImageView

@@ -123,16 +123,18 @@
 
             <ImageView
                 android:id="@+id/stop_upload_image_btn"
-                android:layout_width="118dp"
+                android:layout_width="0dp"
                 android:layout_height="118dp"
                 android:layout_margin="5dp"
+                android:layout_columnWeight="1"
                 app:srcCompat="@drawable/photo_icon" />
 
             <ImageView
                 android:id="@+id/imageView29"
-                android:layout_width="118dp"
+                android:layout_width="0dp"
                 android:layout_height="118dp"
                 android:layout_margin="5dp"
+                android:layout_columnWeight="1"
                 tools:srcCompat="@tools:sample/avatars" />
 
 

@@ -279,17 +279,23 @@ public class StopActivity extends AppCompatActivity {
             for (String url : posts_list) {
                 ImageView imageView = new ImageView(StopActivity.this);
 
-                int widthInDp = 118;
                 int heightInDp = 118;
-                int widthInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthInDp, getResources().getDisplayMetrics());
                 int heightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, heightInDp, getResources().getDisplayMetrics());
 
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.width = widthInPx;
+                params.width = 0;
                 params.height = heightInPx;
                 int marginInDp = 5;
                 int marginInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, marginInDp, getResources().getDisplayMetrics());
                 params.setMargins(marginInPx, marginInPx, marginInPx, marginInPx);
+
+                // Specify the row and column index, and column weight
+                int columnIndex = gridLayout.getChildCount() % 3; // Assuming 3 columns, modify if your column count is different
+                GridLayout.Spec rowSpec = GridLayout.spec(GridLayout.UNDEFINED);
+                GridLayout.Spec colSpec = GridLayout.spec(columnIndex, 1.0f); // Use a weight of 1 for even distribution
+
+                params.rowSpec = rowSpec;
+                params.columnSpec = colSpec;
 
                 imageView.setLayoutParams(params);
                 // Set scale type
