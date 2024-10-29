@@ -292,6 +292,8 @@ public class StopActivity extends AppCompatActivity {
                 params.setMargins(marginInPx, marginInPx, marginInPx, marginInPx);
 
                 imageView.setLayoutParams(params);
+                // Set scale type
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 Glide.with(StopActivity.this).load(url).into(imageView);
                 gridLayout.addView(imageView);
             }

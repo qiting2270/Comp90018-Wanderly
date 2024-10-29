@@ -289,6 +289,8 @@ public class MyProfileActivity extends AppCompatActivity {
                     params.setMargins(marginInPx, marginInPx, marginInPx, marginInPx);
 
                     imageView.setLayoutParams(params);
+                    // Set scale type
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                     //load img to ImageView
                     Glide.with(MyProfileActivity.this).load(url).into(imageView);
 
