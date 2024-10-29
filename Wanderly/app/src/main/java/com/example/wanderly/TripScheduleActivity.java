@@ -182,6 +182,9 @@ public class TripScheduleActivity extends AppCompatActivity {
             public void onClick(View view) {
                 databaseReference.child("Trips").child(tripId).removeValue();
                 Toast.makeText(TripScheduleActivity.this, "Delete Trip Successful!", Toast.LENGTH_SHORT).show();
+                // navigate back to My Trip page.
+                Intent intent = new Intent(TripScheduleActivity.this, MyTripsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -306,8 +309,9 @@ public class TripScheduleActivity extends AppCompatActivity {
                     String placeName = activitySnapshot.child("placeName").getValue(String.class);
                     String timeFrom = activitySnapshot.child("timeFrom").getValue(String.class);
                     String timeTo = activitySnapshot.child("timeTo").getValue(String.class);
+                    String activity_ID = activitySnapshot.getKey();
 
-                    addNewPlaceLayout(placeName, timeFrom, timeTo, parentLayout, day);
+                    addNewPlaceLayout(placeName, timeFrom, timeTo, parentLayout, day, activity_ID);
                 }
             }
 
@@ -319,7 +323,7 @@ public class TripScheduleActivity extends AppCompatActivity {
     }
 
     // Function to add a new ConstraintLayout to the parent layout
-    private void addNewPlaceLayout(String placeName, String timeFrom, String timeTo, LinearLayout parentLayout, String day) {
+    private void addNewPlaceLayout(String placeName, String timeFrom, String timeTo, LinearLayout parentLayout, String day, String activity_ID) {
         // Create a new ConstraintLayout
         ConstraintLayout newLayout = new ConstraintLayout(this);
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
@@ -333,10 +337,13 @@ public class TripScheduleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TripScheduleActivity.this, StopActivity.class);
+                intent.putExtra("activity_ID", activity_ID);
                 intent.putExtra("placeName", placeName);
+                intent.putExtra("day", day);
+                /*
                 intent.putExtra("timeFrom", timeFrom);
                 intent.putExtra("timeTo", timeTo);
-                intent.putExtra("day", day);
+                */
                 startActivity(intent);
             }
         });

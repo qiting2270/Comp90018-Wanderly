@@ -705,7 +705,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/kulim_park"
-                        android:text="Billy‘s Central"
+                        android:text="Billy's Central"
                         android:textSize="15sp"
                         tools:layout_editor_absoluteX="6dp"
                         tools:layout_editor_absoluteY="42dp" />
@@ -777,7 +777,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/kulim_park"
-                        android:text="National Gallery of Victoria"
+                        android:text="National Gallery Victoria"
                         android:textSize="15sp"
                         tools:layout_editor_absoluteX="6dp"
                         tools:layout_editor_absoluteY="42dp" />
