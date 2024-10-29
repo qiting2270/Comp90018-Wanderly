@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +40,7 @@ import com.bumptech.glide.Glide;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -60,12 +63,10 @@ public class MyProfileActivity extends AppCompatActivity {
     private ImageView addImageBtn;
     private GridLayout gridLayout;
     private ScrollView savedPageLayout;
-    private TextView savedPageBtn;
-    private TextView postPageBtn;
-    private ImageView saveBtnUnderline;
-    private ImageView postBtnUnderline;
+    private TextView savedPageBtn, postPageBtn;
+    private ImageView saveBtnUnderline, postBtnUnderline;
 
-    private TextView postNum;
+    private TextView postNum, tripNum;
 
     Uri image;
     AlertDialog progressDialog;
@@ -73,6 +74,14 @@ public class MyProfileActivity extends AppCompatActivity {
     private String currentUserId;
 
     private ArrayList<String> posts_list = new ArrayList<>();
+
+    List<String> savedList;
+
+    private String savedName, savedDesc;
+    private float savedRating;
+    RatingBar savedRating1, savedRating2, savedRating3;
+    private TextView savedName1, savedDesc1, savedName2, savedDesc2, savedName3, savedDesc3;
+    ConstraintLayout saved1, saved2, saved3;
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -129,6 +138,23 @@ public class MyProfileActivity extends AppCompatActivity {
         saveBtnUnderline = findViewById(R.id.my_profile_saved_btn_underline);
         postBtnUnderline = findViewById(R.id.my_profile_post_btn_underline);
         postNum = findViewById(R.id.my_profile_postNum);
+        tripNum = findViewById(R.id.my_profile_tripNum);
+
+        saved1 = findViewById(R.id.saved1);
+        savedName1 = findViewById(R.id.saved_name1);
+        savedRating1 = findViewById(R.id.saved_rating1);
+        savedDesc1 = findViewById(R.id.saved_desc1);
+        saved2 = findViewById(R.id.saved2);
+        savedName2 = findViewById(R.id.saved_name2);
+        savedRating2 = findViewById(R.id.saved_rating2);
+        savedDesc2 = findViewById(R.id.saved_desc2);
+        saved3 = findViewById(R.id.saved3);
+        savedName3 = findViewById(R.id.saved_name3);
+        savedRating3 = findViewById(R.id.saved_rating3);
+        savedDesc3 = findViewById(R.id.saved_desc3);
+
+        // display number of trips
+        findTrips();
 
         addImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,6 +225,29 @@ public class MyProfileActivity extends AppCompatActivity {
                 gridLayout.setVisibility(View.GONE);
                 saveBtnUnderline.setVisibility(View.VISIBLE);
                 postBtnUnderline.setVisibility(View.GONE);
+
+                // get user saved list
+                DatabaseReference reference_saved = FirebaseDatabase.getInstance().getReference();
+                reference_saved.child("User Information").child(currentUserId).child("saved")
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                savedList = new ArrayList<>();
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    // store all of user's saved places to 'saved'
+                                    String savedValue = snapshot.child("stop_name").getValue(String.class);
+                                    if (savedValue != null) {
+                                        savedList.add(savedValue);
+                                    }
+                                }
+                                fetchSaved();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
             }
         });
 
@@ -212,8 +261,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 postBtnUnderline.setVisibility(View.VISIBLE);
             }
         });
-
-
 
 
         // access db
@@ -252,6 +299,11 @@ public class MyProfileActivity extends AppCompatActivity {
                         }
                         // update the post number
                         postNum.setText(posts_list.size() + " posts");
+                        if (posts_list.size() <= 2) {
+                            postNum.setText(posts_list.size() + " post");
+                        } else {
+                            postNum.setText(posts_list.size() + " posts");
+                        }
                     }
                 }
 
@@ -288,6 +340,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
+
         shareProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -298,12 +351,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(shareIntent, "Share Link"));
             }
         });
-
-
-
-
-
-
     }
 
     private void uploadImage(Uri image) {
@@ -362,5 +409,107 @@ public class MyProfileActivity extends AppCompatActivity {
         }
     }
 
+    // get saved details
+    public void fetchSaved() {
+        DatabaseReference reference_saved = FirebaseDatabase.getInstance().getReference("Stops");
+        reference_saved.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int count = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (count >= 3) break; // only want first three
+
+                    savedName = snapshot.child("name").getValue(String.class);
+                    savedDesc = snapshot.child("description").getValue(String.class);
+                    savedRating = snapshot.child("rating").getValue(Float.class);
+
+                    Log.d("1", "           "+savedList.toString());
+                    Log.d("2", "           "+savedName);
+                    for (String saved : savedList) {
+                        if (saved.equals(savedName)) {
+                            Log.d("3", "                 CONTAINS");
+                            if (count == 0) {
+                                saved1.setVisibility(View.VISIBLE);
+                                savedName1.setText(savedName);
+                                savedDesc1.setText(savedDesc);
+                                savedRating1.setRating(savedRating);
+
+                            } else if (count == 1) {
+                                saved2.setVisibility(View.VISIBLE);
+                                savedName2.setText(savedName);
+                                savedDesc2.setText(savedDesc);
+                                savedRating2.setRating(savedRating);
+
+                            } else if (count == 2) {
+                                saved3.setVisibility(View.VISIBLE);
+                                savedName3.setText(savedName);
+                                savedDesc3.setText(savedDesc);
+                                savedRating3.setRating(savedRating);
+
+                            }
+                            count++;
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void findTrips() {
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("User Information");
+        DatabaseReference scheduleReference = FirebaseDatabase.getInstance().getReference("Trips");
+
+        userReference.child(currentUserId).child("email").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot userSnapshot) {
+                if (userSnapshot.exists()) {
+                    String userEmail = userSnapshot.getValue(String.class);
+
+                    // Perform the trip retrieval in parallel to reduce delay
+                    new Thread(() -> {
+                        scheduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                int count = 0;
+                                for (DataSnapshot tripSnapshot : snapshot.getChildren()) {
+                                    String tid = tripSnapshot.getKey();
+                                    DataSnapshot membersSnapshot = tripSnapshot.child("Members");
+                                    for (DataSnapshot memberSnapshot : membersSnapshot.getChildren()) {
+                                        String tripEmail = memberSnapshot.child("email").getValue(String.class);
+                                        if (userEmail != null && userEmail.equals(tripEmail)) {
+                                            count++;
+                                        }
+                                    }
+                                    // update the trips number
+                                    if (count <= 2) {
+                                        tripNum.setText(count + " trip");
+                                    } else {
+                                        tripNum.setText(count + " trips");
+                                    }
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }).start();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 }
