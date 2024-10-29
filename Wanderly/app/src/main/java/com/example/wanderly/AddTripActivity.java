@@ -280,11 +280,12 @@ public class AddTripActivity extends AppCompatActivity {
         ArrayList<String> arrayListWhereTo = new ArrayList<>();
         arrayListWhereTo.add("Where To");
         arrayListWhereTo.add("Melbourne");
+        /*
         arrayListWhereTo.add("Sydney");
         arrayListWhereTo.add("Canberra");
         arrayListWhereTo.add("Perth");
         arrayListWhereTo.add("Gold Coast");
-        arrayListWhereTo.add("Brisbane");
+        arrayListWhereTo.add("Brisbane");*/
 
         ArrayAdapter<String> adapterWhereTo = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayListWhereTo);
         adapterWhereTo.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
