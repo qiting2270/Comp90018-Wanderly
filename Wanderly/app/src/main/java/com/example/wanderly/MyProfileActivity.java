@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -75,13 +76,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
     private ArrayList<String> posts_list = new ArrayList<>();
 
-    List<String> savedList;
 
-    private String savedName, savedDesc;
-    private float savedRating;
-    RatingBar savedRating1, savedRating2, savedRating3;
-    private TextView savedName1, savedDesc1, savedName2, savedDesc2, savedName3, savedDesc3;
-    ConstraintLayout saved1, saved2, saved3;
+
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -140,18 +136,7 @@ public class MyProfileActivity extends AppCompatActivity {
         postNum = findViewById(R.id.my_profile_postNum);
         tripNum = findViewById(R.id.my_profile_tripNum);
 
-        saved1 = findViewById(R.id.saved1);
-        savedName1 = findViewById(R.id.saved_name1);
-        savedRating1 = findViewById(R.id.saved_rating1);
-        savedDesc1 = findViewById(R.id.saved_desc1);
-        saved2 = findViewById(R.id.saved2);
-        savedName2 = findViewById(R.id.saved_name2);
-        savedRating2 = findViewById(R.id.saved_rating2);
-        savedDesc2 = findViewById(R.id.saved_desc2);
-        saved3 = findViewById(R.id.saved3);
-        savedName3 = findViewById(R.id.saved_name3);
-        savedRating3 = findViewById(R.id.saved_rating3);
-        savedDesc3 = findViewById(R.id.saved_desc3);
+
 
         // display number of trips
         findTrips();
@@ -226,28 +211,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 saveBtnUnderline.setVisibility(View.VISIBLE);
                 postBtnUnderline.setVisibility(View.GONE);
 
-                // get user saved list
-                DatabaseReference reference_saved = FirebaseDatabase.getInstance().getReference();
-                reference_saved.child("User Information").child(currentUserId).child("saved")
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                savedList = new ArrayList<>();
-                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    // store all of user's saved places to 'saved'
-                                    String savedValue = snapshot.child("stop_name").getValue(String.class);
-                                    if (savedValue != null) {
-                                        savedList.add(savedValue);
-                                    }
-                                }
-                                fetchSaved();
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                            }
-                        });
             }
         });
 
@@ -351,6 +314,10 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(shareIntent, "Share Link"));
             }
         });
+
+        addSavedStops();
+
+
     }
 
     private void uploadImage(Uri image) {
@@ -384,7 +351,6 @@ public class MyProfileActivity extends AppCompatActivity {
         });
     }
 
-
     private void saveUrlToDB(String imageUrl) {
         // get user id
         String userId = auth.getCurrentUser().getUid();
@@ -407,58 +373,6 @@ public class MyProfileActivity extends AppCompatActivity {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-    }
-
-    // get saved details
-    public void fetchSaved() {
-        DatabaseReference reference_saved = FirebaseDatabase.getInstance().getReference("Stops");
-        reference_saved.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int count = 0;
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    if (count >= 3) break; // only want first three
-
-                    savedName = snapshot.child("name").getValue(String.class);
-                    savedDesc = snapshot.child("description").getValue(String.class);
-                    savedRating = snapshot.child("rating").getValue(Float.class);
-
-                    Log.d("1", "           "+savedList.toString());
-                    Log.d("2", "           "+savedName);
-                    for (String saved : savedList) {
-                        if (saved.equals(savedName)) {
-                            Log.d("3", "                 CONTAINS");
-                            if (count == 0) {
-                                saved1.setVisibility(View.VISIBLE);
-                                savedName1.setText(savedName);
-                                savedDesc1.setText(savedDesc);
-                                savedRating1.setRating(savedRating);
-
-                            } else if (count == 1) {
-                                saved2.setVisibility(View.VISIBLE);
-                                savedName2.setText(savedName);
-                                savedDesc2.setText(savedDesc);
-                                savedRating2.setRating(savedRating);
-
-                            } else if (count == 2) {
-                                saved3.setVisibility(View.VISIBLE);
-                                savedName3.setText(savedName);
-                                savedDesc3.setText(savedDesc);
-                                savedRating3.setRating(savedRating);
-
-                            }
-                            count++;
-                        }
-
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     private void findTrips() {
@@ -511,5 +425,68 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void addSavedStops() {
+        LinearLayout parentLayout = findViewById(R.id.my_profile_saved_linearLayout);
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        // check if current user_id is in the stop which means user have saved that stop
+        DatabaseReference stopsRef = FirebaseDatabase.getInstance().getReference("Stops");
+        stopsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot stopSnapshot : dataSnapshot.getChildren()) {
+                    DataSnapshot savedUsers = stopSnapshot.child("saved_user");
+                    for (DataSnapshot userSnapshot : savedUsers.getChildren()) {
+                        String userID = userSnapshot.child("userID").getValue(String.class);
+                        if (currentUserId.equals(userID)) {
+                            // Inflate and add the layout
+                            View customView = inflater.inflate(R.layout.my_profile_saved_inside_layout, parentLayout, false);
+                            updateStopInfo(customView, stopSnapshot);
+
+                            // click the view to navigate to stop detail page.
+                            customView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(MyProfileActivity.this, StopActivity.class);
+                                    //send info
+                                    intent.putExtra("tripID", userSnapshot.child("tripID").getValue(String.class));
+                                    intent.putExtra("ActivityID", userSnapshot.child("ActivityID").getValue(String.class));
+                                    intent.putExtra("placeName", stopSnapshot.child("name").getValue(String.class));
+                                    intent.putExtra("day", userSnapshot.child("day").getValue(String.class));
+                                    startActivity(intent);
+                                }
+                            });
+
+
+                            parentLayout.addView(customView);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("DBError", "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+    private void updateStopInfo(View view, DataSnapshot stopSnapshot) {
+        TextView nameText = view.findViewById(R.id.saved_name);
+        TextView descText = view.findViewById(R.id.saved_desc);
+        RatingBar ratingBar = view.findViewById(R.id.saved_rating);
+
+        String name = stopSnapshot.child("name").getValue(String.class);
+        String description = stopSnapshot.child("description").getValue(String.class);
+        Float rating = stopSnapshot.child("rating").getValue(Float.class);
+
+        nameText.setText(name);
+        descText.setText(description);
+        if (rating != null) {
+            ratingBar.setRating(rating);
+        }
+    }
+
 
 }

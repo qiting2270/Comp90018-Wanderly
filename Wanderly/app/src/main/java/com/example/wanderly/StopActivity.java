@@ -215,12 +215,16 @@ public class StopActivity extends AppCompatActivity {
         });
 
 
-        //save stop to db:
+        //save user_id in db under Stops:
         stop_save_btn_unsaved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 HashMap<String, Object> savedUserMap = new HashMap<>();
                 savedUserMap.put("userID", currentUserId);
+                savedUserMap.put("tripID", tripID);
+                savedUserMap.put("ActivityID", ActivityID);
+                savedUserMap.put("placeName", placeName);
+                savedUserMap.put("day", day);
 
                 databaseReference.child("Stops").child(stopID).child("saved_user").push().setValue(savedUserMap);
 
