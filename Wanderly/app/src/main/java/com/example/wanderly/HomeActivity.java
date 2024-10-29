@@ -48,8 +48,7 @@ public class HomeActivity extends AppCompatActivity {
     private String userLastName, userFirstname,
             foodName, foodDesc, attrName, attrDesc;
     private float foodRating, attrRating;
-    RatingBar recRating1, recRating2, recRating3,
-            attrRating1, attrRating2, attrRating3;
+    RatingBar recRating1, recRating2, recRating3;
     List<String> savedList;
 
     ViewPager mSlideViewPager;
@@ -351,8 +350,6 @@ public class HomeActivity extends AppCompatActivity {
                                 for (DataSnapshot activitySnapshot : activitiesSnapshot.getChildren()) {
                                     for (DataSnapshot daySnapshot : activitySnapshot.getChildren()) {
                                         String did = daySnapshot.getKey();
-                                        Log.d("xxxxxxx", "              " + did);
-
                                     }
 
                                     // get day of the trip
