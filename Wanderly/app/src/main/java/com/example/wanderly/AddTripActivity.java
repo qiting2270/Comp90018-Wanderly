@@ -739,6 +739,7 @@ public class AddTripActivity extends AppCompatActivity {
         DayHashMap.put("type", (Objects.equals(placeName, "Thai Town") || Objects.equals(placeName, "Billy‘s Central") || Objects.equals(placeName, "Bornga") || Objects.equals(placeName, "Sweet Canteen")) ? "restaurant" : "attraction");
         DayHashMap.put("timeFrom", addstop_selectedTimeFrom);
         DayHashMap.put("timeTo", addstop_selectedTimeTo);
+        //DayHashMap.put("saved", false);
 
         // Save the activity details immediately to Firebase under the specified trip and day
         databaseReference.child("Trips").child(uniqueTripId).child("activities").child("Day"+tripDay).push().setValue(DayHashMap)

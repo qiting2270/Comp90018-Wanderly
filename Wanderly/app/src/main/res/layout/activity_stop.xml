@@ -153,10 +153,22 @@
             android:layout_width="30dp"
             android:layout_height="38dp"
             android:layout_marginEnd="32dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/back_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/back_icon"
             app:srcCompat="@drawable/unsaved_icon" />
+
+        <ImageView
+            android:id="@+id/stop_save_Btn_saved"
+            android:visibility="gone"
+            android:layout_width="30dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/back_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/back_icon"
+            app:srcCompat="@drawable/saved_icon" />
 
         <Button
             android:id="@+id/get_direction_btn"

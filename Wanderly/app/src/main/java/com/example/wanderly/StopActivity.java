@@ -1,7 +1,6 @@
 package com.example.wanderly;
 
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,9 +21,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,20 +35,20 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
 public class StopActivity extends AppCompatActivity {
     private String tripID = new String();
-    private String stopID = new String();
+    private String ActivityID = new String();
     private String placeName = new String();
     private String day = new String();
 
     private TextView stopPlaceName;
-    private ImageView stop_save_btn;
+    private ImageView stop_save_btn_unsaved;
+    private ImageView stop_save_btn_saved;
     //private TextView DayText;
 
     private TextView stopTextDescription;
@@ -65,10 +61,14 @@ public class StopActivity extends AppCompatActivity {
     private GridLayout gridLayout;
     Uri image;
     AlertDialog progressDialog;
-    private FirebaseAuth auth;
 
     ImageView stop_uploadImageBtn;
     private ArrayList<String> posts_list = new ArrayList<>();
+
+    private FirebaseAuth auth;
+    private String currentUserId = new String();
+
+    private String stopID = new String();
 
     /*
     private String timeFrom = new String();
@@ -89,7 +89,7 @@ public class StopActivity extends AppCompatActivity {
             }
         }
     });
-    
+
 
 
     @Override
@@ -100,14 +100,15 @@ public class StopActivity extends AppCompatActivity {
 
         tripID = getIntent().getStringExtra("tripID");
         placeName = getIntent().getStringExtra("placeName");
-        stopID = getIntent().getStringExtra("stopID");
+        ActivityID = getIntent().getStringExtra("ActivityID");
         day = getIntent().getStringExtra("day");
         Log.d("intent_info", day);
         Log.d("intent_info", tripID);
-        Log.d("intent_info", stopID);
+        Log.d("intent_info", ActivityID);
 
         stopPlaceName = findViewById(R.id.stop_place_name);
-        stop_save_btn = findViewById(R.id.stop_save_Btn);
+        stop_save_btn_unsaved = findViewById(R.id.stop_save_Btn);
+        stop_save_btn_saved = findViewById(R.id.stop_save_Btn_saved);
         stopTextDescription = findViewById(R.id.stop_text_description);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -116,6 +117,10 @@ public class StopActivity extends AppCompatActivity {
         gridLayout = findViewById(R.id.stop_grid_layout);
 
         stop_uploadImageBtn = findViewById(R.id.stop_upload_image_btn);
+
+        auth = FirebaseAuth.getInstance();
+        currentUserId = auth.getCurrentUser().getUid().toString();
+        Log.d("CurrentUserId", currentUserId);
 
 
         //back icon logic
@@ -140,6 +145,21 @@ public class StopActivity extends AppCompatActivity {
                         textDescription = snapShot.child("description").getValue(String.class);
                         rating = snapShot.child("rating").getValue(float.class);
                         stopRating.setRating(rating);
+                        stopID = snapShot.getKey();
+
+                        for (DataSnapshot userdata : snapShot.child("saved_user").getChildren()){
+                            // check if userid in database match the current user id
+                            String userIDinDB = userdata.child("userID").getValue(String.class);
+                            if (Objects.equals(userIDinDB, currentUserId) && userIDinDB != null){
+                                stop_save_btn_saved.setVisibility(View.VISIBLE);
+                                stop_save_btn_unsaved.setVisibility(View.GONE);
+                                break;
+                            }
+                            else {
+                                stop_save_btn_saved.setVisibility(View.GONE);
+                                stop_save_btn_unsaved.setVisibility(View.VISIBLE);
+                            }
+                        }
 
                         if (textDescription != null){
                             stopTextDescription.setText(textDescription);
@@ -147,6 +167,7 @@ public class StopActivity extends AppCompatActivity {
                         else{
                             stopTextDescription.setText("Description not available.");
                         }
+
                     }
                 }
             }
@@ -169,7 +190,7 @@ public class StopActivity extends AppCompatActivity {
 
 
         // fetch images from database and display it in the gridlayout.
-        databaseReference.child("Trips").child(tripID).child("activities").child(day).child(stopID).child("stop_images").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Trips").child(tripID).child("activities").child(day).child(ActivityID).child("stop_images").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 posts_list.clear();
@@ -185,9 +206,6 @@ public class StopActivity extends AppCompatActivity {
                     posts_list.add(Objects.requireNonNull(data.getValue()).toString());
                 }
                 addImagesInLayout();
-
-
-
             }
 
             @Override
@@ -197,9 +215,58 @@ public class StopActivity extends AppCompatActivity {
         });
 
 
+        //save stop to db:
+        stop_save_btn_unsaved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HashMap<String, Object> savedUserMap = new HashMap<>();
+                savedUserMap.put("userID", currentUserId);
+
+                databaseReference.child("Stops").child(stopID).child("saved_user").push().setValue(savedUserMap);
+
+                stop_save_btn_unsaved.setVisibility(View.GONE);
+                stop_save_btn_saved.setVisibility(View.VISIBLE);
+            }
+        });
+
+        //unsave stop:
+        stop_save_btn_saved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteUserFromStopsDB();
+                stop_save_btn_unsaved.setVisibility(View.VISIBLE);
+                stop_save_btn_saved.setVisibility(View.GONE);
+            }
+        });
 
 
 
+
+
+
+
+
+    }
+
+    private void deleteUserFromStopsDB() {
+        databaseReference.child("Stops").child(stopID).child("saved_user")
+                .orderByChild("userID").equalTo(currentUserId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            // Loop through the result to delete each matching child
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                snapshot.getRef().removeValue();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("Firebase Error", "Error: " + databaseError.getMessage());
+                    }
+                });
 
     }
 
@@ -262,7 +329,7 @@ public class StopActivity extends AppCompatActivity {
 
     private void saveUrlToDB(String imageUrl) {
         // store image url in db with random key.
-        FirebaseDatabase.getInstance().getReference().child("Trips").child(tripID).child("activities").child(day).child(stopID).child("stop_images").push().setValue(imageUrl);
+        FirebaseDatabase.getInstance().getReference().child("Trips").child(tripID).child("activities").child(day).child(ActivityID).child("stop_images").push().setValue(imageUrl);
     }
 
     private void showProgressDialog() {
