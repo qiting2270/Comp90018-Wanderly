@@ -265,18 +265,6 @@
                 app:layout_constraintTop_toTopOf="@+id/rec_bg1" />
 
             <ImageView
-                android:id="@+id/rec_unsaved1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="300dp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/rec_bg1"
-                app:srcCompat="@drawable/unsaved_icon" />
-
-            <ImageView
                 android:id="@+id/rec_saved1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -345,18 +333,6 @@
                 app:layout_constraintTop_toTopOf="@+id/rec_bg2" />
 
             <ImageView
-                android:id="@+id/rec_unsaved2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="300dp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/rec_bg2"
-                app:srcCompat="@drawable/unsaved_icon" />
-
-            <ImageView
                 android:id="@+id/rec_saved2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -423,18 +399,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rec_bg3" />
-
-            <ImageView
-                android:id="@+id/rec_unsaved3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="300dp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/rec_bg3"
-                app:srcCompat="@drawable/unsaved_icon" />
 
             <ImageView
                 android:id="@+id/rec_saved3"

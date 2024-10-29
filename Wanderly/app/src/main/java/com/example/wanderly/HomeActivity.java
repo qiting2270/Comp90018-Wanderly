@@ -44,13 +44,13 @@ public class HomeActivity extends AppCompatActivity {
             recName1, recDesc1, recName2, recDesc2, recName3, recDesc3;
     private ImageView menuMyProfileBtn, menuMapBtn, menuHomeBtn, menuTripBtn, notificationBtn,
             recFoodBorder, recAttractionBorder,
-            recSaved1, recUnsaved1, recSaved2, recUnsaved2, recSaved3, recUnsaved3;
+            recSaved1, recSaved2, recSaved3;
     private String userLastName, userFirstname,
             foodName, foodDesc, attrName, attrDesc;
     private float foodRating, attrRating;
     RatingBar recRating1, recRating2, recRating3,
             attrRating1, attrRating2, attrRating3;
-    String[] saved;
+    List<String> savedList;
 
     ViewPager mSlideViewPager;
     LinearLayout mDotLayout;
@@ -95,17 +95,14 @@ public class HomeActivity extends AppCompatActivity {
         recRating1 = findViewById(R.id.rec_rating1);
         recDesc1 = findViewById(R.id.rec_desc1);
         recSaved1 = findViewById(R.id.rec_saved1);
-        recUnsaved1 = findViewById(R.id.rec_unsaved1);
         recName2 = findViewById(R.id.rec_name2);
         recRating2 = findViewById(R.id.rec_rating2);
         recDesc2 = findViewById(R.id.rec_desc2);
         recSaved2 = findViewById(R.id.rec_saved2);
-        recUnsaved2 = findViewById(R.id.rec_unsaved2);
         recName3 = findViewById(R.id.rec_name3);
         recRating3 = findViewById(R.id.rec_rating3);
         recDesc3 = findViewById(R.id.rec_desc3);
         recSaved3 = findViewById(R.id.rec_saved3);
-        recUnsaved3 = findViewById(R.id.rec_unsaved3);
 
         // get user
         DatabaseReference reference_username = FirebaseDatabase.getInstance().getReference("User Information");
@@ -129,36 +126,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        // get user saved
-//        DatabaseReference reference_saved = FirebaseDatabase.getInstance().getReference();
-//        reference_saved.child("User Information").child(currentUserId).child("saved")
-//                .addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                saved = new String[8];
-//                int count = 0;
-//
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-//                    // store all of user's saved places to 'saved'
-//                    if (count >= 8) break; // Stop if the array is full
-//
-//                    // Get the stop_name value for the current snapshot
-//                    String savedValue = snapshot.child("stop_name").getValue(String.class);
-//                    Log.d(TAG, "                    saving");
-//                    if (savedValue != null) { // Ensure savedValue is not null
-//                        saved[count] = savedValue; // Store it in the array
-//                        count++; // Increment the counter
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//            }
-//        });
-
-        fetchRecommendations();
         // recommendation: navigate to food section
         foodPageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +146,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
+
         // navigate to notifications page
         notificationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,6 +156,39 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // get user saved list and load recommendation section
+        DatabaseReference reference_saved = FirebaseDatabase.getInstance().getReference();
+        reference_saved.child("User Information").child(currentUserId).child("saved")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        savedList = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            // store all of user's saved places to 'saved'
+                            String savedValue = snapshot.child("stop_name").getValue(String.class);
+                            if (savedValue != null) {
+                                savedList.add(savedValue);
+                            }
+                        }
+                        fetchRecommendations();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+
+        // when click on stops in recommendation
+//        newLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(HomeActivity.this, StopActivity.class);
+//                intent.putExtra("placeName", placeName);
+//                startActivity(intent);
+//            }
+//        });
 
         // menu navigation
         menuMyProfileBtn.setOnClickListener(new View.OnClickListener() {
@@ -424,11 +426,11 @@ public class HomeActivity extends AppCompatActivity {
 
     // get recommendation details
     public void fetchRecommendations() {
+
         DatabaseReference reference_rec = FirebaseDatabase.getInstance().getReference("Stops");
         reference_rec.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 int fcount = 0, acount = 0;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     if (fcount >= 3 && acount >= 3) break; // only want first three
@@ -461,21 +463,21 @@ public class HomeActivity extends AppCompatActivity {
                                 recRating3.setRating(foodRating);
                             }
 
+                            // reset visibility of saved button
+                            recSaved1.setVisibility(View.INVISIBLE);
+                            recSaved2.setVisibility(View.INVISIBLE);
+                            recSaved3.setVisibility(View.INVISIBLE);
+
                             // check if user saved the place
-//                            for (String string : saved) {
-//                                if (string != null) {
-//                                    if (recName1.getText().toString().equals(string)) {
-//                                        recSaved1.setVisibility(View.VISIBLE);
-//                                        recUnsaved1.setVisibility(View.INVISIBLE);
-//                                    } else if (recName2.getText().toString().equals(string)) {
-//                                        recSaved2.setVisibility(View.VISIBLE);
-//                                        recUnsaved2.setVisibility(View.INVISIBLE);
-//                                    } else if (recName3.getText().toString().equals(string)) {
-//                                        recSaved3.setVisibility(View.VISIBLE);
-//                                        recUnsaved3.setVisibility(View.INVISIBLE);
-//                                    }
-//                                }
-//                            }
+                            for (String string : savedList) {
+                                if (recName1.getText().toString().equals(string)) {
+                                    recSaved1.setVisibility(View.VISIBLE);
+                                } else if (recName2.getText().toString().equals(string)) {
+                                    recSaved2.setVisibility(View.VISIBLE);
+                                } else if (recName3.getText().toString().equals(string)) {
+                                    recSaved3.setVisibility(View.VISIBLE);
+                                }
+                            }
 
                             fcount++;
                         }
@@ -510,21 +512,23 @@ public class HomeActivity extends AppCompatActivity {
 
                             }
 
+                            // reset visibility of saved button
+                            recSaved1.setVisibility(View.INVISIBLE);
+                            recSaved2.setVisibility(View.INVISIBLE);
+                            recSaved3.setVisibility(View.INVISIBLE);
+
                             // check if user saved the place
-//                            for (String string : saved) {
-//                                if (string != null) {
-//                                    if (recName1.getText().toString().equals(string)) {
-//                                        recSaved1.setVisibility(View.VISIBLE);
-//                                        recUnsaved1.setVisibility(View.INVISIBLE);
-//                                    } else if (recName2.getText().toString().equals(string)) {
-//                                        recSaved2.setVisibility(View.VISIBLE);
-//                                        recUnsaved2.setVisibility(View.INVISIBLE);
-//                                    } else if (recName3.getText().toString().equals(string)) {
-//                                        recSaved3.setVisibility(View.VISIBLE);
-//                                        recUnsaved3.setVisibility(View.INVISIBLE);
-//                                    }
-//                                }
-//                            }
+                            for (String string : savedList) {
+                                if (string != null) {
+                                    if (recName1.getText().toString().equals(string)) {
+                                        recSaved1.setVisibility(View.VISIBLE);
+                                    } else if (recName2.getText().toString().equals(string)) {
+                                        recSaved2.setVisibility(View.VISIBLE);
+                                    } else if (recName3.getText().toString().equals(string)) {
+                                        recSaved3.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
 
                             acount++;
                         }
