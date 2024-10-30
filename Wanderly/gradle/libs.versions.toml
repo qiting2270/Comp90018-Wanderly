@@ -19,9 +19,6 @@ firebaseDatabase = "21.0.0"
 firebaseStorage = "21.0.1"
 playServicesMaps = "19.0.0"
 
-playServicesLocation = "21.3.0"
-kotlin = "1.9.0"
-googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"  # 确保版本是你所需要的最新版本
 
 
 [libraries]
@@ -43,11 +40,11 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
-play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
-play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
-google-android-libraries-mapsplatform-secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleAndroidLibrariesMapsplatformSecretsGradlePlugin" }
 
