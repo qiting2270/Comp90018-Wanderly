@@ -720,53 +720,25 @@ public class AddTripActivity extends AppCompatActivity {
         if (!selectedPlace.isEmpty() && timeFromSpinner.getSelectedItemPosition() > 0 && timeToSpinner.getSelectedItemPosition() > 0) {
             // Add a new layout to the parent layout
             if (tripDay == 1){
-                Calendar currentDay = (Calendar) departureCalendar.clone();
-                String formattedDate = String.format(Locale.getDefault(), "%d-%02d-%02d",
-                        currentDay.get(Calendar.YEAR),
-                        currentDay.get(Calendar.MONTH) + 1,
-                        currentDay.get(Calendar.DAY_OF_MONTH));
-
-                addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay1, formattedDate);
+                addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay1);
             }
             else if (tripDay == 2){
-                Calendar currentDay = (Calendar) departureCalendar.clone();
-                currentDay.add(Calendar.DAY_OF_MONTH, 1);
-                String formattedDate = String.format(Locale.getDefault(), "%d-%02d-%02d",
-                        currentDay.get(Calendar.YEAR),
-                        currentDay.get(Calendar.MONTH) + 1,
-                        currentDay.get(Calendar.DAY_OF_MONTH));
-
-                addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay2, formattedDate);
+                addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay2);
             }
             else if (tripDay == 3){
-                Calendar currentDay = (Calendar) departureCalendar.clone();
-                currentDay.add(Calendar.DAY_OF_MONTH, 1);
-                String formattedDate_Day2 = String.format(Locale.getDefault(), "%d-%02d-%02d",
-                        currentDay.get(Calendar.YEAR),
-                        currentDay.get(Calendar.MONTH) + 1,
-                        currentDay.get(Calendar.DAY_OF_MONTH));
-                day2DateText.setText(formattedDate_Day2);
-
-                currentDay.add(Calendar.DAY_OF_MONTH, 1);
-                String formattedDate_Day3 = String.format(Locale.getDefault(), "%d-%02d-%02d",
-                        currentDay.get(Calendar.YEAR),
-                        currentDay.get(Calendar.MONTH) + 1,
-                        currentDay.get(Calendar.DAY_OF_MONTH));
-
-                addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay3, formattedDate_Day3);
+                addNewPlaceLayout(selectedPlace, stopsLinearLayoutDay3);
             }
 
         }
     }
 
     // Function to add a new ConstraintLayout to the parent layout
-    private void addNewPlaceLayout(String placeName, LinearLayout parentLayout, String Date) {
+    private void addNewPlaceLayout(String placeName, LinearLayout parentLayout) {
 
         DayHashMap.put("placeName", placeName);
         DayHashMap.put("type", (Objects.equals(placeName, "Thai Town") || Objects.equals(placeName, "Billy‘s Central") || Objects.equals(placeName, "Bornga") || Objects.equals(placeName, "Sweet Canteen")) ? "restaurant" : "attraction");
         DayHashMap.put("timeFrom", addstop_selectedTimeFrom);
         DayHashMap.put("timeTo", addstop_selectedTimeTo);
-        DayHashMap.put("Date", Date);
         //DayHashMap.put("saved", false);
 
         // Save the activity details immediately to Firebase under the specified trip and day
