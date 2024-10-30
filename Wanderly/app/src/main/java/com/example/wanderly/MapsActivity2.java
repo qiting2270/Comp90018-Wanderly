@@ -67,6 +67,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         intent = getIntent();
 // 通过 key"Location" 获取传递的值
         String location = intent.getStringExtra( "location");
+        Log.d("MAPS2","My location is " + location);
 
         if (location != null && locationMap.containsKey(location)) {
             // 获取该 location 对应的经纬度
@@ -75,7 +76,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 latitude = coordinates[0];
                 longitude = coordinates[1];
                 targetLatLng = new LatLng(coordinates[0], coordinates[1]);
-                Log.d("MapsActivity2", "here with latitude" + latitude);
+                Log.d("MapsActivity2", "here with targetlocation" + targetLatLng);
 
 
             }
@@ -162,16 +163,21 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
     // 获取设备当前位置并显示其地址
     private void getDeviceLocation() {
+
+
         try {
             fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+                Log.d("MapsActivaty2", "location is null: " + (location == null));
                 if (location != null) {
                     LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    Log.d("MapsActivaty2", "current location is null: " + currentLatLng);
 
                     // 使用 Geocoder 获取地址信息
                     Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                     try {
                         List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         String addressText = addresses != null && !addresses.isEmpty() ? addresses.get(0).getAddressLine(0) : "Unknown Address";
+                        Log.d("MapsActivaty2","my location is " + targetLatLng);
 
                         // 在当前位置添加标记并显示地址信息
 //                        mMap.addMarker(new MarkerOptions().position(currentLatLng).title("Current Location").snippet(addressText));
