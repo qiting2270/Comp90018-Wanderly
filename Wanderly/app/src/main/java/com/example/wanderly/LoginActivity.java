@@ -62,8 +62,12 @@ public class LoginActivity extends AppCompatActivity {
         forgot_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+//                startActivity(intent);
+
+                  Intent intent = new Intent(LoginActivity.this, MapsActivity2.class);
+                  intent.putExtra("location", "Billy's Central");
+                  startActivity(intent);
             }
         });
 
