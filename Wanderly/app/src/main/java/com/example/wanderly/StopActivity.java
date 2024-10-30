@@ -7,7 +7,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -71,8 +70,6 @@ public class StopActivity extends AppCompatActivity {
 
     private String stopID = new String();
 
-    private Button getDirectionBtn;
-
     /*
     private String timeFrom = new String();
     private String timeTo = new String();*/
@@ -124,7 +121,6 @@ public class StopActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         currentUserId = auth.getCurrentUser().getUid().toString();
         Log.d("CurrentUserId", currentUserId);
-        getDirectionBtn = findViewById(R.id.get_direction_btn);
 
 
         //back icon logic
@@ -247,6 +243,7 @@ public class StopActivity extends AppCompatActivity {
             }
         });
 
+<<<<<<< HEAD
         //when get direcion btn is pressed
         getDirectionBtn.setOnClickListener(new View.OnClickListener() {
             //在这儿加AR
@@ -256,6 +253,8 @@ public class StopActivity extends AppCompatActivity {
                 //startActivity(intent);
             }
         });
+=======
+>>>>>>> parent of ddbfe16 (111)
 
 
 
