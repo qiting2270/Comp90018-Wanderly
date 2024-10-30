@@ -245,6 +245,7 @@ public class StopActivity extends AppCompatActivity {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         //when get direcion btn is pressed
         getDirectionBtn.setOnClickListener(new View.OnClickListener() {
             //在这儿加AR
@@ -254,6 +255,8 @@ public class StopActivity extends AppCompatActivity {
                 //startActivity(intent);
             }
         });
+=======
+>>>>>>> parent of ddbfe16 (111)
 =======
 >>>>>>> parent of ddbfe16 (111)
 =======
