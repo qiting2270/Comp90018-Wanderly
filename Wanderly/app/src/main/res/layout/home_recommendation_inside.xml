@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/rec_bg1"
+        android:layout_width="332dp"
+        android:layout_height="120dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/rec_stop_bg" />
+
+    <TextView
+        android:id="@+id/rec_name1"
+        android:layout_width="259dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="name of stop"
+        android:text="Natinal Gallery of Victoria"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintStart_toStartOf="@+id/rec_bg1"
+        app:layout_constraintTop_toTopOf="@+id/rec_bg1" />
+
+    <RatingBar
+        android:id="@+id/rec_rating1"
+        android:layout_width="236dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="4dp"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:progressTint="@color/dot_active"
+        android:scaleX="0.4"
+        android:scaleY="0.4"
+        android:stepSize="0.1"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/rec_bg1"
+        app:layout_constraintTop_toTopOf="@+id/rec_bg1" />
+
+    <TextView
+        android:id="@+id/rec_desc1"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:contentDescription="description of stop"
+        android:paddingBottom="10dp"
+        android:text="Ducimus unde eveniet. Consequatur voluptates nemo nam voluptatum omnis. Expedita perspiciatis laudantium. Quod eos quas nulla."
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@+id/rec_bg1"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="@+id/rec_bg1"
+        app:layout_constraintTop_toBottomOf="@+id/rec_name1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

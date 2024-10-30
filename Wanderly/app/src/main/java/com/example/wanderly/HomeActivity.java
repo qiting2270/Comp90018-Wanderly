@@ -333,14 +333,7 @@ public class HomeActivity extends AppCompatActivity {
                         if (memberEmail != null && memberEmail.equals(currentUserEmail))  {
 
                             saveActivityToLists(tripSnapshot);
-                            /*
-                            // add the trip id in the list if it's not.
-                            String tripID = tripSnapshot.getKey();
-                            tripIDList.add(tripID);
-
-                            for(String trip : tripIDList){
-                                Log.d("ABCDE", trip);
-                            }*/
+                           /*
                             for (String tripdetail : Day1List){
                                 Log.d("ABCD", "day1"+tripdetail);
                             }
@@ -349,7 +342,7 @@ public class HomeActivity extends AppCompatActivity {
                             }
                             for (String tripdetail : Day3List){
                                 Log.d("ABCD", "day3"+tripdetail);
-                            }
+                            }*/
 
                             onFirebaseLoadSuccess(Day1List, Day2List, Day3List);
 
@@ -402,14 +395,6 @@ public class HomeActivity extends AppCompatActivity {
         mSlideViewPager.setAdapter(viewPagerAdapter);
     }
 
-    // return error message when trip schedule viewpager failed
-    public void onFirebaseLoadFailed(String message) {
-        Toast.makeText(this, ""+message, Toast.LENGTH_SHORT).show();
-    }
-
-    private int getItem(int i) {
-        return mSlideViewPager.getCurrentItem() + i;
-    }
 
     // get recommendation details
     public void fetchRecommendations() {
