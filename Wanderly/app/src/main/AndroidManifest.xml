@@ -43,6 +43,10 @@
             android:name=".CalendarActivity"
             android:exported="false" />
         <activity
+            android:name=".MapsActivity2"
+            android:exported="false"
+            android:label="@string/title_activity_maps2" />
+        <activity
             android:name=".ScheduleActivity"
             android:exported="false" />
         <activity
