@@ -1,11 +1,8 @@
 package com.example.wanderly;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +11,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.content.SharedPreferences;
 import android.widget.Toast;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Calendar;
+
+
 
 
 import androidx.activity.EdgeToEdge;
@@ -29,17 +32,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private String currentUserId;
+    private String currentUserEmail;
     private TextView home_greeting, foodPageBtn, attractionPageBtn,
             recName1, recDesc1, recName2, recDesc2, recName3, recDesc3;
     private ImageView menuMyProfileBtn, menuMapBtn, menuHomeBtn, menuTripBtn, notificationBtn,
@@ -56,15 +55,48 @@ public class HomeActivity extends AppCompatActivity {
     TextView[] dots;
     ViewPagerAdapter viewPagerAdapter;
 
+    private DatabaseReference databaseReference;
+
+    List<String> Day1List = new ArrayList<>();
+    List<String> Day2List = new ArrayList<>();
+    List<String> Day3List = new ArrayList<>();
+
+    // Get today's and tomorrow's dates
+    Calendar calToday = Calendar.getInstance();
+    Calendar calTomorrow;
+    Calendar calDayAfterTomorrow;
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    String todayDate = sdf.format(calToday.getTime());
+    String tomorrowDate;
+    String dayAfterTomorrowDate;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+        // set up date
+        calTomorrow = (Calendar) calToday.clone();
+        calTomorrow.add(Calendar.DATE, 1);
+
+        calDayAfterTomorrow = (Calendar) calTomorrow.clone();
+        calDayAfterTomorrow.add(Calendar.DATE, 1);
+        tomorrowDate = sdf.format(calTomorrow.getTime());
+        dayAfterTomorrowDate = sdf.format(calDayAfterTomorrow.getTime());
+
+
+        Log.d("ABCDE", todayDate + tomorrowDate + dayAfterTomorrowDate);
+
 
         auth = FirebaseAuth.getInstance();
         currentUserId = auth.getCurrentUser().getUid();
+        currentUserEmail = auth.getCurrentUser().getEmail();
         home_greeting = findViewById(R.id.home_greeting);
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         // bottom navbar
         menuHomeBtn = findViewById(R.id.menu_homebutton);
@@ -76,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
         notificationBtn = findViewById(R.id.notification_btn);
 
         // Your Schedule
-        loadSchedule();
+        //loadSchedule();
         mSlideViewPager = (ViewPager) findViewById(R.id.slide_viewPager);
         mDotLayout = (LinearLayout) findViewById(R.id.indicator_layout);
 
@@ -102,6 +134,8 @@ public class HomeActivity extends AppCompatActivity {
         recRating3 = findViewById(R.id.rec_rating3);
         recDesc3 = findViewById(R.id.rec_desc3);
         recSaved3 = findViewById(R.id.rec_saved3);
+
+
 
         // get user
         DatabaseReference reference_username = FirebaseDatabase.getInstance().getReference("User Information");
@@ -223,6 +257,14 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        loadUserTrips();
+
+
+
+
+
+
     }
 
     // notification icon
@@ -278,137 +320,85 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    private void loadSchedule() {
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("User Information");
-        DatabaseReference scheduleReference = FirebaseDatabase.getInstance().getReference("Trips");
-
-        userReference.child(currentUserId).child("email").addListenerForSingleValueEvent(new ValueEventListener() {
+    private void loadUserTrips() {
+        // find trips that contains the current user email address
+        databaseReference.child("Trips").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot userSnapshot) {
-                if (userSnapshot.exists()) {
-                    String userEmail = userSnapshot.getValue(String.class);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot tripSnapshot : dataSnapshot.getChildren()) {
+                    DataSnapshot membersSnapshot = tripSnapshot.child("Members");
 
-                    // Perform the trip retrieval in parallel to reduce delay
-                    new Thread(() -> {
-                        scheduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot tripSnapshot : snapshot.getChildren()) {
-                                    String tid = tripSnapshot.getKey();
+                    for (DataSnapshot member : membersSnapshot.getChildren()) {
+                        String memberEmail = member.child("email").getValue(String.class);
+                        if (memberEmail != null && memberEmail.equals(currentUserEmail))  {
 
-                                    new Thread(() -> {
-                                        DataSnapshot membersSnapshot = tripSnapshot.child("Members");
-                                        for (DataSnapshot memberSnapshot : membersSnapshot.getChildren()) {
-                                            String tripEmail = memberSnapshot.child("email").getValue(String.class);
-                                            if (userEmail != null && userEmail.equals(tripEmail)) {
-                                                getSchedule(tid, scheduleReference);
-                                                break; // stop searching once found
-                                            }
-                                        }
-                                    }).start();
-                                }
+                            saveActivityToLists(tripSnapshot);
+                            /*
+                            // add the trip id in the list if it's not.
+                            String tripID = tripSnapshot.getKey();
+                            tripIDList.add(tripID);
+
+                            for(String trip : tripIDList){
+                                Log.d("ABCDE", trip);
+                            }*/
+                            for (String tripdetail : Day1List){
+                                Log.d("ABCD", "day1"+tripdetail);
+                            }
+                            for (String tripdetail : Day2List){
+                                Log.d("ABCD", "day2"+tripdetail);
+                            }
+                            for (String tripdetail : Day3List){
+                                Log.d("ABCD", "day3"+tripdetail);
                             }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                onFirebaseLoadFailed(error.getMessage());
-                            }
-                        });
-                    }).start();
-                }
-            }
+                            onFirebaseLoadSuccess(Day1List, Day2List, Day3List);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-    }
-
-    // get schedules
-    public void getSchedule(String tid1, DatabaseReference scheduleReference) {
-        scheduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<Integer> days = new ArrayList<>();
-                List<String> dates = new ArrayList<>();
-                List<HomeSchedule> stops = new ArrayList<>();
-
-                // get today, tomorrow and the day after
-                LocalDate today = LocalDate.now();
-                String todayDate = today.format(DateTimeFormatter.ofPattern("dd/MM"));
-                String tomorrowDate = today.plusDays(1).format(DateTimeFormatter.ofPattern("dd/MM"));
-                String dayAfterDate = today.plusDays(2).format(DateTimeFormatter.ofPattern("dd/MM"));
-
-                stops.clear();
-
-                for (DataSnapshot tripSnapshot : snapshot.getChildren()) {
-                    String tid2 = tripSnapshot.getKey();
-                    if (Objects.equals(tid1, tid2)) {
-                        for (DataSnapshot activitiesSnapshot : tripSnapshot.getChildren()) {
-                            if (activitiesSnapshot.getKey().equals("activities")) {
-                                for (DataSnapshot activitySnapshot : activitiesSnapshot.getChildren()) {
-                                    for (DataSnapshot daySnapshot : activitySnapshot.getChildren()) {
-                                        String did = daySnapshot.getKey();
-                                    }
-
-                                    // get day of the trip
-                                    String dayValue = activitySnapshot.getKey();
-                                    String[] parts = dayValue.split("Day");
-                                    int dayNumber = Integer.parseInt(parts[1]);
-
-                                    days.add(dayNumber);
-
-                                    // format date
-//                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//
-//                                    LocalDate departureDate = LocalDate.parse(departureDateStr, formatter);
-//                                    LocalDate returnDate = LocalDate.parse(returnDateStr, formatter);
-//                                    for (LocalDate date = departureDate; !date.isAfter(returnDate); date = date.plusDays(1)) {
-//                                        // Add the formatted date to the list
-//                                        dates.add(date.format(formatter));
-//                                    }
-//                                    dates.add()
-
-//                                    if ("Day1".equals(dayKey)) {
-//                                        days.add("Today");
-//                                        dates.add(todayDate);
-//                                    } else if ("Day2".equals(dayKey)) {
-//                                        days.add("Tomorrow");
-//                                        dates.add(tomorrowDate);
-//                                    } else if ("Day3".equals(dayKey)) {
-//                                        days.add("Day After");
-//                                        dates.add(dayAfterDate);
-//                                    }
-//
-//                                    String placeName = activitySnapshot.child("placeName").getValue(String.class);
-//                                    String timeFrom = activitySnapshot.child("timeFrom").getValue(String.class);
-//                                    String timeTo = activitySnapshot.child("timeTo").getValue(String.class);
-//                                    String type = activitySnapshot.child("type").getValue(String.class);
-//                                    stops.add(new HomeSchedule(placeName, timeFrom, timeTo));
-                                }
-
-//                                for (DataSnapshot scheduleSnapshot : tripSnapshot.child("activities").getChildren()) {
-//                                    scheduleList.add(scheduleSnapshot.getValue(HomeSchedule.class));
-//                                    Log.d("2", "                    "+scheduleList.toString());
-//                                }
-//                                DaySchedule schedule = new DaySchedule(days, dates, stops);
-                                onFirebaseLoadSuccess((List<HomeSchedule>) stops);
-                            }
                         }
+
                     }
+
+
+
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("TripOverview", "Failed to load trip data.", databaseError.toException());
             }
         });
     }
+
+    private void saveActivityToLists(DataSnapshot tripSnapshot) {
+        DataSnapshot activitiesSnapshot = tripSnapshot.child("activities");
+        for (DataSnapshot daySnapshot : activitiesSnapshot.getChildren()) {
+            for (DataSnapshot activitySnapshot : daySnapshot.getChildren()) {
+                String date = activitySnapshot.child("Date").getValue(String.class);
+                String placeName = activitySnapshot.child("placeName").getValue(String.class);
+                String timeFrom = activitySnapshot.child("timeFrom").getValue(String.class);
+                String timeTo = activitySnapshot.child("timeTo").getValue(String.class);
+
+                String activityDetails = placeName + " from " + timeFrom + " - " + timeTo;
+
+                //Log.d("ABCD", date + placeName + timeFrom + timeTo);
+                if (date != null && date.equals(todayDate)) {
+                    Day1List.add(activityDetails);
+                }
+                else if (date != null && date.equals(tomorrowDate)){
+                    Day2List.add(activityDetails);
+                }
+                else if (date != null && date.equals(dayAfterTomorrowDate)){
+                    Day3List.add(activityDetails);
+                }
+            }
+        }
+    }
+
+
     // load trip schedule viewpager if success
-    public void onFirebaseLoadSuccess(List<HomeSchedule> scheduleList) {
-        viewPagerAdapter = new ViewPagerAdapter(this, scheduleList);
+    public void onFirebaseLoadSuccess(List<String> day1List, List<String> day2List, List<String> day3List) {
+        viewPagerAdapter = new ViewPagerAdapter(this, day1List, day2List, day3List);
         mSlideViewPager.setAdapter(viewPagerAdapter);
     }
 
