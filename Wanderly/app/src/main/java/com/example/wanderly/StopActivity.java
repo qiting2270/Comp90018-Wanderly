@@ -249,6 +249,7 @@ public class StopActivity extends AppCompatActivity {
 
         //when get direcion btn is pressed
         getDirectionBtn.setOnClickListener(new View.OnClickListener() {
+            //在这儿加AR
             @Override
             public void onClick(View view) {
                 //Intent intent = new Intent(StopActivity.this, destinationActivity.class);
