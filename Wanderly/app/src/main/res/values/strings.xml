@@ -33,5 +33,6 @@
 
     <!-- No trips -->
     <string name="trip_none">You do not have any trips.</string>
+    <string name="title_activity_maps2">MapsActivity2</string>
 
 </resources>
