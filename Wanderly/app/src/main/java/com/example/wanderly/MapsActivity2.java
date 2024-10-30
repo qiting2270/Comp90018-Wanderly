@@ -45,7 +45,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
-    LatLng targetLatLng;
+    LatLng targetLatLng; //11
 
     HashMap<String, double[]> locationMap = new HashMap<>();
 
