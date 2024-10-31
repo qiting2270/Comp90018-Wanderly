@@ -341,6 +341,7 @@ public class TripScheduleActivity extends AppCompatActivity {
                 intent.putExtra("placeName", placeName);
                 intent.putExtra("day", day);
                 intent.putExtra("tripID", tripId);
+                intent.putExtra("uploadImgFunction", "1");
                 /*
                 intent.putExtra("timeFrom", timeFrom);
                 intent.putExtra("timeTo", timeTo);

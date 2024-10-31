@@ -46,6 +46,7 @@ public class StopActivity extends AppCompatActivity {
     private String ActivityID = new String();
     private String placeName = new String();
     private String day = new String();
+    private String uploadImgFunction = new String();
 
     private TextView stopPlaceName;
     private ImageView stop_save_btn_unsaved;
@@ -72,6 +73,8 @@ public class StopActivity extends AppCompatActivity {
     private String stopID = new String();
 
     private Button getDirectionBtn;
+
+    TextView stopImageText;
 
     /*
     private String timeFrom = new String();
@@ -105,6 +108,8 @@ public class StopActivity extends AppCompatActivity {
         placeName = getIntent().getStringExtra("placeName");
         ActivityID = getIntent().getStringExtra("ActivityID");
         day = getIntent().getStringExtra("day");
+        uploadImgFunction = getIntent().getStringExtra("uploadImgFunction");
+
         Log.d("intent_info", day);
         Log.d("intent_info", tripID);
         Log.d("intent_info", ActivityID);
@@ -125,6 +130,8 @@ public class StopActivity extends AppCompatActivity {
         currentUserId = auth.getCurrentUser().getUid().toString();
         Log.d("CurrentUserId", currentUserId);
         getDirectionBtn = findViewById(R.id.get_direction_btn);
+
+        stopImageText = findViewById(R.id.stop_image_text);
 
 
         //back icon logic
@@ -255,6 +262,16 @@ public class StopActivity extends AppCompatActivity {
                 //startActivity(intent);
             }
         });
+
+        // display the upload image function only through the trip schedule page.
+        if (Objects.equals(uploadImgFunction, "1")){
+            gridLayout.setVisibility(View.VISIBLE);
+            stopImageText.setVisibility(View.VISIBLE);
+        }
+        else{
+            gridLayout.setVisibility(View.GONE);
+            stopImageText.setVisibility(View.GONE);
+        }
 
 
 

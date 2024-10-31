@@ -251,7 +251,7 @@ public class HomeActivity extends AppCompatActivity {
         menuMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, MapActivity.class);
+                Intent intent = new Intent(HomeActivity.this, MapsActivity2.class);
                 //intent.putExtra("userLastName", userLastName);
                 //intent.putExtra("userFirstName", userFirstname);
                 startActivity(intent);
