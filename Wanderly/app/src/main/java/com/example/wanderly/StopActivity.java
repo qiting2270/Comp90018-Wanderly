@@ -292,8 +292,10 @@ public class StopActivity extends AppCompatActivity implements OnMapReadyCallbac
         getDirectionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(StopActivity.this, destinationActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(StopActivity.this, ARActivity.class);
+                intent.putExtra("Location", "National Gallery of Victoria");
+
+                startActivity(intent);
             }
         });
 
