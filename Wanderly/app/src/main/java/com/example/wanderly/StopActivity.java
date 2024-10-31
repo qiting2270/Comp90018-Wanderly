@@ -119,11 +119,13 @@ public class StopActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         tripID = getIntent().getStringExtra("tripID");
         placeName = getIntent().getStringExtra("placeName");
+        Log.d("stopactivity", "my place name is " + placeName);
         ActivityID = getIntent().getStringExtra("ActivityID");
         day = getIntent().getStringExtra("day");
         uploadImgFunction = getIntent().getStringExtra("uploadImgFunction");
 
         stopPlaceName = findViewById(R.id.stop_place_name);
+
         stop_save_btn_unsaved = findViewById(R.id.stop_save_Btn);
         stop_save_btn_saved = findViewById(R.id.stop_save_Btn_saved);
         stopTextDescription = findViewById(R.id.stop_text_description);
@@ -293,7 +295,7 @@ public class StopActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(StopActivity.this, ARActivity.class);
-                intent.putExtra("Location", "National Gallery of Victoria");
+                intent.putExtra("Location", placeName);
 
                 startActivity(intent);
             }
