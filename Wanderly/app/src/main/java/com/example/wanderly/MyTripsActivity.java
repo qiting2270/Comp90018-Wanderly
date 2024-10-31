@@ -97,7 +97,7 @@ public class MyTripsActivity extends AppCompatActivity {
         menuMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyTripsActivity.this, MapActivity.class);
+                Intent intent = new Intent(MyTripsActivity.this, MapsActivity2.class);
                 startActivity(intent);
             }
         });

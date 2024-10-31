@@ -7,15 +7,16 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-//import com.example.wanderly.databinding.ActivityMaps2Binding;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -33,9 +34,12 @@ import java.util.List;
 import java.util.Locale;
 
 public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallback {
+    private ImageView menuMyProfileBtn;
+    private ImageView menuHomeBtn;
+    private ImageView menuTripBtn;
+    private ImageView menuMapBtn;
 
     private GoogleMap mMap;
-    //private ActivityMaps2Binding binding;
     private FusedLocationProviderClient fusedLocationClient;
     private EditText latitudeInput;
     private EditText longitudeInput;
@@ -55,6 +59,45 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_maps2);
+
+        menuMyProfileBtn = findViewById(R.id.menu_profile);
+        menuHomeBtn = findViewById(R.id.menu_homebutton);
+        menuTripBtn = findViewById(R.id.menu_tripbutton);
+        menuMapBtn = findViewById(R.id.menu_map);
+
+        //menu navigation
+        menuMyProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity2.this, MyProfileActivity.class);
+                //intent.putExtra("userLastName", userLastName);
+                //intent.putExtra("userFirstName", userFirstname);
+                startActivity(intent);
+            }
+        });
+        menuHomeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity2.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+        menuTripBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity2.this, MyTripsActivity.class);
+                startActivity(intent);
+            }
+        });
+        menuMapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity2.this, MapsActivity2.class);
+                startActivity(intent);
+            }
+        });
+
+
 
 
         locationMap.put("Thai Town", new double[]{-33.8784, 151.2070});
@@ -135,8 +178,8 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // 启用地图的 UI 控件（放大缩小按钮）
         mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         // 检查并请求位置权限
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -147,6 +190,9 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
             // 请求权限
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }
+        //mMap.setPadding(0, 1700, 0, 250);
+
+
     }
 
     // 根据用户输入的经纬度更新位置
@@ -156,47 +202,6 @@ public class MapsActivity2 extends AppCompatActivity implements OnMapReadyCallba
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
     }
 
-    // 获取设备当前位置并显示其地址
-//    private void getDeviceLocation() {
-//
-//
-//        try {
-//            fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
-//                Log.d("MapsActivaty2", "location is null: " + (location == null));
-//                if (location != null) {
-//                    LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-//                    Log.d("MapsActivaty2", "current location is null: " + currentLatLng);
-//
-//                    // 使用 Geocoder 获取地址信息
-//                    Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-//                    try {
-//                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-//                        String addressText = addresses != null && !addresses.isEmpty() ? addresses.get(0).getAddressLine(0) : "Unknown Address";
-//                        Log.d("MapsActivaty2","my location is " + targetLatLng);
-//
-//                        // 在当前位置添加标记并显示地址信息
-////                        mMap.addMarker(new MarkerOptions().position(currentLatLng).title("Current Location").snippet(addressText));
-//                        mMap.addMarker(new MarkerOptions()
-//                                .position(currentLatLng)
-//                                .title("you are here")
-//                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))); // 红色标记
-//
-//                        mMap.addMarker(new MarkerOptions()
-//                                .position(targetLatLng)
-//                                .title("your target")
-//                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-//                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f));
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                } else {
-//                    Toast.makeText(MapsActivity2.this, "Unable to find current location", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        } catch (SecurityException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     private void getDeviceLocation() {
         try {

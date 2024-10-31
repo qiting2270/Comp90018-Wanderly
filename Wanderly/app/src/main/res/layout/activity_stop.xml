@@ -40,6 +40,19 @@
             app:layout_constraintTop_toTopOf="@+id/back_icon"
             app:layout_constraintVertical_bias="0.0" />
 
+        <TextView
+            android:id="@+id/stop_rating_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/kulim_park"
+            android:text="4.8"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/stop_ratingbar"
+            app:layout_constraintEnd_toEndOf="@+id/stop_ratingbar"
+            app:layout_constraintHorizontal_bias="0.33"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/stop_ratingbar" />
+
         <RatingBar
             android:id="@+id/stop_ratingbar"
             android:layout_width="245dp"
@@ -50,6 +63,7 @@
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:stepSize="0.1"
+            android:progressTint="@color/dot_active"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/stop_place_name" />
@@ -134,10 +148,12 @@
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
-            android:layout_width="365dp"
-            android:layout_height="162dp"
-            android:background="#D9EFCC"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="#D9EFCC"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/stop_ratingbar" />

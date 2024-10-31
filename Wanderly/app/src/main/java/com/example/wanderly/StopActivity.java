@@ -24,6 +24,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,10 +44,11 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-public class StopActivity extends AppCompatActivity {
+public class StopActivity extends AppCompatActivity implements OnMapReadyCallback {
     private String tripID = new String();
     private String ActivityID = new String();
     private String placeName = new String();
@@ -58,6 +65,7 @@ public class StopActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     RatingBar stopRating;
+    TextView ratingText;
     private float rating;
 
     private GridLayout gridLayout;
@@ -75,6 +83,11 @@ public class StopActivity extends AppCompatActivity {
     private Button getDirectionBtn;
 
     TextView stopImageText;
+
+    private MapView mapView;
+    private GoogleMap googleMap;
+
+    double latitude, longitude;
 
     /*
     private String timeFrom = new String();
@@ -114,6 +127,7 @@ public class StopActivity extends AppCompatActivity {
         stop_save_btn_unsaved = findViewById(R.id.stop_save_Btn);
         stop_save_btn_saved = findViewById(R.id.stop_save_Btn_saved);
         stopTextDescription = findViewById(R.id.stop_text_description);
+        ratingText = findViewById(R.id.stop_rating_text);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -128,6 +142,10 @@ public class StopActivity extends AppCompatActivity {
         getDirectionBtn = findViewById(R.id.get_direction_btn);
 
         stopImageText = findViewById(R.id.stop_image_text);
+
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        //mapView.getMapAsync(this); // This will trigger the onMapReady callback when the map is loaded
 
 
         //back icon logic
@@ -152,7 +170,19 @@ public class StopActivity extends AppCompatActivity {
                         textDescription = snapShot.child("description").getValue(String.class);
                         rating = snapShot.child("rating").getValue(float.class);
                         stopRating.setRating(rating);
+                        String ratingStr = String.format(Locale.getDefault(), "%.1f", rating);
+                        ratingText.setText(ratingStr);
+                        latitude = snapShot.child("latitude").getValue(double.class);
+                        longitude = snapShot.child("longitude").getValue(double.class);
                         stopID = snapShot.getKey();
+
+                        // After data is loaded and latitude and longitude are set
+                        if (mapView != null) {
+                            mapView.getMapAsync(StopActivity.this); // Trigger map setup
+                        }
+
+
+
 
                         for (DataSnapshot userdata : snapShot.child("saved_user").getChildren()){
                             // check if userid in database match the current user id
@@ -387,6 +417,66 @@ public class StopActivity extends AppCompatActivity {
             progressDialog.dismiss();
         }
     }
+
+
+//    ---------------------------google map related---------------------------
+
+    @Override
+    public void onMapReady(GoogleMap gMap) {
+        googleMap = gMap;
+        setupMap();
+    }
+
+    private void setupMap() {
+        // Customize your map here
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.getUiSettings().setAllGesturesEnabled(true);
+
+        // Call showLocation to display your desired location
+        showLocation();
+    }
+
+    private void showLocation() {
+        Log.d("locationAA", String.valueOf(longitude));
+        Log.d("locationAA", String.valueOf(latitude));
+
+        LatLng location = new LatLng(latitude, longitude);
+        googleMap.addMarker(new MarkerOptions().position(location).title("Marker in " + placeName));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16)); // Zoom level can be adjusted
+    }
+
+    // Make sure to override lifecycle methods to manage mapView
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        mapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
 
 
 

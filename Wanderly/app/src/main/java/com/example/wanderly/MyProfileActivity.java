@@ -172,7 +172,7 @@ public class MyProfileActivity extends AppCompatActivity {
         menuMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyProfileActivity.this, MapActivity.class);
+                Intent intent = new Intent(MyProfileActivity.this, MapsActivity2.class);
                 startActivity(intent);
             }
         });
