@@ -9,6 +9,7 @@
         android:id="@+id/rec_bg1"
         android:layout_width="332dp"
         android:layout_height="120dp"
+        android:layout_marginTop="10dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,47 +18,59 @@
 
     <TextView
         android:id="@+id/rec_name1"
-        android:layout_width="259dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="270dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="10dp"
         android:contentDescription="name of stop"
-        android:text="Natinal Gallery of Victoria"
+        android:text="Indigo"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintEnd_toEndOf="@+id/rec_bg1"
+        app:layout_constraintHorizontal_bias="0.27"
         app:layout_constraintStart_toStartOf="@+id/rec_bg1"
         app:layout_constraintTop_toTopOf="@+id/rec_bg1" />
 
     <RatingBar
         android:id="@+id/rec_rating1"
-        android:layout_width="236dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:isIndicator="true"
         android:numStars="5"
         android:progressTint="@color/dot_active"
         android:scaleX="0.4"
         android:scaleY="0.4"
         android:stepSize="0.1"
-        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/rec_bg1"
+        app:layout_constraintEnd_toEndOf="@+id/rec_bg1"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/rec_bg1"
-        app:layout_constraintTop_toTopOf="@+id/rec_bg1" />
+        app:layout_constraintTop_toTopOf="@+id/rec_bg1"
+        app:layout_constraintVertical_bias="0.19" />
 
     <TextView
         android:id="@+id/rec_desc1"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="50dp"
         android:contentDescription="description of stop"
-        android:paddingBottom="10dp"
-        android:text="Ducimus unde eveniet. Consequatur voluptates nemo nam voluptatum omnis. Expedita perspiciatis laudantium. Quod eos quas nulla."
+        android:text=" Ducimus unde eveniet. Consequatur voluptates nemo nam voluptatum omnis. Expedita perspiciatis laudantium. Quod eos quas nulla."
         android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@+id/rec_bg1"
-        app:layout_constraintHorizontal_bias="0.468"
-        app:layout_constraintStart_toStartOf="@+id/rec_bg1"
-        app:layout_constraintTop_toBottomOf="@+id/rec_name1" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rec_bg1" />
+
+    <ImageView
+        android:id="@+id/rec_saved1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rec_bg1"
+        app:srcCompat="@drawable/saved_icon" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.content.SharedPreferences;
-import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.Calendar;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -32,23 +34,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Objects;
-
 public class HomeActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private String currentUserId;
     private String currentUserEmail;
-    private TextView home_greeting, foodPageBtn, attractionPageBtn,
-            recName1, recDesc1, recName2, recDesc2, recName3, recDesc3;
+    private TextView home_greeting, foodPageBtn, attractionPageBtn;
     private ImageView menuMyProfileBtn, menuMapBtn, menuHomeBtn, menuTripBtn, notificationBtn,
-            recFoodBorder, recAttractionBorder,
-            recSaved1, recSaved2, recSaved3;
-    private String userLastName, userFirstname,
-            foodName, foodDesc, attrName, attrDesc;
-    private float foodRating, attrRating;
-    RatingBar recRating1, recRating2, recRating3;
-    List<String> savedList;
+            recFoodBorder, recAttractionBorder;
+    private String userLastName, userFirstname;
+
+
+
+    ConstraintLayout recommend_food1, recommend_food2, recommend_food3;
+
 
     ViewPager mSlideViewPager;
     LinearLayout mDotLayout;
@@ -122,18 +121,9 @@ public class HomeActivity extends AppCompatActivity {
         recFoodBorder = findViewById(R.id.rec_food_border);
         recAttractionBorder = findViewById(R.id.rec_attraction_border);
 
-        recName1 = findViewById(R.id.rec_name1);
-        recRating1 = findViewById(R.id.rec_rating1);
-        recDesc1 = findViewById(R.id.rec_desc1);
-        recSaved1 = findViewById(R.id.rec_saved1);
-        recName2 = findViewById(R.id.rec_name2);
-        recRating2 = findViewById(R.id.rec_rating2);
-        recDesc2 = findViewById(R.id.rec_desc2);
-        recSaved2 = findViewById(R.id.rec_saved2);
-        recName3 = findViewById(R.id.rec_name3);
-        recRating3 = findViewById(R.id.rec_rating3);
-        recDesc3 = findViewById(R.id.rec_desc3);
-        recSaved3 = findViewById(R.id.rec_saved3);
+
+
+
 
 
 
@@ -165,7 +155,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 recFoodBorder.setVisibility(View.VISIBLE);
                 recAttractionBorder.setVisibility(View.INVISIBLE);
-                fetchRecommendations();
+
             }
         });
 
@@ -175,7 +165,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 recAttractionBorder.setVisibility(View.VISIBLE);
                 recFoodBorder.setVisibility(View.INVISIBLE);
-                fetchRecommendations();
+
             }
         });
 
@@ -190,38 +180,9 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        // get user saved list and load recommendation section
-        DatabaseReference reference_saved = FirebaseDatabase.getInstance().getReference();
-        reference_saved.child("User Information").child(currentUserId).child("saved")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        savedList = new ArrayList<>();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            // store all of user's saved places to 'saved'
-                            String savedValue = snapshot.child("stop_name").getValue(String.class);
-                            if (savedValue != null) {
-                                savedList.add(savedValue);
-                            }
-                        }
-                        fetchRecommendations();
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
 
-        // when click on stops in recommendation
-//        newLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(HomeActivity.this, StopActivity.class);
-//                intent.putExtra("placeName", placeName);
-//                startActivity(intent);
-//            }
-//        });
 
         // menu navigation
         menuMyProfileBtn.setOnClickListener(new View.OnClickListener() {
@@ -261,11 +222,17 @@ public class HomeActivity extends AppCompatActivity {
         loadUserTrips();
 
 
+        addStopsToRec();
+
+
+
+
 
 
 
 
     }
+
 
     // notification icon
     protected void onResume() {
@@ -396,123 +363,72 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    // get recommendation details
-    public void fetchRecommendations() {
+    private void addStopsToRec() {
+        LinearLayout parentLayout = findViewById(R.id.recommend_linearLayout);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        DatabaseReference stopsRef = FirebaseDatabase.getInstance().getReference("Stops");
 
-        DatabaseReference reference_rec = FirebaseDatabase.getInstance().getReference("Stops");
-        reference_rec.addValueEventListener(new ValueEventListener() {
+        stopsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            int count = 0; // Counter to limit the number of stops added to 3
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int fcount = 0, acount = 0;
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    if (fcount >= 3 && acount >= 3) break; // only want first three
+                for (DataSnapshot stopSnapshot : dataSnapshot.getChildren()) {
+                    if (count >= 3) break; // Break if three stops have already been added
+                    String type = stopSnapshot.child("type").getValue(String.class);
+                    if (!"food".equals(type)) continue; // Skip if the stop is not of type 'food'
 
-                    // get food recommendation places
-                    if (recFoodBorder.getVisibility() == View.VISIBLE) {
-                        if (Objects.equals(snapshot.child("type").getValue(String.class), "food")) {
-                            foodName =  snapshot.child("name").getValue(String.class);
-                            foodDesc =  snapshot.child("description").getValue(String.class);
-                            foodRating = snapshot.child("rating").getValue(Float.class);
-                            if (fcount == 0) {
-                                recName1.setText(foodName);
-                                recDesc1.setText(foodDesc);
-
-                                recRating1.setVisibility(View.VISIBLE);
-                                recRating1.setRating(foodRating);
-
-                            } else if (fcount == 1) {
-                                recName2.setText(foodName);
-                                recDesc2.setText(foodDesc);
-
-                                recRating2.setVisibility(View.VISIBLE);
-                                recRating2.setRating(foodRating);
-
-                            } else if (fcount == 2){
-                                recName3.setText(foodName);
-                                recDesc3.setText(foodDesc);
-
-                                recRating3.setVisibility(View.VISIBLE);
-                                recRating3.setRating(foodRating);
-                            }
-
-                            // reset visibility of saved button
-                            recSaved1.setVisibility(View.INVISIBLE);
-                            recSaved2.setVisibility(View.INVISIBLE);
-                            recSaved3.setVisibility(View.INVISIBLE);
-
-                            // check if user saved the place
-                            for (String string : savedList) {
-                                if (recName1.getText().toString().equals(string)) {
-                                    recSaved1.setVisibility(View.VISIBLE);
-                                } else if (recName2.getText().toString().equals(string)) {
-                                    recSaved2.setVisibility(View.VISIBLE);
-                                } else if (recName3.getText().toString().equals(string)) {
-                                    recSaved3.setVisibility(View.VISIBLE);
-                                }
-                            }
-
-                            fcount++;
+                    // Check if the current user has saved this stop
+                    boolean isSavedByUser = false;
+                    for (DataSnapshot savedUser : stopSnapshot.child("saved_user").getChildren()) {
+                        String userID = savedUser.child("userID").getValue(String.class);
+                        if (currentUserId.equals(userID)) {
+                            isSavedByUser = true;
+                            break; // Stop checking if the current user has already been found
                         }
                     }
 
-                    // get attraction recommendation places
-                    if (recAttractionBorder.getVisibility() == View.VISIBLE) {
-                        if (Objects.equals(snapshot.child("type").getValue(String.class), "attraction")) {
-                            attrName =  snapshot.child("name").getValue(String.class);
-                            attrDesc =  snapshot.child("description").getValue(String.class);
-                            attrRating = snapshot.child("rating").getValue(Float.class);
-                            if (acount == 0) {
-                                recName1.setText(attrName);
-                                recDesc1.setText(attrDesc);
+                    // Inflate and add the layout
+                    View customView = inflater.inflate(R.layout.home_recommendation_inside, parentLayout, false);
+                    updateStopInfo(customView, stopSnapshot, isSavedByUser);
 
-                                recRating1.setVisibility(View.VISIBLE);
-                                recRating1.setRating(attrRating);
+                    // Set the click listener to open stop activiy
+                    customView.setOnClickListener(view -> {
+                        Intent intent = new Intent(HomeActivity.this, StopActivity.class);
+                        intent.putExtra("placeName", stopSnapshot.child("name").getValue(String.class));
+                        startActivity(intent);
+                    });
 
-                            } else if (acount == 1) {
-                                recName2.setText(attrName);
-                                recDesc2.setText(attrDesc);
 
-                                recRating2.setVisibility(View.VISIBLE);
-                                recRating2.setRating(attrRating);
-
-                            } else if (acount == 2){
-                                recName3.setText(attrName);
-                                recDesc3.setText(attrDesc);
-
-                                recRating3.setVisibility(View.VISIBLE);
-                                recRating3.setRating(attrRating);
-
-                            }
-
-                            // reset visibility of saved button
-                            recSaved1.setVisibility(View.INVISIBLE);
-                            recSaved2.setVisibility(View.INVISIBLE);
-                            recSaved3.setVisibility(View.INVISIBLE);
-
-                            // check if user saved the place
-                            for (String string : savedList) {
-                                if (string != null) {
-                                    if (recName1.getText().toString().equals(string)) {
-                                        recSaved1.setVisibility(View.VISIBLE);
-                                    } else if (recName2.getText().toString().equals(string)) {
-                                        recSaved2.setVisibility(View.VISIBLE);
-                                    } else if (recName3.getText().toString().equals(string)) {
-                                        recSaved3.setVisibility(View.VISIBLE);
-                                    }
-                                }
-                            }
-
-                            acount++;
-                        }
-                    }
+                    parentLayout.addView(customView);
+                    count++; // Increment the counter when a stop is added
                 }
-
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("DBError", "loadPost:onCancelled", databaseError.toException());
             }
         });
     }
+
+    private void updateStopInfo(View view, DataSnapshot stopSnapshot, boolean isSavedByUser) {
+        TextView nameText = view.findViewById(R.id.rec_name1);
+        TextView descText = view.findViewById(R.id.rec_desc1);
+        RatingBar ratingBar = view.findViewById(R.id.rec_rating1);
+        ImageView saveIcon = view.findViewById(R.id.rec_saved1);
+
+        nameText.setText(stopSnapshot.child("name").getValue(String.class));
+        descText.setText(stopSnapshot.child("description").getValue(String.class));
+        Float rating = stopSnapshot.child("rating").getValue(Float.class);
+        if (rating != null) {
+            ratingBar.setRating(rating);
+        }
+
+        // Set the visibility of the save icon based on whether the user has saved the stop
+        saveIcon.setVisibility(isSavedByUser ? View.VISIBLE : View.GONE);
+    }
+
+
 
 }

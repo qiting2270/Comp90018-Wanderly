@@ -110,10 +110,6 @@ public class StopActivity extends AppCompatActivity {
         day = getIntent().getStringExtra("day");
         uploadImgFunction = getIntent().getStringExtra("uploadImgFunction");
 
-        Log.d("intent_info", day);
-        Log.d("intent_info", tripID);
-        Log.d("intent_info", ActivityID);
-
         stopPlaceName = findViewById(R.id.stop_place_name);
         stop_save_btn_unsaved = findViewById(R.id.stop_save_Btn);
         stop_save_btn_saved = findViewById(R.id.stop_save_Btn_saved);
@@ -199,31 +195,33 @@ public class StopActivity extends AppCompatActivity {
             }
         });
 
+        if (tripID != null && day != null & ActivityID != null){
+            // fetch images from database and display it in the gridlayout.
+            databaseReference.child("Trips").child(tripID).child("activities").child(day).child(ActivityID).child("stop_images").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    posts_list.clear();
 
-        // fetch images from database and display it in the gridlayout.
-        databaseReference.child("Trips").child(tripID).child("activities").child(day).child(ActivityID).child("stop_images").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                posts_list.clear();
+                    // keep the first element
+                    for (int i = gridLayout.getChildCount() - 1; i > 0; i--) {
+                        View child = gridLayout.getChildAt(i);
+                        gridLayout.removeView(child);
+                    }
 
-                // keep the first element
-                for (int i = gridLayout.getChildCount() - 1; i > 0; i--) {
-                    View child = gridLayout.getChildAt(i);
-                    gridLayout.removeView(child);
+                    for(DataSnapshot data : snapshot.getChildren()){
+                        // add each image url in the list.
+                        posts_list.add(Objects.requireNonNull(data.getValue()).toString());
+                    }
+                    addImagesInLayout();
                 }
 
-                for(DataSnapshot data : snapshot.getChildren()){
-                    // add each image url in the list.
-                    posts_list.add(Objects.requireNonNull(data.getValue()).toString());
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
                 }
-                addImagesInLayout();
-            }
+            });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        }
 
 
         //save user_id in db under Stops:
@@ -241,6 +239,12 @@ public class StopActivity extends AppCompatActivity {
 
                 stop_save_btn_unsaved.setVisibility(View.GONE);
                 stop_save_btn_saved.setVisibility(View.VISIBLE);
+
+               /* // also save it under user information
+                HashMap<String, Object> savePlaceNameMap = new HashMap<>();
+                savePlaceNameMap.put("stop_name", placeName);
+                databaseReference.child("User Information").child(currentUserId).child("saved").push().setValue(savePlaceNameMap);
+*/
             }
         });
 
