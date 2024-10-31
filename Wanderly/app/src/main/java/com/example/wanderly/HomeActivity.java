@@ -44,9 +44,7 @@ public class HomeActivity extends AppCompatActivity {
             recFoodBorder, recAttractionBorder;
     private String userLastName, userFirstname;
 
-
-
-    ConstraintLayout recommend_food1, recommend_food2, recommend_food3;
+    LinearLayout attractionLayout, foodLayout;
 
 
     ViewPager mSlideViewPager;
@@ -155,6 +153,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 recFoodBorder.setVisibility(View.VISIBLE);
                 recAttractionBorder.setVisibility(View.INVISIBLE);
+                foodLayout.setVisibility(View.VISIBLE);
+                attractionLayout.setVisibility(View.GONE);
 
             }
         });
@@ -165,6 +165,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 recAttractionBorder.setVisibility(View.VISIBLE);
                 recFoodBorder.setVisibility(View.INVISIBLE);
+                foodLayout.setVisibility(View.GONE);
+                attractionLayout.setVisibility(View.VISIBLE);
 
             }
         });
@@ -219,11 +221,15 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
         loadUserTrips();
 
+        addFoodToRec();
+        addAttractionToRec();
 
-        addStopsToRec();
-
+        // initialize
+        foodLayout.setVisibility(View.VISIBLE);
+        attractionLayout.setVisibility(View.GONE);
 
 
 
@@ -363,8 +369,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    private void addStopsToRec() {
-        LinearLayout parentLayout = findViewById(R.id.recommend_linearLayout);
+    private void addFoodToRec() {
+        foodLayout = findViewById(R.id.recommendFood_linearLayout);
         LayoutInflater inflater = LayoutInflater.from(this);
         DatabaseReference stopsRef = FirebaseDatabase.getInstance().getReference("Stops");
 
@@ -389,7 +395,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
 
                     // Inflate and add the layout
-                    View customView = inflater.inflate(R.layout.home_recommendation_inside, parentLayout, false);
+                    View customView = inflater.inflate(R.layout.home_recommendation_inside, foodLayout, false);
                     updateStopInfo(customView, stopSnapshot, isSavedByUser);
 
                     // Set the click listener to open stop activiy
@@ -400,7 +406,56 @@ public class HomeActivity extends AppCompatActivity {
                     });
 
 
-                    parentLayout.addView(customView);
+                    foodLayout.addView(customView);
+                    count++; // Increment the counter when a stop is added
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("DBError", "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+    private void addAttractionToRec() {
+        attractionLayout = findViewById(R.id.recommendAttraction_linearLayout);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        DatabaseReference stopsRef = FirebaseDatabase.getInstance().getReference("Stops");
+
+        stopsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            int count = 0; // Counter to limit the number of stops added to 3
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot stopSnapshot : dataSnapshot.getChildren()) {
+                    if (count >= 3) break; // Break if three stops have already been added
+                    String type = stopSnapshot.child("type").getValue(String.class);
+                    if (!"attraction".equals(type)) continue; // Skip if the stop is not of type 'attraction'
+
+                    // Check if the current user has saved this stop
+                    boolean isSavedByUser = false;
+                    for (DataSnapshot savedUser : stopSnapshot.child("saved_user").getChildren()) {
+                        String userID = savedUser.child("userID").getValue(String.class);
+                        if (currentUserId.equals(userID)) {
+                            isSavedByUser = true;
+                            break; // Stop checking if the current user has already been found
+                        }
+                    }
+
+                    // Inflate and add the layout
+                    View customView = inflater.inflate(R.layout.home_recommendation_inside, attractionLayout, false);
+                    updateStopInfo(customView, stopSnapshot, isSavedByUser);
+
+                    // Set the click listener to open stop activiy
+                    customView.setOnClickListener(view -> {
+                        Intent intent = new Intent(HomeActivity.this, StopActivity.class);
+                        intent.putExtra("placeName", stopSnapshot.child("name").getValue(String.class));
+                        startActivity(intent);
+                    });
+
+
+                    attractionLayout.addView(customView);
                     count++; // Increment the counter when a stop is added
                 }
             }

@@ -194,7 +194,21 @@
 
 
             <LinearLayout
-                android:id="@+id/recommend_linearLayout"
+                android:id="@+id/recommendFood_linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="415dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="@+id/imageView11"
+                app:layout_constraintStart_toStartOf="@+id/imageView11"
+                app:layout_constraintTop_toBottomOf="@+id/rec_food">
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/recommendAttraction_linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="415dp"
                 android:layout_marginTop="12dp"
