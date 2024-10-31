@@ -201,27 +201,24 @@
 
                 <ImageView
                     android:id="@+id/my_profile_addimagebtn"
-                    android:layout_width="0dp"
+                    android:layout_width="118dp"
                     android:layout_height="118dp"
                     android:layout_margin="5dp"
-                    android:layout_columnWeight="1"
                     app:srcCompat="@drawable/add_image" />
 
                 <ImageView
                     android:id="@+id/my_profile_post"
-                    android:layout_width="0dp"
+                    android:layout_width="118dp"
                     android:layout_height="118dp"
                     android:layout_margin="5dp"
                     android:visibility="visible"
-                    android:layout_columnWeight="1"
                     tools:srcCompat="@tools:sample/avatars" />
                 <ImageView
                     android:id="@+id/my_profile_post"
-                    android:layout_width="0dp"
+                    android:layout_width="118dp"
                     android:layout_height="118dp"
                     android:layout_margin="5dp"
                     android:visibility="visible"
-                    android:layout_columnWeight="1"
                     tools:srcCompat="@tools:sample/avatars" />
 
 
