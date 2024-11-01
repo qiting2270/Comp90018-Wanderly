@@ -317,9 +317,11 @@ public class HomeActivity extends AppCompatActivity {
                             }*/
 
                             onFirebaseLoadSuccess(Day1List, Day2List, Day3List);
-
-
                         }
+                        else{
+                            onFirebaseLoadSuccess(Day1List, Day2List, Day3List);
+                        }
+
 
                     }
 
