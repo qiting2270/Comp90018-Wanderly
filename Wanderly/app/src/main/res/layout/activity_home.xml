@@ -81,9 +81,11 @@
 
             <ImageView
                 android:id="@+id/imageView12"
-                android:layout_width="365dp"
-                android:layout_height="275dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -92,9 +94,11 @@
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/slide_viewPager"
-                android:layout_width="365dp"
-                android:layout_height="275.5dp"
+                android:layout_width="match_parent"
+                android:layout_height="285dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="schedule day"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -127,109 +131,109 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView12" />
 
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="wrap_content"
-                android:layout_height="466dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/frame6"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-            <TextView
-                android:id="@+id/rec_food"
-                android:layout_width="95dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/kulim_park"
-                android:text="Food"
-                android:textSize="16sp"
-                android:background="@drawable/rec_bg"
-                android:gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-
-            <TextView
-                android:id="@+id/rec_attraction"
-                android:layout_width="95dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/kulim_park"
-                android:text="Attraction"
-                android:textSize="16sp"
-                android:background="@drawable/rec_bg"
-                android:gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-            <ImageView
-                android:id="@+id/rec_food_border"
-                android:layout_width="95dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:visibility="visible"
-                app:srcCompat="@drawable/rec_border"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17"/>
-
-            <ImageView
-                android:id="@+id/rec_attraction_border"
-                android:layout_width="95dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/rec_border"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-
-            <LinearLayout
-                android:id="@+id/recommendFood_linearLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="415dp"
-                android:layout_marginTop="12dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="@+id/imageView11"
-                app:layout_constraintStart_toStartOf="@+id/imageView11"
-                app:layout_constraintTop_toBottomOf="@+id/rec_food">
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/recommendAttraction_linearLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="415dp"
-                android:layout_marginTop="12dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="@+id/imageView11"
-                app:layout_constraintStart_toStartOf="@+id/imageView11"
-                app:layout_constraintTop_toBottomOf="@+id/rec_food">
-
-
-
-            </LinearLayout>
-
-
-
 
             <!-- add space at end of page -->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="466dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/frame6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView17">
+
+                <TextView
+                    android:id="@+id/rec_food"
+                    android:layout_width="95dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/rec_bg"
+                    android:fontFamily="@font/kulim_park"
+                    android:gravity="center"
+                    android:text="Food"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/rec_attraction" />
+
+
+                <TextView
+                    android:id="@+id/rec_attraction"
+                    android:layout_width="95dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="13dp"
+                    android:background="@drawable/rec_bg"
+                    android:fontFamily="@font/kulim_park"
+                    android:gravity="center"
+                    android:text="Attraction"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/rec_food"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/rec_food_border"
+                    android:layout_width="95dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/rec_attraction"
+                    app:srcCompat="@drawable/rec_border" />
+
+                <ImageView
+                    android:id="@+id/rec_attraction_border"
+                    android:layout_width="95dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="13dp"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/rec_food"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/rec_border" />
+
+
+                <LinearLayout
+                    android:id="@+id/recommendFood_linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="415dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/rec_food">
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/recommendAttraction_linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="415dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/rec_food">
+
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageView11" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
 
 

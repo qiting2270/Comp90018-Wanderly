@@ -468,6 +468,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void updateStopInfo(View view, DataSnapshot stopSnapshot, boolean isSavedByUser) {
         TextView nameText = view.findViewById(R.id.rec_name1);
+        TextView ratingText = view.findViewById(R.id.home_rec_inside_ratingtext);
         TextView descText = view.findViewById(R.id.rec_desc1);
         RatingBar ratingBar = view.findViewById(R.id.rec_rating1);
         ImageView saveIcon = view.findViewById(R.id.rec_saved1);
@@ -477,6 +478,7 @@ public class HomeActivity extends AppCompatActivity {
         Float rating = stopSnapshot.child("rating").getValue(Float.class);
         if (rating != null) {
             ratingBar.setRating(rating);
+            ratingText.setText(String.valueOf(rating));
         }
 
         // Set the visibility of the save icon based on whether the user has saved the stop
