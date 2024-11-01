@@ -63,9 +63,9 @@
             android:id="@+id/imageView18"
             android:layout_width="match_parent"
             android:layout_height="650dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/frame_add_trip2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +85,7 @@
 
             <Spinner
                 android:id="@+id/add_trip_spinner_wherefrom"
-                android:layout_width="145dp"
+                android:layout_width="135dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/spinner_background"
@@ -97,7 +97,7 @@
 
             <Spinner
                 android:id="@+id/add_trip_spinner_whereTo"
-                android:layout_width="145dp"
+                android:layout_width="135dp"
                 android:layout_height="45dp"
                 android:background="@drawable/spinner_background"
                 app:layout_constraintBottom_toBottomOf="@+id/add_trip_spinner_wherefrom"
@@ -121,7 +121,7 @@
 
             <TextView
                 android:id="@+id/add_trip_departure_date"
-                android:layout_width="145dp"
+                android:layout_width="135dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/spinner_background"
@@ -135,7 +135,7 @@
 
             <TextView
                 android:id="@+id/add_trip_return_date"
-                android:layout_width="145dp"
+                android:layout_width="135dp"
                 android:layout_height="45dp"
                 android:background="@drawable/spinner_background"
                 android:gravity="center|left"
@@ -203,10 +203,9 @@
 
             <HorizontalScrollView
                 android:id="@+id/add_trip_Horizontal_scroll_view"
-                android:layout_width="363dp"
-                android:layout_height="400dp"
+                android:layout_width="337dp"
+                android:layout_height="411dp"
                 android:layout_marginTop="24dp"
-
                 android:fillViewport="true"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView18"
                 app:layout_constraintEnd_toEndOf="@+id/imageView18"
