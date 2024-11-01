@@ -8,6 +8,7 @@
             android:id="@+id/display_trip_background"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:background="@drawable/trip_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

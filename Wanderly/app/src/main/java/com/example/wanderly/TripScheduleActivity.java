@@ -56,6 +56,7 @@ public class TripScheduleActivity extends AppCompatActivity {
     private Button delete_cancelBtn;
     private Button delete_confirmBtn;
 
+    ConstraintLayout displayMemberPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,8 @@ public class TripScheduleActivity extends AppCompatActivity {
         deletePopup = findViewById(R.id.delete_trip_pop_up);
         delete_cancelBtn = findViewById(R.id.delete_cancel_btn);
         delete_confirmBtn = findViewById(R.id.delete_member_btn);
+
+        displayMemberPopup = findViewById(R.id.view_trip_displaymemberinfo);
 
 
         // read trip ID from previous intent
@@ -217,30 +220,68 @@ public class TripScheduleActivity extends AppCompatActivity {
         databaseReference.child("User Information").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String profilePicUrl = new String();
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         // Safely obtain the profile picture URL, check if it's null first
                         Object profilePicObj = child.child("profile_pic").getValue();
-                        profilePicUrl = profilePicObj != null ? profilePicObj.toString() : null;
+                        String profilePicUrl = profilePicObj != null ? profilePicObj.toString() : null;
+                        String firstName = child.child("firstname").getValue(String.class);
+                        String lastName = child.child("lastname").getValue(String.class);
+                        String fullName = firstName + " " + lastName;
 
                         if (profilePicObj != null) {
                             profilePicUrl = profilePicObj.toString();
                             // Load the image directly here after ensuring URL is fetched
                             Glide.with(TripScheduleActivity.this).load(profilePicUrl).circleCrop().into(userImage);
+                            // show pop up when click the member avatar
+                            userImage.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    showMemberPopup(fullName, email);
+                                }
+                            });
                         }
+                        else {
+                            // Fallback if no URL is found
+                            Glide.with(TripScheduleActivity.this).load(R.drawable.vector).circleCrop().into(userImage);
+                            // show pop up when click the member avatar
+                            userImage.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    showMemberPopup(fullName, email);
+                                }
+                            });
+                        }
+
                     }
                 }
-                if (profilePicUrl == null) {
-                    // Fallback if no URL is found
-                    Glide.with(TripScheduleActivity.this).load(R.drawable.vector).circleCrop().into(userImage);
-                }
+
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("Firebase", "Error fetching user data", databaseError.toException());
+            }
+        });
+    }
+
+    private void showMemberPopup(String name, String email) {
+        displayMemberPopup.setVisibility(View.VISIBLE);
+
+        // Set the name and email in the popup
+        TextView nameTextView = findViewById(R.id.trip_member_name);
+        TextView emailTextView = findViewById(R.id.trip_member_email);
+        nameTextView.setText(name);
+        emailTextView.setText(email);
+
+        // Handle the close button
+        ImageView closeButton = findViewById(R.id.trip_member_close_btn);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Set the popup back to gone
+                displayMemberPopup.setVisibility(View.GONE);
             }
         });
     }
