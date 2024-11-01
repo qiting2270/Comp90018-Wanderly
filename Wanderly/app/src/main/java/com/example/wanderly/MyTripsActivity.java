@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -47,6 +48,8 @@ public class MyTripsActivity extends AppCompatActivity {
     String profilePicUrl = new String();
     private String tripImageUrl;
 
+    TextView noUpcomingTripsText;
+
 
 
     @Override
@@ -64,6 +67,7 @@ public class MyTripsActivity extends AppCompatActivity {
         upcomingTripsContainer = findViewById(R.id.upcomingtriplinearLayout);
         pastTripContainer = findViewById(R.id.pasttriplinearLayout);
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        noUpcomingTripsText = findViewById(R.id.no_upcoming_trip_text);
 
         auth = FirebaseAuth.getInstance();
         currentUserEmail = Objects.requireNonNull(auth.getCurrentUser()).getEmail();
@@ -124,6 +128,7 @@ public class MyTripsActivity extends AppCompatActivity {
         databaseReference.child("Trips").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean hasUpcomingTrips = false;
                 for (DataSnapshot tripSnapshot : dataSnapshot.getChildren()) {
                     DataSnapshot membersSnapshot = tripSnapshot.child("Members");
 
@@ -133,9 +138,17 @@ public class MyTripsActivity extends AppCompatActivity {
                     for (DataSnapshot member : membersSnapshot.getChildren()) {
                         String memberEmail = member.child("email").getValue(String.class);
                         if (currentUserEmail.equals(memberEmail)) {
+                            hasUpcomingTrips = true;
                             addTripView(tripSnapshot, numberOfPeople);
                         }
                     }
+                }
+
+                if (!hasUpcomingTrips) {
+                    noUpcomingTripsText.setVisibility(View.VISIBLE);
+                }
+                else{
+                    noUpcomingTripsText.setVisibility(View.GONE);
                 }
             }
 
@@ -169,7 +182,7 @@ public class MyTripsActivity extends AppCompatActivity {
         TextView memberNum = tripView.findViewById(R.id.trippeople_number);
         ImageView userImage = tripView.findViewById(R.id.user_profile_image_tem);
         ImageView tripImage = tripView.findViewById(R.id.trip_image);
-        ImageView displayTripBackground = tripView.findViewById(R.id.display_trip_background);
+        ConstraintLayout displayTripBackground = tripView.findViewById(R.id.display_trip_background);
 
 
         String departureDate = tripSnapshot.child("departureDate").getValue(String.class);
@@ -189,7 +202,7 @@ public class MyTripsActivity extends AppCompatActivity {
 
         if (daysUntil < 0) {
             inHowmanyDays.setText("Past trip");
-            displayTripBackground.setImageResource(R.drawable.tripbackground_past);
+            displayTripBackground.setBackgroundResource(R.drawable.tripbackground_past);
             ViewGroup.LayoutParams layoutParams = displayTripBackground.getLayoutParams();
             layoutParams.height = convertDpToPx(150); // Adjust the height
             displayTripBackground.setLayoutParams(layoutParams);

@@ -50,30 +50,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-            <SearchView
-                android:id="@+id/searchView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:background="@drawable/searchview_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:iconifiedByDefault="false"
-                app:layout_constraintTop_toBottomOf="@+id/my_trips_add_icon" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:background="#F2F2F2"
                 android:paddingBottom="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchView">
+                app:layout_constraintTop_toBottomOf="@+id/my_trips_add_icon">
 
 
                 <TextView
@@ -104,12 +91,25 @@
                         android:layout_height="match_parent">
 
 
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/no_upcoming_trip_text"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="60dp"
+                    android:fontFamily="@font/kulim_park"
+                    android:text="No upcoming trips! Click the yellow 'Add' button to plan a trip now."
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
