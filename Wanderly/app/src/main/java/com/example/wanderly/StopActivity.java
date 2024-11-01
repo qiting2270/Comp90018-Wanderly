@@ -346,8 +346,8 @@ public class StopActivity extends AppCompatActivity implements OnMapReadyCallbac
             for (String url : posts_list) {
                 ImageView imageView = new ImageView(StopActivity.this);
 
-                int heightInDp = 118;
-                int widthInDp = 118;
+                int heightInDp = 100;
+                int widthInDp = 100;
                 int widthInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthInDp, getResources().getDisplayMetrics());
                 int heightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, heightInDp, getResources().getDisplayMetrics());
 
@@ -446,7 +446,7 @@ public class StopActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d("locationAA", String.valueOf(latitude));
 
         LatLng location = new LatLng(latitude, longitude);
-        googleMap.addMarker(new MarkerOptions().position(location).title("Marker in " + placeName));
+        googleMap.addMarker(new MarkerOptions().position(location).title(placeName));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16)); // Zoom level can be adjusted
     }
 

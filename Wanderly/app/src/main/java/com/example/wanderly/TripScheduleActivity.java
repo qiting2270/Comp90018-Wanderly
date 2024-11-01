@@ -1,6 +1,5 @@
 package com.example.wanderly;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -30,9 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class TripScheduleActivity extends AppCompatActivity {
@@ -90,7 +86,7 @@ public class TripScheduleActivity extends AppCompatActivity {
         deleteBtn = findViewById(R.id.trip_schedule_delete_icon);
         deletePopup = findViewById(R.id.delete_trip_pop_up);
         delete_cancelBtn = findViewById(R.id.delete_cancel_btn);
-        delete_confirmBtn = findViewById(R.id.delete_confirm_btn);
+        delete_confirmBtn = findViewById(R.id.delete_member_btn);
 
 
         // read trip ID from previous intent

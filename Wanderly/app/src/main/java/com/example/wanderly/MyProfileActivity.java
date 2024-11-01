@@ -1,6 +1,8 @@
 package com.example.wanderly;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -204,12 +207,15 @@ public class MyProfileActivity extends AppCompatActivity {
 
         // navigate to saved section
         savedPageBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
                 savedPageLayout.setVisibility(View.VISIBLE);
                 gridLayout.setVisibility(View.GONE);
                 saveBtnUnderline.setVisibility(View.VISIBLE);
                 postBtnUnderline.setVisibility(View.GONE);
+                savedPageBtn.setTextColor(Color.parseColor("#000000"));
+                postPageBtn.setTextColor(Color.parseColor("#803B5667"));
 
             }
         });
@@ -222,6 +228,8 @@ public class MyProfileActivity extends AppCompatActivity {
                 gridLayout.setVisibility(View.VISIBLE);
                 saveBtnUnderline.setVisibility(View.GONE);
                 postBtnUnderline.setVisibility(View.VISIBLE);
+                savedPageBtn.setTextColor(Color.parseColor("#803B5667"));
+                postPageBtn.setTextColor(Color.parseColor("#000000"));
             }
         });
 
@@ -274,8 +282,8 @@ public class MyProfileActivity extends AppCompatActivity {
                     // display all images under posts (gridlayout).
                     ImageView imageView = new ImageView(MyProfileActivity.this);
 
-                    int heightInDp = 118;
-                    int widthInDp = 118;
+                    int heightInDp = 100;
+                    int widthInDp = 100;
                     // Convert dp to pixels programmatically
                     int heightInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, heightInDp, getResources().getDisplayMetrics());
                     int widthInPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthInDp, getResources().getDisplayMetrics());

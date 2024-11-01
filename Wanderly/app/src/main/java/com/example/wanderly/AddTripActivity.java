@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 import android.graphics.Typeface;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -87,10 +89,12 @@ public class AddTripActivity extends AppCompatActivity {
 
     ConstraintLayout addStopPopup;
     ConstraintLayout addMemberPopup;
+    ConstraintLayout displayMemberPopup;
     ImageView popUpCloseBtn;
     ImageView addMembersCloseBtn;
     private Spinner timeFromSpinner, timeToSpinner;
     private ArrayList<String> timeValues;
+    private ArrayList<String> timeToValues;
 
     private String selectedPlace = "";
     TextView restaurant_ThaiTown;
@@ -155,6 +159,7 @@ public class AddTripActivity extends AppCompatActivity {
         //addStopBtn = insideHorizontalLayout.findViewById(R.id.addtrip_inside_add_stopBtn);
         addStopPopup = findViewById(R.id.addtrip_inside_popup_layout);
         addMemberPopup = findViewById(R.id.add_trip_addmembers_popup_layout);
+        displayMemberPopup = findViewById(R.id.add_trip_displaymemberinfo);
         popUpCloseBtn = findViewById(R.id.add_trip_pop_up_close_btn);
         addMembersCloseBtn = findViewById(R.id.add_trip_addmembers_closeBtn);
         Day1 = findViewById(R.id.add_trip_day_1);
@@ -497,6 +502,9 @@ public class AddTripActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email_txt = memberEmail.getText().toString();
                 checkEmailAndStore(email_txt);
+                //close the pop up
+                addMemberPopup.setVisibility(View.GONE);
+
 
             }
         });
@@ -660,7 +668,7 @@ public class AddTripActivity extends AppCompatActivity {
     private void setUpSpinners() {
         //time value
         timeValues = new ArrayList<>();
-        timeValues.add("Select Time"); // Default selection option
+        timeValues.add("Time From"); // Default selection option
         timeValues.add("12 AM");
         timeValues.add("1 AM");
         timeValues.add("2 AM");
@@ -688,9 +696,39 @@ public class AddTripActivity extends AppCompatActivity {
 
         ArrayAdapter<String> timeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, timeValues);
         timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         timeFromSpinner.setAdapter(timeAdapter);
-        timeToSpinner.setAdapter(timeAdapter);
+
+        //time value
+        timeToValues = new ArrayList<>();
+        timeToValues.add("Time To"); // Default selection option
+        timeToValues.add("12 AM");
+        timeToValues.add("1 AM");
+        timeToValues.add("2 AM");
+        timeToValues.add("3 AM");
+        timeToValues.add("4 AM");
+        timeToValues.add("5 AM");
+        timeToValues.add("6 AM");
+        timeToValues.add("7 AM");
+        timeToValues.add("8 AM");
+        timeToValues.add("9 AM");
+        timeToValues.add("10 AM");
+        timeToValues.add("11 AM");
+        timeToValues.add("12 PM");
+        timeToValues.add("1 PM");
+        timeToValues.add("2 PM");
+        timeToValues.add("3 PM");
+        timeToValues.add("4 PM");
+        timeToValues.add("5 PM");
+        timeToValues.add("6 PM");
+        timeToValues.add("7 PM");
+        timeToValues.add("8 PM");
+        timeToValues.add("9 PM");
+        timeToValues.add("10 PM");
+        timeToValues.add("11 PM");
+
+        ArrayAdapter<String> timeToAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, timeToValues);
+        timeToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeToSpinner.setAdapter(timeToAdapter);
 
         timeFromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1015,6 +1053,10 @@ public class AddTripActivity extends AppCompatActivity {
                         // Safely obtain the profile picture URL, check if it's null first
                         Object profilePicObj = child.child("profile_pic").getValue();
                         String profilePicUrl = profilePicObj != null ? profilePicObj.toString() : null;
+                        String firstName = child.child("firstname").getValue(String.class);
+                        String lastName = child.child("lastname").getValue(String.class);
+                        String fullName = firstName + " " + lastName;
+
 
                         //String profilePicUrl = child.child("profile_pic").getValue().toString();
 
@@ -1023,10 +1065,10 @@ public class AddTripActivity extends AppCompatActivity {
                             noProfileImg = true;
                             //random text
                             String text = "abc";
-                            addImageViewToLayout(text);
+                            addImageViewToLayout(text, fullName, email);
                         }
                         else{
-                            addImageViewToLayout(profilePicUrl);
+                            addImageViewToLayout(profilePicUrl, fullName, email);
                         }
 
                     }
@@ -1042,7 +1084,7 @@ public class AddTripActivity extends AppCompatActivity {
         });
     }
 
-    private void addImageViewToLayout(String imageUrl) {
+    private void addImageViewToLayout(String imageUrl, String name, String email) {
         ImageView imageView = new ImageView(this);
         imageView.setId(View.generateViewId());
         // Set both width and height to 49dp converted to pixels
@@ -1054,6 +1096,14 @@ public class AddTripActivity extends AppCompatActivity {
         imageView.setPadding(
                 convertDpToPx(5), 0, convertDpToPx(5), 0
         );
+
+        // show pop up when click the member avatar
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMemberPopup(name, email);
+            }
+        });
 
         if (noProfileImg){
             Glide.with(this).load(R.drawable.vector).circleCrop().into(imageView);
@@ -1073,6 +1123,27 @@ public class AddTripActivity extends AppCompatActivity {
     private int convertDpToPx(int dp) {
         return (int) (dp * getResources().getDisplayMetrics().density);
     }
+
+    private void showMemberPopup(String name, String email) {
+        displayMemberPopup.setVisibility(View.VISIBLE);
+
+        // Set the name and email in the popup
+        TextView nameTextView = findViewById(R.id.delete_member_name);
+        TextView emailTextView = findViewById(R.id.delete_member_email);
+        nameTextView.setText(name);
+        emailTextView.setText(email);
+
+        // Handle the close button
+        ImageView closeButton = findViewById(R.id.delete_member_close_btn);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Set the popup back to gone
+                displayMemberPopup.setVisibility(View.GONE);
+            }
+        });
+    }
+
 
 }
 

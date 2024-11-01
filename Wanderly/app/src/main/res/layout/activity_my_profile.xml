@@ -38,7 +38,7 @@
                 android:layout_width="43dp"
                 android:layout_height="43dp"
                 android:layout_marginTop="60dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/my_profile_name"
@@ -132,6 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/kulim_park"
+                android:textColor="@color/black"
                 android:text="Posts"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -201,22 +202,22 @@
 
                 <ImageView
                     android:id="@+id/my_profile_addimagebtn"
-                    android:layout_width="118dp"
-                    android:layout_height="118dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/add_image" />
 
                 <ImageView
                     android:id="@+id/my_profile_post"
-                    android:layout_width="118dp"
-                    android:layout_height="118dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_margin="5dp"
                     android:visibility="visible"
                     tools:srcCompat="@tools:sample/avatars" />
                 <ImageView
                     android:id="@+id/my_profile_post"
-                    android:layout_width="118dp"
-                    android:layout_height="118dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_margin="5dp"
                     android:visibility="visible"
                     tools:srcCompat="@tools:sample/avatars" />
@@ -227,7 +228,7 @@
 
             <ScrollView
                 android:id="@+id/my_profile_scrollview_savedpage"
-                android:layout_width="409dp"
+                android:layout_width="match_parent"
                 android:layout_height="502dp"
                 android:layout_marginTop="16dp"
                 android:fillViewport="true"

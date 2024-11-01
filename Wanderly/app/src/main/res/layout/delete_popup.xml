@@ -31,7 +31,7 @@
             app:srcCompat="@drawable/warning_icon" />
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/delete_member_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/kulim_park"
@@ -60,10 +60,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView22" />
+            app:layout_constraintTop_toBottomOf="@+id/delete_member_name" />
 
         <Button
-            android:id="@+id/delete_confirm_btn"
+            android:id="@+id/delete_member_btn"
             android:layout_width="114dp"
             android:layout_height="42dp"
             android:layout_marginTop="8dp"
@@ -78,7 +78,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView22"
+            app:layout_constraintTop_toBottomOf="@+id/delete_member_name"
             app:layout_constraintVertical_bias="0.508" />
 
 

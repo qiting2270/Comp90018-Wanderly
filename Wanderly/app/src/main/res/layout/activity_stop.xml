@@ -17,7 +17,7 @@
             android:id="@+id/back_icon"
             android:layout_width="43dp"
             android:layout_height="44dp"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="60dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -27,18 +27,16 @@
 
         <TextView
             android:id="@+id/stop_place_name"
-            android:layout_width="250dp"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/kulim_park"
             android:gravity="center"
-            android:text=""
             android:textColor="#3B5667"
-            android:textSize="32sp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="@+id/back_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/back_icon"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/back_icon" />
 
         <TextView
             android:id="@+id/stop_rating_text"
@@ -49,7 +47,7 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/stop_ratingbar"
             app:layout_constraintEnd_toEndOf="@+id/stop_ratingbar"
-            app:layout_constraintHorizontal_bias="0.33"
+            app:layout_constraintHorizontal_bias="0.35"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/stop_ratingbar" />
 
@@ -60,11 +58,12 @@
             android:layout_marginTop="24dp"
             android:isIndicator="true"
             android:numStars="5"
+            android:progressTint="@color/dot_active"
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:stepSize="0.1"
-            android:progressTint="@color/dot_active"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.67"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/stop_place_name" />
 
@@ -96,14 +95,14 @@
 
         <TextView
             android:id="@+id/stop_text_description"
-            android:layout_width="365dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/kulim_park"
-            android:textSize="15sp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="24dp"
+            android:fontFamily="@font/kulim_park"
             android:text="Indigo Café offers a curated menu of specialty coffees, teas, and delicious homemade pastries, emphasizing quality, locally-sourced ingredients. It is a cozy, art-inspired spot where creativity and comfort come together."
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView37" />
@@ -160,8 +159,8 @@
 
         <ImageView
             android:id="@+id/stop_save_Btn"
-            android:layout_width="30dp"
-            android:layout_height="38dp"
+            android:layout_width="26dp"
+            android:layout_height="34dp"
             android:layout_marginEnd="32dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/back_icon"
@@ -171,10 +170,10 @@
 
         <ImageView
             android:id="@+id/stop_save_Btn_saved"
-            android:visibility="gone"
-            android:layout_width="30dp"
-            android:layout_height="38dp"
+            android:layout_width="26dp"
+            android:layout_height="34dp"
             android:layout_marginEnd="32dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/back_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/back_icon"
@@ -198,6 +197,15 @@
             app:layout_constraintTop_toBottomOf="@+id/mapView" />
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stop_grid_layout" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </ScrollView>
