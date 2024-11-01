@@ -136,8 +136,8 @@
 
             <ImageView
                 android:id="@+id/stop_upload_image_btn"
-                android:layout_width="118dp"
-                android:layout_height="118dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_margin="5dp"
                 app:srcCompat="@drawable/photo_icon" />
 
