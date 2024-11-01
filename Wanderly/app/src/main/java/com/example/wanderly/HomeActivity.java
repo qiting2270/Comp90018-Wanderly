@@ -70,8 +70,6 @@ public class HomeActivity extends AppCompatActivity {
     String dayAfterTomorrowDate;
 
 
-    private ImageView topleftBtn;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +119,6 @@ public class HomeActivity extends AppCompatActivity {
         recFoodBorder = findViewById(R.id.rec_food_border);
         recAttractionBorder = findViewById(R.id.rec_attraction_border);
 
-        topleftBtn = findViewById(R.id.imageView8);
 
 
 
@@ -185,16 +182,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        topleftBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, ARActivity.class);
-                intent.putExtra("Location", "National Gallery of Victoria");
-                startActivity(intent);
-            }
-        });
-
 
 
 

@@ -22,7 +22,7 @@
         android:layout_height="21dp"
         android:layout_marginTop="10dp"
         android:contentDescription="name of stop"
-        android:text="Indigo"
+        android:text="National Gallery of Victoria"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/rec_bg1"
@@ -45,7 +45,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/rec_bg1"
         app:layout_constraintTop_toTopOf="@+id/rec_bg1"
-        app:layout_constraintVertical_bias="0.19" />
+        app:layout_constraintVertical_bias="0.21" />
 
     <TextView
         android:id="@+id/rec_desc1"

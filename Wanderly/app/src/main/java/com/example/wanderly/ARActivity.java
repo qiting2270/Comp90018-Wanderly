@@ -64,7 +64,7 @@ public class ARActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        locationMap.put("Thai Town", new double[]{-33.8784, 151.2070});
+        locationMap.put("Thai Town", new double[]{-37.8105, 144.9662});
         locationMap.put("Billy's Central", new double[]{-37.8136, 144.9631});
         locationMap.put("Bornga", new double[]{-37.8140, 144.9660});
         locationMap.put("Sweet Canteen", new double[]{-37.8162, 144.9613});
