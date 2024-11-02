@@ -65,9 +65,9 @@ public class ARActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationMap.put("Thai Town", new double[]{-37.8105, 144.9662});
-        locationMap.put("Billy's Central", new double[]{-37.8136, 144.9631});
-        locationMap.put("Bornga", new double[]{-37.8140, 144.9660});
-        locationMap.put("Sweet Canteen", new double[]{-37.8162, 144.9613});
+        locationMap.put("Billy's Central", new double[]{-37.8116, 144.9635});
+        locationMap.put("Bornga", new double[]{-37.8118, 144.9669});
+        locationMap.put("Sweet Canteen", new double[]{-37.812977, 144.963127});
         locationMap.put("National Gallery of Victoria", new double[]{-37.8226, 144.9690});
         locationMap.put("State Library of Victoria", new double[]{-37.8099, 144.9656});
         locationMap.put("Queen Victoria Market", new double[]{-37.8076, 144.9568});
@@ -134,7 +134,6 @@ public class ARActivity extends AppCompatActivity {
 
         //!!!arrived page buttons!!!
         findViewById(R.id.closeButton).setOnClickListener(v -> finish()); // Close the activity
-        findViewById(R.id.viewDetailsButton).setOnClickListener(v -> showStopDetails()); // View stop details
     }
 
 
@@ -158,17 +157,15 @@ public class ARActivity extends AppCompatActivity {
     private void getLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
-        } else {
+        }
+        else {
+            requestNewLocationData();
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
-                            if (location != null) {
-                                calculateBearingToTarget(location);
-                                updateDistance(location);
-                            } else {
-                                requestNewLocationData();
-                            }
+                            calculateBearingToTarget(location);
+                            updateDistance(location);
                         }
                     });
         }
@@ -210,7 +207,9 @@ public class ARActivity extends AppCompatActivity {
     // Update the distance to the target location and check if the user has arrived
     private void updateDistance(Location currentLocation) {
         float distanceInMeters = currentLocation.distanceTo(targetLocation);
-        distanceText.setText(String.format("Distance: %.1f km", distanceInMeters / 1000));
+        //distanceText.setText(String.format("Distance: %.1f km", distanceInMeters / 1000));
+        distanceText.setText(String.format("Distance: %.0f meters", distanceInMeters));
+
 
         if (distanceInMeters <= ARRIVAL_THRESHOLD) {
             arrow.setVisibility(View.GONE);
@@ -278,4 +277,19 @@ public class ARActivity extends AppCompatActivity {
         // This can open a new activity or show more information about the stop
         Toast.makeText(this, "Viewing stop details...", Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getLocation();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+    }
+
 }
