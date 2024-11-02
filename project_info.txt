@@ -1,0 +1,33 @@
+################################################################################                     
+                    COMP90018 Programming Project Submission
+################################################################################
+
+Group No: T06-G02
+
+Group Members:
+
+1: [Qiting Ma, qitingm@student.unimelb.edu.au, 1174225] 
+2: [Jo Eann Chong, joeannc@student.unimelb.edu.au, 1152260] 
+3: [Yuqi Deng, yuqideng@student.unimelb.edu.au, 1138222] 
+4: [Yuqian Si, yusi1@student.unimelb.edu.au, 1213984] 
+5: [Xueyi Chen, xueyic1@student.unimelb.edu.au, 1174341]
+
+YouTube Link: 
+
+Publicity statement: We authorise the University of Melbourne to use material from our submission for publicity.
+
+README:
+
+To run the project, In Android Studio, click File - Open, choose the folder named "Wanderly", once its opened, Sync the project with Gradle files, once it finish syncing, click 'Run app'.
+
+It is highly recommended to use an actual Android phone to test the application, as the virtual environment do not have full access to the location and camera features. When selecting dates in add new trip, we have only implemented trips for up to 3 days. So make sure not to select the date that exceed the duration of 3 days. Thank you! 
+
+
+NOTE: 
+
+If this error occur during the build: Execution failed for task ':app:parseDebugLocalResources',
+Clean and rebuild the project should solve the problem. Go to Build - Clean Project, then Build - Rebuild Project. 
+
+If you failed to build the project with a MacBook and encounter the error related to ".DS_Store", open the terminal, navigate to this path: Comp90018-Wanderly/Wanderly/app/build/intermediates/packaged_res/debug/packageDebugResources, then enter "rm .DS_Store" should solve the issue.
+
+
